@@ -1,5 +1,5 @@
 ---
-title: "Accueillir un chiot : les premières semaines"
+title: "Accueillir un chiot : les premières semaines"
 description: "Propreté, sommeil, socialisation, solitude : tout ce qu’il faut savoir pour bien démarrer avec votre chiot."
 category: "Chiot"
 cover: "../../assets/photos/oslo-chiot.jpg"

@@ -1,18 +1,23 @@
 ---
-interface Props { items: string[] }
-const { items } = Astro.props;
-const list = [...items, ...items];
+interface Props { items: string[]; alt?: string[] }
+const { items, alt = items } = Astro.props;
+const a = [...items, ...items, ...items];
+const b = [...alt, ...alt, ...alt];
 ---
-<div class="mq" aria-hidden="true">
-  <div class="track">
-    {list.map((t) => <span>{t}<svg viewBox="0 0 24 24" width="22" height="22"><use href="#paw-sym" /></svg></span>)}
-  </div>
+<div class="mqx" aria-hidden="true">
+  <div class="band b1"><div class="track">{a.map((t) => <span>{t}<svg viewBox="0 0 24 24"><use href="#paw-sym" /></svg></span>)}</div></div>
+  <div class="band b2"><div class="track rev">{b.map((t) => <span>{t}<svg viewBox="0 0 24 24"><use href="#paw-sym" /></svg></span>)}</div></div>
 </div>
 <style>
-  .mq { overflow: hidden; background: var(--green); color: var(--on); padding: 18px 0; transform: rotate(-1.5deg); margin: 0 -20px; }
-  .track { display: flex; width: max-content; animation: mq 38s linear infinite; }
-  .mq:hover .track { animation-play-state: paused; }
-  span { display: inline-flex; align-items: center; gap: 28px; padding-right: 28px; font-family: var(--serif); font-size: clamp(1.3rem, 2.6vw, 1.9rem); font-weight: 600; white-space: nowrap; }
-  svg { color: var(--sun); }
-  @keyframes mq { to { transform: translateX(-50%); } }
+  .mqx { position: relative; height: clamp(150px, 18vw, 220px); overflow: hidden; margin: 0; }
+  .band { position: absolute; left: -5%; width: 110%; border-block: var(--line); padding: 14px 0; overflow: hidden; }
+  .b1 { top: 8%; background: var(--sun); transform: rotate(-3deg); z-index: 1; }
+  .b2 { top: 48%; background: var(--grass); color: var(--white); transform: rotate(2.5deg); }
+  .track { display: flex; width: max-content; animation: mq 40s linear infinite; }
+  .track.rev { animation-direction: reverse; animation-duration: 46s; }
+  span { display: inline-flex; align-items: center; gap: 26px; padding-right: 26px; font-family: var(--display); font-weight: 800; font-stretch: 80%; text-transform: uppercase; font-size: clamp(1.6rem, 3.4vw, 2.8rem); letter-spacing: -.02em; white-space: nowrap; }
+  .b2 span { color: transparent; -webkit-text-stroke: 1.5px var(--white); }
+  svg { width: 30px; height: 30px; color: var(--tomato); }
+  .b2 svg { color: var(--sun); }
+  @keyframes mq { to { transform: translateX(-33.333%); } }
 </style>

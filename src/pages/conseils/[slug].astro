@@ -4,7 +4,9 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import Icon from '../../components/Icon.astro';
+import Kicker from '../../components/Kicker.astro';
 import OsloTip from '../../components/OsloTip.astro';
+import OsloAvatar from '../../components/OsloAvatar.astro';
 
 export async function getStaticPaths() {
   const all = await getCollection('conseils');
@@ -14,60 +16,69 @@ const { entry, all } = Astro.props;
 const { Content } = await render(entry);
 const { title, description, category, cover, coverAlt, readingTime } = entry.data;
 const related = all.filter((a) => a.id !== entry.id).sort((a, b) => Number(b.data.category === category) - Number(a.data.category === category)).slice(0, 3);
+const colors: Record<string, string> = { Éducation: 'sun', Comportement: 'pink', Chiot: 'sky', Quotidien: 'mint' };
+const c = colors[category];
 ---
 <Layout title={title} description={description} image={cover} type="article">
   <div class="progress" aria-hidden="true"></div>
   <article>
-    <header class="w narrow ah">
-      <a class="back" href="/conseils/"><Icon name="arrow" size={16} /> Tous les conseils</a>
-      <div class="meta"><span class="chip">{category}</span><span class="mut"><Icon name="clock" size={15} /> {readingTime} min de lecture</span></div>
-      <h1>{title}</h1>
-      <p class="lead">{description}</p>
+    <header class:list={['ah', `bg-${c}`]} data-hero>
+      <div class="w narrow">
+        <a class="back" href="/conseils/"><Icon name="arrow" size={16} /> Tous les conseils</a>
+        <div class="meta"><span class="pill">{category}</span><span class="time"><Icon name="clock" size={16} /> {readingTime} min de lecture</span></div>
+        <h1 data-split>{title}</h1>
+        <p class="lead">{description}</p>
+      </div>
     </header>
-    <div class="w cover-w"><div class="photo cover"><Image src={cover} alt={coverAlt} widths={[480, 675, 900]} sizes="(min-width: 1180px) 1100px, 94vw" loading="eager" transition:name={`cover-${entry.id}`} /></div></div>
+    <div class="w cover-w">
+      <figure class="polaroid tape cover" style="--ar:21/10" data-pop>
+        <Image src={cover} alt={coverAlt} widths={[480, 675, 900]} sizes="(min-width: 1180px) 1000px, 92vw" loading="eager" />
+      </figure>
+    </div>
     <div class="w narrow prose"><Content /></div>
     {entry.data.oslo && <div class="w narrow"><OsloTip><p>{entry.data.oslo}</p></OsloTip></div>}
     <div class="w narrow">
-      <aside class="box">
-        <p class="t">Besoin d’un accompagnement personnalisé ?</p>
-        <p class="mut">Chaque chien est unique. Lors d’une séance bilan, on analyse votre situation et je vous propose un plan adapté.</p>
-        <a class="btn accent" href="/contact/">Réserver une séance bilan <Icon name="arrow" size={18} /></a>
+      <aside class="box" data-reveal>
+        <div class="box-oslo"><OsloAvatar size={90} /></div>
+        <div>
+          <p class="t">Besoin d’un accompagnement personnalisé ?</p>
+          <p>Chaque chien est unique. Lors d’une séance bilan, on analyse votre situation et je vous propose un plan adapté.</p>
+          <a class="btn" href="/contact/">Réserver une séance bilan <Icon name="arrow" size={18} /></a>
+        </div>
       </aside>
     </div>
   </article>
-  <section class="alt">
+  <section class="bg-sand">
     <div class="w">
-      <div class="head rv"><span class="eyebrow">À lire aussi</span><h2>D’autres conseils.</h2></div>
-      <div class="grid g3">{related.map((a, i) => <ArticleCard entry={a} d={i} />)}</div>
+      <Kicker>À lire aussi</Kicker><h2 data-split>D’autres conseils.</h2>
+      <div class="grid g3 rel" data-reveal="stagger">{related.map((a, i) => <ArticleCard entry={a} i={i} />)}</div>
     </div>
   </section>
-  <section style="padding-bottom:0"></section>
 </Layout>
 <style>
-  .progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); z-index: 60; }
-  @supports (animation-timeline: scroll()) {
-    .progress { animation: grow linear both; animation-timeline: scroll(root); }
-    @keyframes grow { to { transform: scaleX(1); } }
-  }
-  .ah { padding-top: clamp(40px, 6vw, 80px); }
-  .back { display: inline-flex; align-items: center; gap: 8px; color: var(--mut); text-decoration: none; font-weight: 600; margin-bottom: 24px; }
-  .back :global(svg) { transform: rotate(180deg); transition: transform .3s var(--ease); }
-  .back:hover :global(svg) { transform: rotate(180deg) translateX(4px); }
-  .meta { display: flex; gap: 16px; align-items: center; margin-bottom: 18px; font-size: .9rem; }
-  .meta .mut { display: inline-flex; gap: 6px; align-items: center; }
-  h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); }
-  .cover-w { margin: 40px auto 56px; }
-  .cover { aspect-ratio: 21 / 10; }
-  @media (max-width: 700px) { .cover { aspect-ratio: 4 / 3; } }
-  .prose { font-size: 1.09rem; }
-  .prose :global(h2) { font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 1.8em; }
-  .prose :global(h3) { margin-top: 1.5em; }
+  .progress { position: fixed; top: 0; left: 0; height: 6px; width: 100%; background: var(--tomato); border-bottom: 2px solid var(--ink); transform-origin: 0 50%; transform: scaleX(0); z-index: 60; }
+  @supports (animation-timeline: scroll()) { .progress { animation: grow linear both; animation-timeline: scroll(root); } @keyframes grow { to { transform: scaleX(1); } } }
+  .ah { padding: clamp(40px, 6vw, 80px) 0 clamp(120px, 14vw, 180px); }
+  .back { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; text-decoration: none; margin-bottom: 24px; }
+  .back :global(svg) { transform: rotate(180deg); }
+  .meta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 18px; }
+  .time { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+  h1 { font-size: clamp(2.6rem, 6vw, 4.8rem); }
+  .ah .lead { color: var(--ink); }
+  .cover-w { margin-top: clamp(-130px, -10vw, -80px); margin-bottom: 64px; }
+  .cover { rotate: -1deg; margin: 0; }
+  @media (max-width: 700px) { .cover { --ar: 4/3 !important; } }
+  .prose { font-size: 1.12rem; line-height: 1.7; }
+  .prose :global(h2) { font-size: clamp(1.8rem, 3.6vw, 2.5rem); margin-top: 1.6em; }
+  .prose :global(h3) { margin-top: 1.4em; }
   .prose :global(ul), .prose :global(ol) { padding-left: 1.3em; }
   .prose :global(li) { margin-bottom: .4em; }
-  .prose :global(li::marker) { color: var(--accent); font-weight: 700; }
-  .prose :global(blockquote) { margin: 1.8em 0; padding: 20px 24px; background: var(--green-soft); border-left: 4px solid var(--green); border-radius: 0 18px 18px 0; color: var(--ink); }
+  .prose :global(li::marker) { color: var(--tomato); font-weight: 800; }
+  .prose :global(strong) { background: linear-gradient(transparent 60%, var(--sun) 60%); }
+  .prose :global(blockquote) { position: relative; margin: 2em 0; padding: 22px 26px; background: var(--mint); border: var(--line); border-radius: 22px; box-shadow: var(--hard); rotate: -.6deg; }
   .prose :global(blockquote p:last-child) { margin: 0; }
-  .prose :global(strong) { color: var(--ink); }
-  .box { margin: 56px 0 clamp(64px, 9vw, 110px); background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 32px; box-shadow: var(--shadow); }
-  .box .t { font-family: var(--serif); font-size: 1.5rem; font-weight: 650; margin-bottom: 6px; }
+  .box { display: flex; gap: 22px; align-items: flex-start; margin: 56px 0 clamp(64px, 9vw, 110px); background: var(--sun); border: var(--line); border-radius: 28px; padding: 30px; box-shadow: var(--hard-lg); }
+  .box .t { font-family: var(--display); font-weight: 800; font-stretch: 82%; font-size: 1.7rem; line-height: 1.05; margin-bottom: 8px; letter-spacing: -.02em; }
+  @media (max-width: 600px) { .box { flex-direction: column; } }
+  .rel { margin-top: 30px; row-gap: 40px; }
 </style>

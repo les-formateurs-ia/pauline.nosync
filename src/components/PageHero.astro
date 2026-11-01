@@ -1,14 +1,36 @@
 ---
-interface Props { eyebrow: string; title: string; lead?: string }
-const { eyebrow, title, lead } = Astro.props;
+import Illus from './Illus.astro';
+import OsloAvatar from './OsloAvatar.astro';
+interface Props { kicker: string; title: string; lead?: string; color?: string; illus?: string; oslo?: boolean }
+const { kicker, title, lead, color = 'sun', illus, oslo = false } = Astro.props;
 ---
-<section class="page-hero">
-  <div class="blob" style="width:420px;height:420px;background:var(--accent-soft);top:-120px;right:-80px"></div>
-  <div class="blob" style="width:360px;height:360px;background:var(--green-soft);bottom:-160px;left:-120px"></div>
-  <div class="w">
-    <span class="eyebrow rv">{eyebrow}</span>
-    <h1 class="rv" style="--d:1" set:html={title} />
-    {lead && <p class="lead rv" style="--d:2">{lead}</p>}
-    <slot />
+<section class:list={['phero', `bg-${color}`]} data-hero>
+  <div class="w grid-h">
+    <div class="txt">
+      <p class="kicker hand">{kicker}</p>
+      <h1 data-split set:html={title} />
+      {lead && <p class="lead">{lead}</p>}
+      <slot />
+    </div>
+    <div class="art" aria-hidden="true">
+      <div class="disc spin-slow"></div>
+      <div class="art-in float">{illus ? <Illus name={illus} size={260} /> : oslo && <OsloAvatar size={260} />}</div>
+      {illus && oslo && <div class="mini oslo-host" data-pop="0.6"><OsloAvatar size={96} /></div>}
+    </div>
   </div>
+  <svg class="wave edge" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 V20 C 120 0, 240 0, 360 20 S 600 40, 720 20 S 960 0, 1080 20 S 1320 40, 1440 20 V40Z" /></svg>
 </section>
+<style>
+  .phero { padding: clamp(48px, 7vw, 96px) 0 clamp(80px, 9vw, 120px); overflow: hidden; border-bottom: 0; }
+  .grid-h { display: grid; gap: 32px; align-items: center; }
+  @media (min-width: 900px) { .grid-h { grid-template-columns: 1.35fr .65fr; } }
+  .txt h1 { font-size: clamp(2.9rem, 7.4vw, 6.4rem); }
+  .phero .kicker { color: var(--ink); }
+  .phero .lead { color: var(--ink); opacity: .85; }
+  .art { position: relative; display: grid; place-items: center; min-height: 260px; }
+  .disc { position: absolute; width: 300px; height: 300px; border-radius: 50%; border: 2.5px dashed var(--ink); opacity: .45; }
+  .art-in { position: relative; display: grid; place-items: center; width: 280px; height: 280px; border-radius: 50%; background: var(--white); border: var(--line); box-shadow: var(--hard-lg); }
+  .mini { position: absolute; right: 4%; bottom: 0; }
+  .edge { position: absolute; left: 0; right: 0; bottom: -1px; color: var(--paper); }
+  @media (max-width: 899px) { .art { display: none; } }
+</style>

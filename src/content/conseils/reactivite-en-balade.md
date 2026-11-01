@@ -1,5 +1,5 @@
 ---
-title: "Réactivité en balade : comprendre avant d’agir"
+title: "Réactivité en balade : comprendre avant d’agir"
 description: "Votre chien aboie, tire ou se jette sur les autres chiens ou les passants ? Comprendre la réactivité est le premier pas pour l’apaiser."
 category: "Comportement"
 cover: "../../assets/photos/frisbee.jpg"

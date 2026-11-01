@@ -1,27 +1,31 @@
 ---
 import { faq } from '../data/site';
-import Icon from './Icon.astro';
 const ld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+const colors = ['sun', 'sky', 'pink', 'mint', 'lilac', 'sun'];
 ---
-<div class="faq">
+<div class="faq" data-reveal="stagger">
   {faq.map((f, i) => (
-    <details class="rv" style={`--d:${i % 3}`} name="faq">
-      <summary>{f.q}<span class="pm"><Icon name="plus" size={20} /></span></summary>
+    <details name="faq" style={`--c: var(--${colors[i % colors.length]})`}>
+      <summary><span class="q">{f.q}</span><span class="pm" aria-hidden="true"><span></span><span></span></span></summary>
       <div class="a"><p>{f.a}</p></div>
     </details>
   ))}
 </div>
 <script type="application/ld+json" set:html={JSON.stringify(ld)} />
 <style>
-  .faq { display: grid; gap: 12px; }
-  details { background: var(--card); border: 1px solid var(--line); border-radius: 20px; transition: border-color .3s, box-shadow .3s, opacity .9s var(--ease), transform .9s var(--ease); }
-  details[open] { border-color: var(--green); box-shadow: var(--shadow); }
-  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 24px; font-weight: 700; font-size: 1.05rem; }
+  .faq { display: grid; gap: 14px; }
+  details { background: var(--white); border: var(--line); border-radius: 22px; transition: background .3s, box-shadow .3s var(--ease), transform .3s var(--ease); }
+  details:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  details[open] { background: var(--c); box-shadow: var(--hard); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 24px; }
   summary::-webkit-details-marker { display: none; }
-  .pm { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--green-soft); color: var(--green2); transition: transform .4s var(--ease), background .3s; }
-  details[open] .pm { transform: rotate(45deg); background: var(--accent); color: #fff; }
-  .a { padding: 0 24px 6px; color: var(--mut); }
-  details::details-content { block-size: 0; overflow: hidden; transition: block-size .4s var(--ease), content-visibility .4s allow-discrete; }
+  .q { font-family: var(--display); font-weight: 700; font-stretch: 85%; font-size: 1.25rem; letter-spacing: -.01em; line-height: 1.15; }
+  .pm { position: relative; flex: none; width: 38px; height: 38px; border: var(--line); border-radius: 50%; background: var(--white); transition: transform .45s var(--spring); }
+  .pm span { position: absolute; left: 50%; top: 50%; width: 14px; height: 3px; background: var(--ink); border-radius: 3px; transform: translate(-50%, -50%); }
+  .pm span + span { transform: translate(-50%, -50%) rotate(90deg); }
+  details[open] .pm { transform: rotate(135deg); }
+  .a { padding: 0 24px 8px; font-size: 1.05rem; }
+  details::details-content { block-size: 0; overflow: hidden; transition: block-size .45s var(--ease), content-visibility .45s allow-discrete; }
   details[open]::details-content { block-size: auto; }
   :root { interpolate-size: allow-keywords; }
 </style>

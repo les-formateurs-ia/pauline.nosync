@@ -1,25 +1,25 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PawTrail from '../components/PawTrail.astro';
-import OsloAvatar from '../components/OsloAvatar.astro';
 import Icon from '../components/Icon.astro';
+import OsloAvatar from '../components/OsloAvatar.astro';
+import Illus from '../components/Illus.astro';
 ---
 <Layout title="Page introuvable">
   <section class="nf">
     <div class="w center">
-      <div class="o404"><OsloAvatar size={160} /></div>
-      <PawTrail class="t404" />
-      <p class="big">404</p>
-      <h1>Cette page a fugué…</h1>
-      <p class="lead" style="margin-inline:auto">Même Oslo ne la retrouve pas, et pourtant il a du flair. On travaille le rappel, promis !</p>
-      <a class="btn accent" href="/">Retour à l’accueil <Icon name="arrow" size={18} /></a>
+      <div class="big" aria-hidden="true"><span>4</span><span class="o oslo-host"><OsloAvatar size={190} /></span><span>4</span></div>
+      <h1 data-split>Cette page a fugué…</h1>
+      <p class="lead" style="margin:0 auto 30px">Même Oslo ne la retrouve pas, et pourtant il a du flair. On travaille le rappel, promis !</p>
+      <a class="btn tomato" href="/">Retour à l’accueil <Icon name="arrow" size={18} /></a>
+      <div class="paws" aria-hidden="true"><Illus name="paws" size={160} /></div>
     </div>
   </section>
 </Layout>
 <style>
-  .nf { min-height: 60vh; display: grid; place-items: center; }
-  .big { font-family: var(--serif); font-size: clamp(6rem, 20vw, 12rem); line-height: 1; font-weight: 700; color: var(--green); margin: 0; }
-  .o404 { display: grid; place-items: center; margin-bottom: -20px; animation: tilt 3s ease-in-out infinite; }
-  @keyframes tilt { 50% { transform: rotate(-8deg); } }
-  .nf :global(.t404) { width: min(500px, 90%); margin: 0 auto; }
+  .nf { min-height: 72vh; display: grid; place-items: center; overflow: hidden; }
+  .big { display: flex; justify-content: center; align-items: center; gap: 10px; font-family: var(--display); font-weight: 800; font-stretch: 75%; font-size: clamp(9rem, 26vw, 16rem); line-height: .8; margin-bottom: 20px; }
+  .o { display: inline-grid; animation: look 3s ease-in-out infinite; }
+  @keyframes look { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-14deg) translateX(-6px); } 75% { transform: rotate(14deg) translateX(6px); } }
+  .paws { display: flex; justify-content: center; margin-top: 30px; }
+  @media (max-width: 600px) { .o :global(.oslo) { width: 120px; height: 120px; } }
 </style>

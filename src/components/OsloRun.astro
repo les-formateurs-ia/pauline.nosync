@@ -1,0 +1,60 @@
+---
+// Oslo, side view, running loop. Use `still` for a standing pose.
+interface Props { size?: number; class?: string; still?: boolean }
+const { size = 220, class: cls, still = false } = Astro.props;
+const INK = '#17150f', BLK = '#1c1c1e', W = '#fbf8f2', TAN = '#c8763a', PINK = '#ec7088', GRASS = '#1f9d55';
+const leg = (x: number, y: number, len: number) => `M${x} ${y} L${x - 2} ${y + len}`;
+---
+<svg class:list={['run', cls, { still }]} width={size} height={size * 0.62} viewBox="0 0 240 150" fill="none" stroke={INK} stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Oslo qui court">
+  <ellipse class="gsh" cx="118" cy="140" rx="80" ry="6" fill={INK} stroke="none" opacity=".12" />
+  <g class="bodyg">
+    <!-- far legs -->
+    <g class="lg b"><path d={leg(70, 90, 40)} stroke-width="14" /><path d={leg(70, 92, 36)} stroke-width="8" stroke={TAN} /><ellipse cx="68" cy="132" rx="8" ry="5" fill={W} stroke-width="3" /></g>
+    <g class="lg fa"><path d={leg(146, 90, 40)} stroke-width="14" /><path d={leg(146, 92, 36)} stroke-width="8" stroke={TAN} /><ellipse cx="144" cy="132" rx="8" ry="5" fill={W} stroke-width="3" /></g>
+    <!-- tail -->
+    <path class="tl" d="M56 66 C42 58 32 44 32 26" stroke-width="11" /><path class="tl" d="M56 66 C42 58 32 44 32 26" stroke-width="5" stroke={BLK} /><path class="tl" d="M33 32 C32 28 32 26 32 24" stroke-width="5" stroke={W} />
+    <!-- body -->
+    <path d="M50 72 C50 54 70 46 100 46 C130 46 158 48 168 62 C178 78 170 102 150 104 L78 104 C58 104 50 92 50 72Z" fill={BLK} stroke-width="3.5" />
+    <path d="M150 62 C166 62 176 80 170 96 C166 104 154 106 146 100 C145 86 146 72 150 62Z" fill={W} stroke-width="3" />
+    <path d="M58 88 C62 98 70 104 80 104" stroke={TAN} stroke-width="6" />
+    <path d="M164 56 C170 66 172 76 170 84" stroke={GRASS} stroke-width="6" />
+    <!-- near legs -->
+    <g class="lg a"><path d={leg(80, 92, 40)} stroke-width="14" /><path d={leg(80, 94, 36)} stroke-width="8" stroke={TAN} /><ellipse cx="78" cy="134" rx="8" ry="5" fill={W} stroke-width="3" /></g>
+    <g class="lg fb"><path d={leg(156, 92, 40)} stroke-width="14" /><path d={leg(156, 94, 36)} stroke-width="8" stroke={TAN} /><ellipse cx="154" cy="134" rx="8" ry="5" fill={W} stroke-width="3" /></g>
+    <!-- head -->
+    <g class="hd">
+      <circle cx="182" cy="46" r="25" fill={BLK} stroke-width="3.5" />
+      <path class="tng" d="M202 66 C202 80 211 82 213 68Z" fill={PINK} stroke-width="2.5" />
+      <path d="M190 40 C206 36 223 44 223 55 C223 66 208 70 193 66Z" fill={W} stroke-width="3" />
+      <path d="M186 24 C192 27 194 35 191 42" stroke={W} stroke-width="5" />
+      <ellipse cx="193" cy="63" rx="8" ry="5" fill={TAN} stroke="none" />
+      <ellipse cx="187" cy="33" rx="4" ry="2.5" fill={TAN} stroke="none" />
+      <circle cx="189" cy="41" r="3.6" fill={W} stroke="none" /><circle cx="190" cy="41" r="2" fill={INK} stroke="none" />
+      <circle cx="222" cy="51" r="5" fill={INK} stroke="none" />
+      <path class="ear" d="M170 28 C156 32 154 52 160 64 C168 60 174 46 176 36Z" fill={BLK} stroke-width="3" />
+    </g>
+  </g>
+</svg>
+
+<style>
+  .run { display: block; overflow: visible; }
+  .run * { transform-box: view-box; }
+  .lg { animation: legA .44s ease-in-out infinite alternate; }
+  .lg.a { transform-origin: 80px 92px; } .lg.b { transform-origin: 70px 90px; animation-name: legB; }
+  .lg.fa { transform-origin: 146px 90px; } .lg.fb { transform-origin: 156px 92px; animation-name: legB; }
+  @keyframes legA { from { transform: rotate(32deg); } to { transform: rotate(-32deg); } }
+  @keyframes legB { from { transform: rotate(-32deg); } to { transform: rotate(32deg); } }
+  .bodyg { animation: bobR .22s ease-in-out infinite alternate; }
+  @keyframes bobR { to { transform: translateY(-5px); } }
+  .tl { transform-origin: 56px 66px; animation: tl .3s ease-in-out infinite alternate; }
+  @keyframes tl { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+  .ear { transform-origin: 172px 30px; animation: ear .22s ease-in-out infinite alternate; }
+  @keyframes ear { to { transform: rotate(-16deg); } }
+  .tng { transform-origin: 207px 66px; animation: tng .22s ease-in-out infinite alternate; }
+  @keyframes tng { to { transform: rotate(12deg) scaleY(1.15); } }
+  .gsh { transform-origin: 118px 140px; animation: gsh .22s ease-in-out infinite alternate; }
+  @keyframes gsh { to { transform: scaleX(.9); } }
+  .still .lg, .still .bodyg, .still .ear, .still .gsh { animation: none; }
+  .still .tl { animation-duration: .5s; }
+  @media (prefers-reduced-motion: reduce) { .run * { animation: none !important; } }
+</style>

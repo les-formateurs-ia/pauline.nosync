@@ -2,7 +2,7 @@
 import OsloAvatar from './OsloAvatar.astro';
 import Icon from './Icon.astro';
 ---
-<div class="buddy" transition:persist="oslo-buddy" data-buddy>
+<div class="buddy" data-buddy>
   <div class="bub" role="dialog" aria-label="Oslo vous parle" aria-hidden="true">
     <button class="x" type="button" aria-label="Fermer"><Icon name="close" size={16} /></button>
     <p class="who">Oslo</p>
@@ -16,22 +16,21 @@ import Icon from './Icon.astro';
 </div>
 
 <style>
-  .buddy { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 40; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; pointer-events: none; }
+  .buddy { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 40; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; pointer-events: none; }
   .buddy > * { pointer-events: auto; }
-  .pup { position: relative; border: 0; padding: 0; background: none; cursor: pointer; border-radius: 50%; filter: drop-shadow(0 12px 22px rgb(31 35 28 / .3)); transform: translateY(140%); transition: transform .8s cubic-bezier(.3, 1.5, .5, 1); }
+  .pup { position: relative; border: 0; padding: 0; background: none; cursor: pointer; border-radius: 50%; box-shadow: 4px 4px 0 var(--ink); transform: translateY(160%) rotate(20deg); transition: transform .9s var(--spring), box-shadow .25s; }
   .buddy.ready .pup { transform: none; }
-  .pup:hover { transform: translateY(-4px) rotate(-6deg) !important; }
-  .ping { position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); border: 3px solid var(--bg); }
-  .ping::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 2px solid var(--accent); animation: ping 1.8s infinite; }
+  .pup:hover { transform: translate(-2px, -3px) rotate(-8deg) !important; box-shadow: 6px 7px 0 var(--ink); }
+  .ping { position: absolute; top: 0; right: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--tomato); border: 2.5px solid var(--ink); }
+  .ping::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2.5px solid var(--tomato); animation: ping 1.6s infinite; }
   .buddy.seen .ping { display: none; }
-  @keyframes ping { to { transform: scale(2.2); opacity: 0; } }
-  .bub { position: relative; width: min(320px, calc(100vw - 32px)); background: var(--card); border: 1px solid var(--line); border-radius: 22px 22px 6px 22px; padding: 18px 20px; box-shadow: var(--shadow-lg); opacity: 0; transform: translateY(12px) scale(.96); transform-origin: bottom right; visibility: hidden; transition: opacity .35s var(--ease), transform .45s var(--ease), visibility .35s; }
+  @keyframes ping { to { transform: scale(2); opacity: 0; } }
+  .bub { position: relative; width: min(320px, calc(100vw - 32px)); background: var(--white); border: var(--line); border-radius: 24px 24px 6px 24px; padding: 18px 20px 18px; box-shadow: var(--hard); opacity: 0; transform: translateY(20px) scale(.8) rotate(4deg); transform-origin: bottom right; visibility: hidden; transition: opacity .3s var(--ease), transform .55s var(--spring), visibility .3s; }
   .buddy.open .bub { opacity: 1; transform: none; visibility: visible; }
-  .who { font-family: var(--serif); font-weight: 650; color: var(--accent); margin: 0 0 4px; }
-  .line { margin: 0 0 12px; font-size: .97rem; line-height: 1.5; }
-  .go { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--green); text-decoration: none; font-size: .95rem; }
-  .go:hover { text-decoration: underline; }
-  .x { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 0; background: var(--bg2); color: var(--mut); cursor: pointer; }
+  .who { font-family: var(--hand); font-size: 1.5rem; line-height: 1; color: var(--tomato); margin: 0 0 6px; }
+  .line { margin: 0 0 14px; font-size: 1rem; line-height: 1.5; }
+  .go { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-decoration: underline; text-decoration-color: var(--tomato); text-decoration-thickness: 3px; text-underline-offset: 4px; }
+  .x { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--ink); background: var(--sun); cursor: pointer; }
   @media (max-width: 600px) { .pup :global(.oslo) { width: 62px; height: 62px; } }
   @media print { .buddy { display: none; } }
 </style>
@@ -80,11 +79,10 @@ import Icon from './Icon.astro';
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
   document.addEventListener('oslo:dog', fill);
 
-  document.addEventListener('astro:page-load', () => {
-    setOpen(false);
+  {
     fill();
     if (sessionStorage.getItem('oslo-seen')) root.classList.add('seen');
-    requestAnimationFrame(() => root.classList.add('ready'));
+    setTimeout(() => root.classList.add('ready'), 900);
     // pop the bubble once per page and per session
     const k = `oslo-pop:${location.pathname}`;
     if (!sessionStorage.getItem(k) && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -92,8 +90,8 @@ import Icon from './Icon.astro';
       timer = window.setTimeout(() => {
         sessionStorage.setItem(k, '1');
         setOpen(true);
-        timer = window.setTimeout(() => setOpen(false), 9000);
-      }, 2800);
+        timer = window.setTimeout(() => setOpen(false), 6500);
+      }, 3200);
     }
-  });
+  }
 </script>

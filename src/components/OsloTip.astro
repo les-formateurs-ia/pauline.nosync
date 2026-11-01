@@ -1,24 +1,23 @@
 ---
 import OsloAvatar from './OsloAvatar.astro';
-interface Props { title?: string; size?: number; class?: string }
-const { title = 'Le conseil d’Oslo', size = 96, class: cls } = Astro.props;
+interface Props { title?: string; size?: number; class?: string; color?: string }
+const { title = 'Le conseil d’Oslo', size = 92, class: cls, color = 'white' } = Astro.props;
 ---
-<aside class:list={['oslo-tip', 'oslo-host', 'rv', cls]}>
+<aside class:list={['oslo-tip', 'oslo-host', cls]} data-reveal>
   <div class="av"><OsloAvatar size={size} /></div>
-  <div class="bubble">
-    <p class="t">{title}</p>
+  <div class="bubble" style={`--b: var(--${color})`}>
+    <p class="t hand">{title}</p>
     <div class="txt"><slot /></div>
   </div>
 </aside>
 <style>
-  .oslo-tip { display: flex; gap: 18px; align-items: flex-end; margin: 40px 0; }
-  .av { flex: none; animation: hop 4s ease-in-out infinite; }
-  @keyframes hop { 0%, 88%, 100% { transform: none; } 92% { transform: translateY(-8px); } 96% { transform: none; } }
-  .bubble { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 24px 24px 24px 6px; padding: 20px 24px; box-shadow: var(--shadow); flex: 1; }
-  .bubble::before { content: ''; position: absolute; left: -9px; bottom: 14px; width: 16px; height: 16px; background: var(--card); border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); transform: rotate(45deg); }
-  .t { font-family: var(--serif); font-weight: 650; font-size: 1.15rem; color: var(--accent); margin: 0 0 6px; }
-  .txt { color: var(--ink); }
+  .oslo-tip { display: flex; gap: 20px; align-items: flex-end; margin: 40px 0; }
+  .av { flex: none; animation: hop 3.6s var(--ease) infinite; }
+  @keyframes hop { 0%, 84%, 100% { transform: none; } 90% { transform: translateY(-14px) rotate(-6deg); } 95% { transform: translateY(0) scale(1.05, .95); } }
+  .bubble { position: relative; flex: 1; background: var(--b); border: var(--line); border-radius: 26px 26px 26px 6px; padding: 18px 24px 20px; box-shadow: var(--hard); }
+  .bubble::before { content: ''; position: absolute; left: -15px; bottom: 10px; width: 22px; height: 18px; background: var(--b); border-left: var(--line); border-bottom: var(--line); transform: skewX(-30deg); clip-path: polygon(0 0, 100% 100%, 0 100%); }
+  .t { font-size: 1.55rem; color: var(--tomato); margin: 0 0 4px; line-height: 1; }
+  .txt { font-size: 1.04rem; }
   .txt :global(p:last-child) { margin: 0; }
-  @media (max-width: 520px) { .oslo-tip { flex-direction: column; align-items: flex-start; } .bubble { border-radius: 6px 24px 24px 24px; } .bubble::before { left: 26px; top: -9px; bottom: auto; transform: rotate(135deg); } }
-  @media (prefers-reduced-motion: reduce) { .av { animation: none; } }
+  @media (max-width: 560px) { .oslo-tip { flex-direction: column; align-items: flex-start; gap: 14px; } .bubble { border-radius: 6px 26px 26px 26px; } .bubble::before { display: none; } }
 </style>

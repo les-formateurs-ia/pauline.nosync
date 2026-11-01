@@ -1,5 +1,5 @@
 ---
-title: "Anxiété de séparation : reconnaître et agir"
+title: "Anxiété de séparation : reconnaître et agir"
 description: "Aboiements, destructions, malpropreté quand vous partez ? Votre chien vit peut-être mal la solitude. Comment l’aider."
 category: "Comportement"
 cover: "../../assets/photos/pauline-oslo.jpg"

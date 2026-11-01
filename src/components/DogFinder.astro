@@ -1,77 +1,67 @@
 ---
-import OsloAvatar from './OsloAvatar.astro';
+// "Fill the sentence" form: name, age and breed of the dog → breed family page.
 import Icon from './Icon.astro';
 import { breeds } from '../data/breeds';
 import { stages } from '../data/groups';
-interface Props { compact?: boolean }
-const { compact = false } = Astro.props;
 ---
-<div class:list={['finder', 'oslo-host', { compact }]}>
-  <div class="head">
-    <OsloAvatar size={compact ? 64 : 78} />
-    <div class="say">
-      <p class="hello">Wouf ! Moi c’est <strong>Oslo</strong>.</p>
-      <p class="mut">Présentez-moi votre chien : je vous explique comment il fonctionne et comment adapter son éducation.</p>
-    </div>
-  </div>
-  <form class="dog-form" autocomplete="off">
-    <label><span>Son nom</span><input name="nom" required maxlength="30" placeholder="Ex. : Oslo" /></label>
-    <label><span>Son âge</span>
+<form class="dog-form" autocomplete="off">
+  <p class="sentence">
+    Mon chien s’appelle
+    <label class="slot w-name"><span class="sr">Son nom</span><input name="nom" required maxlength="24" placeholder="Oslo" /></label>,
+    il a
+    <label class="slot w-age"><span class="sr">Son âge</span>
       <select name="age" required>
-        <option value="" disabled selected>Choisir…</option>
-        {stages.map((s) => <option value={s.key}>{s.label}</option>)}
+        <option value="" disabled selected>quel âge ?</option>
+        {stages.map((s) => <option value={s.key}>{s.label.toLowerCase()}</option>)}
       </select>
     </label>
-    <label class="race"><span>Sa race</span>
-      <input name="race" list="breed-list" required placeholder="Ex. : Bouvier de l’Entlebuch, croisé…" />
-      <datalist id="breed-list">
-        <option value="Croisé / je ne sais pas" />
-        {breeds.map((b) => <option value={b.name} />)}
-      </datalist>
-    </label>
-    <button class="btn accent" type="submit">Découvrir son profil <Icon name="arrow" size={18} /></button>
-  </form>
-</div>
+    et c’est un·e
+    <label class="slot w-race"><span class="sr">Sa race</span><input name="race" list="breed-list" required placeholder="bouvier, croisé…" /></label>.
+  </p>
+  <datalist id="breed-list">
+    <option value="Croisé / je ne sais pas" />
+    {breeds.map((b) => <option value={b.name} />)}
+  </datalist>
+  <button class="btn tomato go" type="submit">Découvrir son profil <Icon name="arrow" size={20} /></button>
+</form>
 
 <style>
-  .finder { background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 22px; box-shadow: var(--shadow-lg); position: relative; }
-  .head { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
-  .say p { margin: 0; line-height: 1.4; }
-  .hello { font-family: var(--serif); font-size: 1.2rem; }
-  .say .mut { font-size: .92rem; margin-top: 2px; }
-  form { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
-  .race, form .btn { grid-column: 1 / -1; }
-  label { display: grid; gap: 4px; font-weight: 600; font-size: .85rem; }
-  label span { padding-left: 4px; }
-  input, select { font: inherit; font-weight: 400; font-size: 1rem; padding: 13px 14px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); width: 100%; transition: border-color .25s, box-shadow .25s; }
-  input:focus, select:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft); }
-  form .btn { justify-content: center; }
-  @media (min-width: 700px) { .compact form { grid-template-columns: 1fr 1fr 1.6fr auto; align-items: end; } .compact .race, .compact form .btn { grid-column: auto; } }
+  .dog-form { display: grid; gap: 26px; justify-items: start; }
+  .sentence { font-family: var(--display); font-weight: 800; font-stretch: 82%; font-size: clamp(1.7rem, 4.2vw, 3.3rem); line-height: 1.35; letter-spacing: -.025em; margin: 0; }
+  .slot { display: inline-block; position: relative; vertical-align: baseline; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  input, select {
+    font-family: var(--hand); font-size: .92em; font-weight: 400; letter-spacing: 0; color: var(--tomato);
+    background: rgb(255 255 255 / .55); border: 0; border-bottom: 4px solid var(--ink); border-radius: 12px 12px 0 0;
+    padding: 0 .3em; margin: 0 .1em; line-height: 1.3; appearance: none; -webkit-appearance: none; transition: background .25s, border-color .25s;
+  }
+  input::placeholder { color: rgb(23 21 15 / .3); }
+  select:invalid { color: rgb(23 21 15 / .3); }
+  input:focus, select:focus { outline: none; background: var(--white); border-color: var(--tomato); }
+  .w-name input { width: 5.2em; }
+  .w-age select { width: 7.6em; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2317150f' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .1em center; background-size: .55em; padding-right: .8em; }
+  .w-race input { width: 8.4em; }
+  @media (max-width: 640px) { .w-name input, .w-age select, .w-race input { width: 100%; } .slot { display: block; margin: 4px 0 10px; } }
+  .go { font-size: 1.15rem; padding: 18px 30px; }
 </style>
 
 <script>
-  import { navigate } from 'astro:transitions/client';
   import { findGroup, saveDog, dogUrl, loadDog } from '../lib/dog';
-  function init() {
-    document.querySelectorAll<HTMLFormElement>('.dog-form').forEach((f) => {
-      if (f.dataset.ready) return;
-      f.dataset.ready = '1';
-      const saved = loadDog();
-      if (saved) {
-        (f.elements.namedItem('nom') as HTMLInputElement).value = saved.nom;
-        (f.elements.namedItem('age') as HTMLSelectElement).value = saved.age;
-        (f.elements.namedItem('race') as HTMLInputElement).value = saved.race;
-      }
-      f.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (!f.reportValidity()) return;
-        const d = new FormData(f);
-        const p = { nom: String(d.get('nom')).trim(), age: String(d.get('age')), race: String(d.get('race')).trim(), group: null as string | null };
-        p.group = findGroup(p.race);
-        saveDog(p);
-        navigate(dogUrl(p));
-      });
+  document.querySelectorAll<HTMLFormElement>('.dog-form').forEach((f) => {
+    const saved = loadDog();
+    if (saved) {
+      (f.elements.namedItem('nom') as HTMLInputElement).value = saved.nom;
+      (f.elements.namedItem('age') as HTMLSelectElement).value = saved.age;
+      (f.elements.namedItem('race') as HTMLInputElement).value = saved.race;
+    }
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!f.reportValidity()) return;
+      const d = new FormData(f);
+      const p = { nom: String(d.get('nom')).trim(), age: String(d.get('age')), race: String(d.get('race')).trim(), group: null as string | null };
+      p.group = findGroup(p.race);
+      saveDog(p);
+      location.href = dogUrl(p);
     });
-  }
-  document.addEventListener('astro:page-load', init);
+  });
 </script>

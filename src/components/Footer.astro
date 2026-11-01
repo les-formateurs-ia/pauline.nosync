@@ -1,39 +1,41 @@
 ---
 import { nav, site } from '../data/site';
 import Icon from './Icon.astro';
+import OsloRun from './OsloRun.astro';
 ---
 <footer class="ft">
   <div class="w">
-    <div class="cta rv">
-      <div>
-        <h2>Prêt·e à avancer avec votre chien ?</h2>
-        <p>Racontez-moi votre situation : on commence par une séance bilan pour faire connaissance.</p>
-      </div>
+    <div class="cta">
+      <div class="run-lane" aria-hidden="true"><div class="runner"><OsloRun size={190} /></div></div>
+      <p class="kicker hand">Prêt·e à avancer ?</p>
+      <h2 data-split>On se rencontre&nbsp;?</h2>
+      <p class="sub">Racontez-moi votre situation : on commence par une séance bilan pour faire connaissance, chez vous ou en balade.</p>
       <div class="btns">
-        <a class="btn accent" href="/contact/">Réserver une séance bilan <Icon name="arrow" size={18} /></a>
-        <a class="btn ghost light" href={site.phoneHref}><Icon name="phone" size={18} /> {site.phone}</a>
+        <a class="btn sun" href="/contact/">Réserver une séance bilan <Icon name="arrow" size={18} /></a>
+        <a class="btn white" href={site.phoneHref}><Icon name="phone" size={18} /> {site.phone}</a>
       </div>
-      <svg class="paws" viewBox="0 0 200 200" aria-hidden="true"><use href="#paw-sym" x="20" y="120" width="40" height="40"/><use href="#paw-sym" x="70" y="80" width="40" height="40"/><use href="#paw-sym" x="110" y="40" width="40" height="40"/><use href="#paw-sym" x="160" y="0" width="40" height="40"/></svg>
     </div>
-    <div class="cols">
+  </div>
+  <div class="base">
+    <div class="w cols">
       <div>
         <p class="brand">Pauline Renard</p>
-        <p class="mut">{site.role}<br />Diplômée EFM Métiers Animaliers · ACACED</p>
+        <p>{site.role} à Lyon.<br />Diplômée EFM Métiers Animaliers · ACACED</p>
       </div>
       <div>
-        <p class="t">Navigation</p>
+        <p class="t hand">Explorer</p>
         <ul>{nav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}<li><a href="/contact/">Contact</a></li></ul>
       </div>
       <div>
-        <p class="t">Contact</p>
+        <p class="t hand">Me joindre</p>
         <ul>
-          <li><a href={site.phoneHref}><Icon name="phone" size={16} /> {site.phone}</a></li>
-          <li><a href={`mailto:${site.email}`}><Icon name="mail" size={16} /> {site.email}</a></li>
-          <li><span><Icon name="pin" size={16} /> {site.city} · {site.area}</span></li>
+          <li><a href={site.phoneHref}>{site.phone}</a></li>
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li>{site.city} · {site.area}</li>
         </ul>
       </div>
     </div>
-    <p class="copy">© {new Date().getFullYear()} Pauline Renard · Éducatrice &amp; comportementaliste canin · Lyon</p>
+    <p class="copy w">© {new Date().getFullYear()} Pauline Renard · Fait avec ♥ (et l’aide d’Oslo) à Lyon</p>
   </div>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <symbol id="paw-sym" viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="12" cy="15.5" rx="5" ry="4.2"/><ellipse cx="5.5" cy="10" rx="2.2" ry="2.8"/><ellipse cx="18.5" cy="10" rx="2.2" ry="2.8"/><ellipse cx="9" cy="5" rx="2" ry="2.6"/><ellipse cx="15" cy="5" rx="2" ry="2.6"/></g></symbol>
@@ -41,21 +43,21 @@ import Icon from './Icon.astro';
 </footer>
 
 <style>
-  .ft { padding: 0 0 30px; }
-  .cta { position: relative; overflow: hidden; background: var(--green2); color: #fff; border-radius: 36px; padding: clamp(36px, 6vw, 72px); display: grid; gap: 28px; align-items: center; margin-bottom: 64px; }
-  @media (prefers-color-scheme: dark) { .cta { background: #2c4e35; } }
-  @media (min-width: 900px) { .cta { grid-template-columns: 1.3fr 1fr; } }
-  .cta h2 { color: #fff; max-width: 16ch; }
-  .cta p { color: rgb(255 255 255 / .8); font-size: 1.1rem; margin: 0; max-width: 46ch; }
-  .cta .btns { position: relative; z-index: 1; }
-  .cta .ghost.light { color: #fff; box-shadow: inset 0 0 0 2px rgb(255 255 255 / .35); }
-  .paws { position: absolute; right: -10px; bottom: -10px; width: 220px; color: rgb(255 255 255 / .07); }
-  .cols { display: grid; gap: 32px; padding-bottom: 36px; border-bottom: 1px solid var(--line); }
-  @media (min-width: 760px) { .cols { grid-template-columns: 1.4fr 1fr 1.2fr; } }
-  .brand { font-family: var(--serif); font-size: 1.6rem; font-weight: 650; margin-bottom: 8px; }
-  .t { font-weight: 700; font-size: .82rem; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); }
-  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-  ul a, ul span { color: var(--mut); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
-  ul a:hover { color: var(--green); }
-  .copy { color: var(--mut); font-size: .88rem; margin: 24px 0 0; text-align: center; }
+  .ft { margin-top: clamp(40px, 6vw, 80px); }
+  .cta { position: relative; overflow: hidden; background: var(--tomato); border: var(--line); border-radius: 40px; padding: clamp(110px, 12vw, 150px) clamp(28px, 6vw, 80px) clamp(40px, 6vw, 72px); box-shadow: var(--hard-lg); }
+  .cta h2 { font-size: clamp(3rem, 9vw, 7.5rem); margin: 0 0 18px; }
+  .cta .kicker { color: var(--ink); }
+  .sub { font-size: 1.2rem; max-width: 46ch; margin-bottom: 28px; }
+  .run-lane { position: absolute; left: 0; right: 0; top: 18px; height: 120px; border-bottom: 2.5px dashed rgb(23 21 15 / .35); }
+  .runner { position: absolute; bottom: -4px; animation: lane 9s linear infinite; }
+  @keyframes lane { from { transform: translateX(-240px); } to { transform: translateX(calc(100vw + 40px)); } }
+  .base { margin-top: 56px; border-top: var(--line); padding: 48px 0 28px; }
+  .cols { display: grid; gap: 32px; }
+  @media (min-width: 780px) { .cols { grid-template-columns: 1.5fr 1fr 1.3fr; } }
+  .brand { font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: 2.2rem; letter-spacing: -.03em; line-height: 1; margin-bottom: 10px; }
+  .t { font-size: 1.5rem; color: var(--tomato); margin-bottom: 8px; }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  ul a { text-decoration: none; font-weight: 600; }
+  ul a:hover { text-decoration: underline; text-decoration-color: var(--tomato); }
+  .copy { margin-top: 40px; font-size: .9rem; color: var(--ink2); }
 </style>

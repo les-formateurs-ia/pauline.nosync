@@ -1,5 +1,5 @@
 ---
-title: "Un rappel fiable : 6 règles d’or"
+title: "Un rappel fiable : 6 règles d’or"
 description: "Votre chien fait la sourde oreille au parc ? Voici comment construire, pas à pas, un rappel sur lequel vous pouvez compter."
 category: "Éducation"
 cover: "../../assets/photos/oslo-balle.jpg"

@@ -46,11 +46,13 @@ const { size = 120, class: cls, bg = true, mood = 'happy' } = Astro.props;
       <path class="mouth" d="M100 130 V136 M100 136 C94 142 86 142 81 135 M100 136 C106 142 114 142 119 135" />
     </g>
   </g>
+  {bg && <circle class="ring" cx="100" cy="100" r="97.5" />}
 </svg>
 
 <style>
   .oslo { display: block; overflow: visible; flex: none; }
-  .bg { fill: var(--accent-soft); }
+  .bg { fill: var(--sun); }
+  .ring { fill: none; stroke: #17150f; stroke-width: 5; }
   .black { fill: #1c1c1e; }
   .white { fill: #fbf8f2; }
   .tan { fill: #c8763a; }

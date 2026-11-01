@@ -3,12 +3,15 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
+import Illus from '../components/Illus.astro';
+import Mark from '../components/Mark.astro';
+import Kicker from '../components/Kicker.astro';
 import Marquee from '../components/Marquee.astro';
-import PawTrail from '../components/PawTrail.astro';
-import ArticleCard from '../components/ArticleCard.astro';
+import OsloAvatar from '../components/OsloAvatar.astro';
+import OsloRun from '../components/OsloRun.astro';
 import DogFinder from '../components/DogFinder.astro';
-import OsloTip from '../components/OsloTip.astro';
-import { programs, steps, prices, site } from '../data/site';
+import ArticleCard from '../components/ArticleCard.astro';
+import { programs, steps, prices } from '../data/site';
 import paulineOslo from '../assets/photos/pauline-oslo.jpg';
 import osloBalle from '../assets/photos/oslo-balle.jpg';
 import riviere from '../assets/photos/riviere.jpg';
@@ -17,282 +20,356 @@ import osloChiot from '../assets/photos/oslo-chiot.jpg';
 import osloLabrador from '../assets/photos/oslo-labrador.jpg';
 
 const articles = (await getCollection('conseils')).sort((a, b) => a.data.order - b.data.order).slice(0, 3);
-const struggles = ['Il tire en laisse', 'Il ne revient pas au rappel', 'Il aboie quand je pars', 'Il réagit aux autres chiens', 'Il détruit tout', 'Il garde ses jouets', 'Il saute sur les gens', 'Il fugue', 'Je viens d’adopter un chiot'];
+const struggles = [
+  { t: 'Il tire en laisse', c: 'sun', x: 4, y: 8 }, { t: 'Il ne revient pas au rappel', c: 'sky', x: 62, y: 4 },
+  { t: 'Il aboie quand je pars', c: 'pink', x: 0, y: 40 }, { t: 'Il réagit aux autres chiens', c: 'mint', x: 66, y: 34 },
+  { t: 'Il détruit tout', c: 'lilac', x: 10, y: 72 }, { t: 'Il saute sur les gens', c: 'sun', x: 70, y: 66 },
+  { t: 'Il garde ses jouets', c: 'tomato', x: 26, y: 90 }, { t: 'Je viens d’adopter un chiot', c: 'sky', x: 52, y: 90 },
+];
+const progIllus = ['ball', 'puppy', 'heart', 'house'];
+const progColor = ['sun', 'sky', 'pink', 'mint'];
+const stepIllus = ['magnifier', 'bulb', 'stairs', 'sprout'];
+const tagColor = ['white', 'sky', 'sun', 'pink'];
+const gallery = [
+  { src: riviere, alt: 'Trois chiens au bord du Rhône', cap: 'Pause baignade sur les quais', ar: '3/4' },
+  { src: osloChiot, alt: 'Un chiot et Oslo dans l’herbe', cap: 'Leçon de politesse', ar: '4/3' },
+  { src: frisbee, alt: 'Chienne couchée avec un frisbee rouge', cap: 'Frisbee & patience', ar: '3/4' },
+  { src: osloLabrador, alt: 'Oslo et un labrador chocolat', cap: 'Oslo & son copain', ar: '3/4' },
+  { src: paulineOslo, alt: 'Pauline et Oslo dans un parc', cap: 'Pauline & Oslo', ar: '3/4' },
+  { src: osloBalle, alt: 'Oslo avec sa balle orange', cap: 'LA balle orange', ar: '3/4' },
+];
 ---
 <Layout>
-  <!-- HERO -->
-  <section class="hero">
-    <div class="blob" style="width:520px;height:520px;background:var(--accent-soft);top:-200px;right:-160px"></div>
-    <div class="blob" style="width:460px;height:460px;background:var(--green-soft);bottom:-200px;left:-200px"></div>
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="hero" data-hero>
     <div class="w hero-grid">
       <div class="hero-txt">
-        <span class="chip rv"><span class="dot"></span> Éducatrice &amp; comportementaliste canin · Lyon 7</span>
-        <h1 class="rv" style="--d:1">
-          Un lien de <span class="draw">confiance<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 60 4, 140 4, 296 12" /></svg></span>,<br />pour avancer ensemble.
+        <Kicker>Éducatrice &amp; comportementaliste canin · Lyon 7</Kicker>
+        <h1 class="h1">
+          <span class="ln"><span>Un lien de</span></span>
+          <span class="ln"><span><Mark>confiance</Mark></span></span>
+          <span class="ln"><span>pour avancer</span></span>
+          <span class="ln"><span>ensemble.</span></span>
         </h1>
-        <p class="lead rv" style="--d:2">
-          Réactivité, aboiements, anxiété, chiot qui découvre le monde… Je vous aide à comprendre votre chien et vous donne des outils concrets pour un quotidien serein.
-        </p>
-        <div class="rv finder-slot" style="--d:3" id="mon-chien"><DogFinder /></div>
-        <p class="direct rv" style="--d:3">ou <a href="/contact/">réserver directement une séance bilan</a> · <a href="/offres/">voir les offres</a></p>
-        <ul class="trust rv" style="--d:4">
-          <li><Icon name="award" size={20} /> Diplômée EFM &amp; ACACED</li>
-          <li><Icon name="heart" size={20} /> Méthodes bienveillantes</li>
-          <li><Icon name="pin" size={20} /> À domicile, Lyon &amp; alentours</li>
-        </ul>
+        <p class="lead in-up" style="--dl:.7s">Réactivité, aboiements, anxiété, chiot qui découvre le monde… Je vous aide à <strong>comprendre</strong> votre chien et vous donne des outils concrets pour un quotidien serein.</p>
+        <div class="btns in-up" style="--dl:.85s">
+          <a class="btn tomato" href="#mon-chien">Présenter mon chien <Icon name="arrow" size={18} /></a>
+          <a class="btn white" href="/offres/">Voir les offres</a>
+        </div>
       </div>
-      <div class="hero-visual rv" style="--d:2">
-        <div class="photo main parallax" data-speed="0.06">
-          <Image src={paulineOslo} alt="Pauline Renard accroupie dans un parc avec son chien Oslo" widths={[400, 675]} sizes="(min-width: 1000px) 480px, 90vw" loading="eager" fetchpriority="high" />
+
+      <div class="collage" aria-label="Pauline et son chien Oslo">
+        <figure class="polaroid tape p-main drop" style="--ar:4/5;--dl:.3s">
+          <Image src={paulineOslo} alt="Pauline Renard accroupie dans un parc avec Oslo" widths={[400, 675]} sizes="(min-width: 1000px) 420px, 80vw" loading="eager" fetchpriority="high" />
+          <figcaption>Pauline &amp; Oslo ♥</figcaption>
+        </figure>
+        <div class="sticker-photo drop" style="--dl:.55s">
+          <Image src={osloBalle} alt="Oslo et sa balle orange" widths={[240, 400]} sizes="190px" loading="eager" />
         </div>
-        <div class="photo mini parallax" data-speed="-0.08">
-          <Image src={osloBalle} alt="Oslo, bouvier de l’Entlebuch, une balle dans la gueule" widths={[240, 400]} sizes="200px" loading="eager" />
+        <div class="badge drop" style="--dl:.75s" aria-hidden="true">
+          <svg viewBox="0 0 200 200" class="spin-slow">
+            <defs><path id="circ" d="M100 100 m-74 0 a74 74 0 1 1 148 0 a74 74 0 1 1 -148 0" /></defs>
+            <text><textPath href="#circ">SÉANCE BILAN · 35 € · À DOMICILE · LYON ·</textPath></text>
+          </svg>
+          <span class="badge-c"><svg viewBox="0 0 24 24" width="38" height="38"><use href="#paw-sym" /></svg></span>
         </div>
-        <div class="float f1"><span class="big">35 €</span><span>la séance bilan</span></div>
-        <div class="float f2"><Icon name="paw" size={22} /><span><strong>Oslo</strong><br />chien régulateur</span></div>
-        <PawTrail class="hero-trail" />
+        <div class="note-oslo drop" style="--dl:1s" aria-hidden="true">
+          <span class="hand">c’est moi, Oslo !</span>
+          <svg viewBox="0 0 90 60" fill="none" stroke="#17150f" stroke-width="3" stroke-linecap="round" data-draw="1.1"><path d="M6 8 C 30 6, 60 18, 70 48" /><path d="M58 40 L70 50 L78 36" /></svg>
+        </div>
+        <div class="ball-deco" aria-hidden="true"><Illus name="ball" size={110} /></div>
+        <div class="star-deco float" aria-hidden="true"><Illus name="star" size={64} /></div>
       </div>
     </div>
   </section>
 
-  <Marquee items={['Éducation de base', 'Chiots', 'Réactivité', 'Anxiété de séparation', 'Rappel', 'Marche en laisse', 'Confiance']} />
-
-  <!-- STRUGGLES -->
-  <section>
-    <div class="w">
-      <div class="head center rv">
-        <span class="eyebrow">Vous vous reconnaissez ?</span>
-        <h2>Chaque difficulté a <span class="em">sa solution</span>.</h2>
-        <p class="lead">Quand le quotidien avec votre chien devient source de stress ou de frustration, il est difficile de savoir comment réagir. Vous n’êtes pas seul·e.</p>
+  <!-- ═══════════ DOG FINDER ═══════════ -->
+  <section class="finder bg-mint" id="mon-chien">
+    <svg class="wave top" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 V20 C 120 40, 240 40, 360 20 S 600 0, 720 20 S 960 40, 1080 20 S 1320 0, 1440 20 V0Z" /></svg>
+    <div class="w finder-grid">
+      <div class="finder-oslo oslo-host" data-pop>
+        <OsloAvatar size={230} />
+        <div class="speech hand">Wouf ! Présentez-moi votre chien, je vous explique comment il fonctionne.</div>
       </div>
-      <div class="bubbles">
-        {struggles.map((s, i) => <span class="bubble rv" style={`--d:${i % 5}`}>« {s} »</span>)}
-      </div>
-      <div class="narrow" style="margin:0 auto">
-        <OsloTip title="Le saviez-vous ?">
-          <p>Beaucoup de ces comportements viennent du <strong>métier d’origine</strong> de la race : un berger qui poursuit les vélos, un terrier qui creuse… <a href="#mon-chien">Présentez-moi votre chien</a> pour découvrir le sien !</p>
-        </OsloTip>
+      <div>
+        <Kicker>Le guide d’Oslo</Kicker>
+        <DogFinder />
+        <p class="finder-note">Bergers, terriers, primitifs, chiens de chasse… chaque famille de races a son histoire. <a class="link" href="/races/">Voir les 9 familles</a></p>
       </div>
     </div>
   </section>
 
-  <!-- PROGRAMS -->
-  <section class="alt">
+  <Marquee items={['Éducation de base', 'Chiots', 'Réactivité', 'Rappel', 'Marche en laisse']} alt={['Anxiété de séparation', 'Confiance', 'Bienveillance', 'Lyon & alentours']} />
+
+  <!-- ═══════════ STRUGGLES ═══════════ -->
+  <section class="strug">
     <div class="w">
-      <div class="head-row">
-        <div class="head rv">
-          <span class="eyebrow">Mes accompagnements</span>
-          <h2>Pour chaque chien, un chemin adapté.</h2>
-        </div>
-        <a class="btn ghost rv" href="/accompagnements/">Tout découvrir <Icon name="arrow" size={18} /></a>
+      <div class="center">
+        <Kicker>Vous vous reconnaissez ?</Kicker>
+        <h2 data-split>Chaque difficulté a sa solution.</h2>
       </div>
-      <div class="grid g4">
+      <div class="cloud">
+        <div class="cloud-oslo oslo-host" data-pop>
+          <span class="qm q1 hand">?</span><span class="qm q2 hand">?</span><span class="qm q3 hand">!</span>
+          <OsloAvatar size={200} mood="calm" />
+        </div>
+        {struggles.map((s, i) => (
+          <span class="sb" style={`--x:${s.x}%;--y:${s.y}%;--c:var(--${s.c});--r:${i % 2 ? 3 : -3}deg`} data-pop={`${i * 0.07}`}>« {s.t} »</span>
+        ))}
+      </div>
+      <p class="lead center cl-lead" data-reveal>Derrière chaque comportement gênant, il y a une émotion, un besoin ou un apprentissage. On le comprend ensemble, puis on avance <strong>pas à pas</strong>.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════ PROGRAMS ═══════════ -->
+  <section class="progs bg-sand">
+    <div class="w">
+      <div class="row-head">
+        <div><Kicker>Mes accompagnements</Kicker><h2 data-split>Pour chaque chien, un chemin adapté.</h2></div>
+        <a class="btn white" href="/accompagnements/">Tout découvrir <Icon name="arrow" size={18} /></a>
+      </div>
+      <div class="grid g4" data-reveal="stagger">
         {programs.map((p, i) => (
-          <a class="card hover prog rv" href={`/accompagnements/#${p.slug}`} style={`--d:${i}`}>
-            <span class="emo">{p.emoji}</span>
+          <a class="prog card lift" href={`/accompagnements/#${p.slug}`} style={`--c:var(--${progColor[i]})`}>
+            <div class="prog-art"><Illus name={progIllus[i]} size={150} /></div>
             <h3>{p.title}</h3>
-            <p class="mut">{p.lead}</p>
-            <span class="more">En savoir plus <Icon name="arrow" size={16} /></span>
+            <p>{p.lead}</p>
+            <span class="go-arr"><Icon name="arrow" size={20} /></span>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- METHOD -->
-  <section>
-    <div class="w method">
-      <div class="method-side">
-        <div class="head rv">
-          <span class="eyebrow">Ma méthode</span>
-          <h2>Comprendre avant d’éduquer.</h2>
-          <p class="lead">J’identifie avec vous les causes des comportements gênants, puis on transforme ces défis en un apprentissage positif et durable.</p>
-        </div>
-        <div class="photo rv sticky-photo"><Image src={osloChiot} alt="Un chiot et Oslo couchés dans l’herbe d’un parc" widths={[400, 675]} sizes="(min-width: 900px) 500px, 90vw" /></div>
-      </div>
-      <ol class="steps">
-        {steps.map((s, i) => (
-          <li class="step rv" style={`--d:${i}`}>
-            <span class="n">{s.n}</span>
-            <div><h3>{s.title}</h3><p class="mut">{s.text}</p></div>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- OSLO -->
-  <section class="oslo">
-    <div class="w grid g2 oslo-grid">
-      <div class="oslo-photos rv">
-        <div class="photo o1"><Image src={osloBalle} alt="Oslo qui rapporte sa balle orange" widths={[400, 675]} sizes="(min-width: 760px) 400px, 80vw" /></div>
-        <div class="photo o2"><Image src={osloLabrador} alt="Oslo assis à côté d’un labrador chocolat" widths={[300, 500]} sizes="260px" /></div>
-      </div>
-      <div class="rv" style="--d:1">
-        <span class="eyebrow">Mon binôme</span>
-        <h2>Oslo, mon chien régulateur.</h2>
-        <p class="lead">Oslo est un bouvier de l’Entlebuch de 8 ans, très calme et très bien codé.</p>
-        <p class="mut">Selon les situations, il peut servir de chien régulateur : un partenaire idéal pour aider les chiens à apprendre les bons codes canins et à se sentir en confiance face à leurs congénères.</p>
-        <div class="stats">
-          <div><strong>8 ans</strong><span>de sagesse canine</span></div>
-          <div><strong>2</strong><span>diplômes : EFM &amp; ACACED</span></div>
-          <div><strong>0</strong><span>méthode coercitive</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICES TEASER -->
-  <section class="alt">
+  <!-- ═══════════ METHOD (scroll trail) ═══════════ -->
+  <section class="method">
     <div class="w">
-      <div class="head center rv">
-        <span class="eyebrow">Tarifs</span>
-        <h2>Simple et transparent.</h2>
-        <p class="lead">Une séance bilan pour faire connaissance, puis des séances ou des forfaits adaptés à votre chien.</p>
-      </div>
-      <div class="grid g4">
-        {prices.map((p, i) => (
-          <div class:list={['card', 'hover', 'price-card', 'rv', { featured: p.featured }]} style={`--d:${i}`}>
-            {p.featured && <span class="chip orange tag">Le plus choisi</span>}
-            <h3>{p.name}</h3>
-            <p class="price"><span>{p.price}</span> €</p>
-            <p class="mut small">{p.unit}</p>
+      <div class="center head-m"><Kicker>Ma méthode</Kicker><h2 data-split>Comprendre avant d’éduquer.</h2></div>
+      <div class="trail" data-trail>
+        <svg class="trail-svg" viewBox="0 0 200 1000" preserveAspectRatio="none" aria-hidden="true">
+          <path class="trail-bg" d="M100 0 C 180 120, 20 250, 100 375 S 180 620, 100 750 S 20 900, 100 1000" />
+          <path data-trail-path class="trail-fg" d="M100 0 C 180 120, 20 250, 100 375 S 180 620, 100 750 S 20 900, 100 1000" />
+        </svg>
+        <div class="trail-dog" data-trail-dog aria-hidden="true"><OsloAvatar size={74} /></div>
+        {steps.map((s, i) => (
+          <div class:list={['step', i % 2 ? 'r' : 'l']} data-step={i % 2 ? 'r' : 'l'}>
+            <div class="step-art"><Illus name={stepIllus[i]} size={120} /></div>
+            <div class="step-txt">
+              <span class="num outline-text">{s.n}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </div>
           </div>
         ))}
       </div>
-      <p class="center rv" style="margin-top:36px"><a class="btn" href="/offres/">Détail des offres et formats <Icon name="arrow" size={18} /></a></p>
     </div>
   </section>
 
-  <!-- GALLERY -->
+  <!-- ═══════════ OSLO ID CARD ═══════════ -->
+  <section class="oslo bg-sky">
+    <svg class="wave top" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 V20 C 120 40, 240 40, 360 20 S 600 0, 720 20 S 960 40, 1080 20 S 1320 0, 1440 20 V0Z" /></svg>
+    <div class="w oslo-grid">
+      <div class="pile">
+        <figure class="polaroid tape pink pl1" style="--ar:3/4" data-parallax="0.08"><Image src={osloBalle} alt="Oslo et sa balle" widths={[400, 675]} sizes="(min-width: 900px) 360px, 70vw" /><figcaption>8 ans de sagesse</figcaption></figure>
+        <figure class="polaroid tape sky pl2" style="--ar:3/4" data-parallax="-0.06"><Image src={osloLabrador} alt="Oslo et un labrador" widths={[300, 500]} sizes="240px" /><figcaption>avec un copain</figcaption></figure>
+      </div>
+      <div>
+        <Kicker>Mon binôme</Kicker>
+        <h2 data-split>Oslo, chien régulateur.</h2>
+        <div class="idcard" data-reveal>
+          <div class="id-top"><span>Carte de chien régulateur</span><span class="hand">n° 001</span></div>
+          <div class="id-body">
+            <OsloAvatar size={110} />
+            <dl>
+              <div><dt>Nom</dt><dd>Oslo</dd></div>
+              <div><dt>Race</dt><dd>Bouvier de l’Entlebuch</dd></div>
+              <div><dt>Âge</dt><dd><span data-count="8">8</span> ans</dd></div>
+              <div><dt>Qualités</dt><dd>Très calme, très bien codé</dd></div>
+            </dl>
+          </div>
+          <p class="id-stamp hand">Validé par Pauline ✓</p>
+        </div>
+        <p class="lead" data-reveal>Selon les situations, Oslo peut participer aux séances : un partenaire idéal pour aider les chiens à apprendre les bons codes et à se sentir en confiance face à leurs congénères.</p>
+      </div>
+    </div>
+    <div class="oslo-run" aria-hidden="true"><OsloRun size={170} /></div>
+  </section>
+
+  <!-- ═══════════ PRICES ═══════════ -->
+  <section class="prices">
+    <div class="w">
+      <div class="center"><Kicker>Tarifs</Kicker><h2 data-split>Simple et transparent.</h2></div>
+      <div class="tags" data-reveal="stagger">
+        {prices.map((p, i) => (
+          <a class="tag" href="/offres/" style={`--c:var(--${tagColor[i]});--sw:${i * -0.6}s`}>
+            <span class="hole"></span>
+            {p.featured && <span class="fav hand">le + choisi !</span>}
+            <span class="tname">{p.name}</span>
+            <span class="tprice">{p.price}<small>€</small></span>
+            <span class="tunit">{p.unit}</span>
+          </a>
+        ))}
+      </div>
+      <p class="center"><a class="btn" href="/offres/">Détail des offres et formats <Icon name="arrow" size={18} /></a></p>
+    </div>
+  </section>
+
+  <!-- ═══════════ GALLERY (horizontal on scroll) ═══════════ -->
+  <section class="gal bg-sand">
+    <div class="w"><Kicker>Au fil des balades</Kicker><h2 data-split>Sur le terrain, à Lyon.</h2></div>
+    <div class="strip-wrap">
+      <div class="strip" data-hscroll>
+        {gallery.map((g, i) => (
+          <figure class="polaroid" style={`--ar:${g.ar};--r:${[-3, 2, -1.5, 3, -2.5, 1.5][i]}deg`}>
+            <Image src={g.src} alt={g.alt} widths={[400, 675]} sizes="340px" loading="lazy" />
+            <figcaption>{g.cap}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ ARTICLES ═══════════ -->
   <section>
     <div class="w">
-      <div class="head rv">
-        <span class="eyebrow">Au fil des balades</span>
-        <h2>Sur le terrain, à Lyon.</h2>
+      <div class="row-head">
+        <div><Kicker>Conseils</Kicker><h2 data-split>Mes conseils pour le quotidien.</h2></div>
+        <a class="btn white" href="/conseils/">Tous les conseils <Icon name="arrow" size={18} /></a>
       </div>
-      <div class="bento">
-        <div class="photo b1 rv"><Image src={riviere} alt="Trois chiens qui se baignent au bord du Rhône" widths={[400, 675]} sizes="(min-width: 900px) 40vw, 90vw" loading="lazy" /></div>
-        <div class="photo b2 rv" style="--d:1"><Image src={frisbee} alt="Chienne couchée dans le trèfle avec un frisbee rouge" widths={[300, 500]} sizes="(min-width: 900px) 25vw, 45vw" loading="lazy" /></div>
-        <div class="photo b3 rv" style="--d:2"><Image src={osloChiot} alt="Un chiot bouvier observe Oslo" widths={[400, 675]} sizes="(min-width: 900px) 35vw, 90vw" loading="lazy" /></div>
-        <div class="photo b4 rv" style="--d:3"><Image src={paulineOslo} alt="Pauline et Oslo jouent avec un bâton" widths={[300, 500]} sizes="(min-width: 900px) 25vw, 45vw" loading="lazy" /></div>
-      </div>
+      <div class="grid g3" data-reveal="stagger">{articles.map((a, i) => <ArticleCard entry={a} i={i} />)}</div>
     </div>
   </section>
-
-  <!-- ARTICLES -->
-  <section class="alt">
-    <div class="w">
-      <div class="head-row">
-        <div class="head rv">
-          <span class="eyebrow">Conseils</span>
-          <h2>Mes conseils pour le quotidien.</h2>
-        </div>
-        <a class="btn ghost rv" href="/conseils/">Tous les conseils <Icon name="arrow" size={18} /></a>
-      </div>
-      <div class="grid g3">
-        {articles.map((a, i) => <ArticleCard entry={a} d={i} />)}
-      </div>
-    </div>
-  </section>
-
-  <section style="padding-bottom:0"></section>
 </Layout>
 
 <style>
-  .hero { padding: clamp(28px, 5vw, 60px) 0 clamp(70px, 9vw, 110px); overflow: hidden; }
-  .hero-grid { display: grid; gap: 56px; align-items: center; }
+  /* HERO */
+  .hero { padding: clamp(24px, 4vw, 56px) 0 clamp(60px, 8vw, 110px); overflow: hidden; }
+  .hero-grid { display: grid; gap: 48px; align-items: center; }
   @media (min-width: 1000px) { .hero-grid { grid-template-columns: 1.1fr .9fr; } }
-  .hero h1 { margin: 18px 0 22px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 var(--green); animation: pulse 2.2s infinite; }
-  @keyframes pulse { 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
-  .draw { position: relative; white-space: nowrap; color: var(--green); font-style: italic; }
-  .draw svg { position: absolute; left: 0; bottom: -.12em; width: 100%; height: .35em; overflow: visible; }
-  .draw path { fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 320; stroke-dashoffset: 320; animation: draw 1.2s .7s var(--ease) forwards; }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-  .lead { max-width: 54ch; }
-  .finder-slot { margin-top: 28px; max-width: 560px; scroll-margin-top: 100px; }
-  .direct { margin: 14px 0 0 6px; color: var(--mut); font-size: .95rem; }
-  .trust { list-style: none; padding: 0; margin: 30px 0 0; display: flex; flex-wrap: wrap; gap: 10px 24px; color: var(--mut); font-size: .95rem; }
-  .trust li { display: inline-flex; align-items: center; gap: 8px; }
-  .trust :global(svg) { color: var(--green); }
+  .h1 { font-size: clamp(3.3rem, 8.6vw, 7.6rem); margin: 6px 0 26px; line-height: .92; }
+  .ln { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
+  .ln > span { display: inline-block; animation: rise 1s var(--ease) both; }
+  .ln:nth-child(2) > span { animation-delay: .1s; } .ln:nth-child(3) > span { animation-delay: .2s; } .ln:nth-child(4) > span { animation-delay: .3s; }
+  .ln:nth-child(2) { overflow: visible; }
+  @keyframes rise { from { transform: translateY(110%) rotate(4deg); } }
+  .in-up { animation: inup .9s var(--ease) both; animation-delay: var(--dl); }
+  @keyframes inup { from { opacity: 0; transform: translateY(24px); } }
+  .lead strong { color: var(--ink); }
 
-  .hero-visual { position: relative; max-width: 520px; margin: 0 auto; width: 100%; padding: 0 0 40px 40px; }
-  .main { aspect-ratio: 4 / 5; border-radius: 200px 200px 36px 36px; }
-  .mini { position: absolute; left: 0; bottom: 0; width: 38%; aspect-ratio: 3 / 4; border: 6px solid var(--bg); border-radius: 28px; }
-  .float { position: absolute; display: flex; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 12px 16px; box-shadow: var(--shadow-lg); font-size: .9rem; line-height: 1.25; animation: bob 5s ease-in-out infinite; }
-  .f1 { top: 12%; right: -14px; flex-direction: column; align-items: flex-start; gap: 0; }
-  .f1 .big { font-family: var(--serif); font-size: 1.8rem; color: var(--accent); font-weight: 700; line-height: 1; }
-  .f1 span:last-child { color: var(--mut); }
-  .f2 { bottom: 22%; right: -6px; animation-delay: -2.5s; }
-  .f2 :global(svg) { color: var(--accent); }
-  @media (max-width: 600px) { .f1 { right: 0; } .f2 { right: 0; } }
-  @keyframes bob { 50% { transform: translateY(-10px); } }
-  .hero-visual :global(.hero-trail) { position: absolute; width: 90%; left: -12%; top: -6%; z-index: -1; opacity: .7; transform: rotate(-12deg); }
+  .collage { position: relative; height: clamp(440px, 52vw, 600px); max-width: 560px; width: 100%; margin: 0 auto; }
+  .drop { animation: drop 1s var(--spring) both; animation-delay: var(--dl); }
+  @keyframes drop { from { opacity: 0; transform: translateY(-80px) rotate(-12deg) scale(.9); } }
+  .p-main { position: absolute; top: 2%; right: 4%; width: 68%; rotate: 4deg; margin: 0; }
+  .sticker-photo { position: absolute; left: 0; bottom: 6%; width: 40%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: var(--line); box-shadow: var(--hard); rotate: -6deg; }
+  .sticker-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .badge { position: absolute; right: -2%; bottom: 0; width: 34%; aspect-ratio: 1; border-radius: 50%; background: var(--sun); border: var(--line); box-shadow: var(--hard); }
+  .badge svg.spin-slow { width: 100%; height: 100%; }
+  .badge text { font-family: var(--display); font-weight: 800; font-size: 19px; letter-spacing: 2px; fill: var(--ink); }
+  .badge-c { position: absolute; inset: 0; display: grid; place-items: center; color: var(--tomato); }
+  .note-oslo { position: absolute; left: 4%; top: 30%; display: flex; flex-direction: column; align-items: flex-start; rotate: -8deg; }
+  .note-oslo .hand { font-size: 1.6rem; color: var(--tomato); }
+  .note-oslo svg { width: 90px; height: 60px; margin-left: 30px; }
+  .ball-deco { position: absolute; top: -4%; left: 10%; }
+  .star-deco { position: absolute; right: 0; top: -2%; }
+  @media (max-width: 600px) { .ball-deco { left: 0; top: 0; } .ball-deco :global(svg) { width: 80px; height: 80px; } .note-oslo { top: 20%; } }
 
-  .bubbles { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 900px; margin: 0 auto; }
-  .bubble { background: var(--card); border: 1px solid var(--line); padding: 12px 20px; border-radius: 999px; font-family: var(--serif); font-style: italic; font-size: clamp(1rem, 1.6vw, 1.15rem); box-shadow: var(--shadow); transition: transform .4s var(--ease), background .3s, color .3s, opacity .9s var(--ease); }
-  .bubble:hover { transform: translateY(-4px) rotate(-1.5deg); background: var(--green); color: var(--on); }
+  /* FINDER */
+  .finder { padding-top: clamp(90px, 10vw, 130px); }
+  .wave.top { position: absolute; top: -1px; left: 0; right: 0; color: var(--paper); }
+  .finder-grid { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 980px) { .finder-grid { grid-template-columns: .55fr 1.45fr; } }
+  .finder-oslo { display: grid; justify-items: center; gap: 18px; }
+  .speech { position: relative; background: var(--white); border: var(--line); border-radius: 22px; padding: 14px 18px; font-size: 1.35rem; line-height: 1.2; text-align: center; max-width: 280px; box-shadow: var(--hard); }
+  .speech::before { content: ''; position: absolute; top: -12px; left: 50%; width: 20px; height: 20px; background: var(--white); border-left: var(--line); border-top: var(--line); transform: translateX(-50%) rotate(45deg); }
+  .finder-note { margin: 22px 0 0; font-size: 1.02rem; }
+  @media (max-width: 979px) { .finder-oslo :global(.oslo) { width: 150px; height: 150px; } }
 
-  .head-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: clamp(36px, 5vw, 56px); }
-  .head-row .head { margin-bottom: 0; }
-  .prog { text-decoration: none; color: inherit; display: flex; flex-direction: column; }
-  .prog .mut { flex: 1; }
-  .emo { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 18px; background: var(--bg2); font-size: 1.8rem; margin-bottom: 18px; transition: transform .5s var(--ease); }
-  .prog:hover .emo { transform: rotate(-8deg) scale(1.1); }
-  .more { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--green); }
-
-  .method { display: grid; gap: 48px; }
-  @media (min-width: 900px) { .method { grid-template-columns: 1fr 1fr; gap: 72px; } .sticky-photo { position: sticky; top: 110px; } }
-  .sticky-photo { aspect-ratio: 4 / 3; }
-  .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; align-content: start; }
-  .step { display: flex; gap: 20px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 26px; box-shadow: var(--shadow); }
-  .step .n { flex: none; font-family: var(--serif); font-size: 2.4rem; font-weight: 700; line-height: 1; color: var(--accent); width: 64px; }
-  .step p { margin: 0; }
-
-  .oslo-grid { align-items: center; gap: 56px; }
-  .oslo-photos { position: relative; padding: 0 60px 60px 0; }
-  .o1 { aspect-ratio: 3 / 4; transform: rotate(-3deg); }
-  .o2 { position: absolute; right: 0; bottom: 0; width: 46%; aspect-ratio: 3 / 4; border: 6px solid var(--bg); transform: rotate(5deg); }
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 30px; }
-  .stats div { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
-  .stats strong { display: block; font-family: var(--serif); font-size: 2rem; color: var(--green); line-height: 1.1; }
-  .stats span { font-size: .85rem; color: var(--mut); line-height: 1.3; display: block; }
-
-  .price-card { position: relative; text-align: center; }
-  .price-card.featured { border: 2px solid var(--accent); }
-  .tag { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); white-space: nowrap; background: var(--accent); color: #fff; }
-  .price { font-family: var(--serif); font-size: 1.4rem; color: var(--accent); margin: 6px 0 0; font-weight: 700; }
-  .price span { font-size: 3.2rem; }
-  .small { font-size: .92rem; margin: 0; }
-
-  .bento { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
-  .bento .photo { aspect-ratio: 1; }
-  .b1, .b3 { grid-column: span 2; aspect-ratio: 4 / 3 !important; }
-  @media (min-width: 900px) {
-    .bento { grid-template-columns: 1.3fr 1fr 1.2fr; grid-template-rows: 260px 260px; }
-    .bento .photo { aspect-ratio: auto !important; }
-    .b1 { grid-column: 1; grid-row: span 2; }
-    .b2 { grid-column: 2; grid-row: 1; }
-    .b3 { grid-column: 3; grid-row: span 2; }
-    .b4 { grid-column: 2; grid-row: 2; }
+  /* STRUGGLES */
+  .strug { padding-top: clamp(40px, 6vw, 80px); }
+  .cloud { position: relative; margin: 40px auto 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .cloud-oslo { position: relative; display: grid; place-items: center; width: 100%; margin-bottom: 16px; }
+  .qm { position: absolute; font-size: 3rem; color: var(--tomato); animation: qm 2.4s ease-in-out infinite; }
+  .q1 { left: calc(50% - 130px); top: 0; } .q2 { left: calc(50% + 100px); top: 10px; animation-delay: -.8s; color: var(--grass); } .q3 { left: calc(50% + 70px); top: -40px; animation-delay: -1.6s; }
+  @keyframes qm { 0%, 100% { transform: translateY(0) rotate(-10deg); opacity: .4; } 50% { transform: translateY(-14px) rotate(10deg); opacity: 1; } }
+  .sb { display: inline-block; background: var(--c); border: var(--line); border-radius: 999px; padding: 12px 22px; font-family: var(--hand); font-size: clamp(1.2rem, 2vw, 1.55rem); line-height: 1.1; box-shadow: 4px 4px 0 var(--ink); rotate: var(--r); transition: rotate .4s var(--spring), scale .4s var(--spring); cursor: default; }
+  .sb:hover { rotate: calc(var(--r) * -2); scale: 1.08; }
+  @media (min-width: 1000px) {
+    .cloud { display: block; height: 560px; max-width: 1060px; }
+    .cloud-oslo { position: absolute; left: 50%; top: 48%; width: auto; transform: translate(-50%, -50%); margin: 0; }
+    .sb { position: absolute; left: var(--x); top: var(--y); }
   }
-  .bento .photo img { transition: transform 1.2s var(--ease); }
-  .bento .photo:hover img { transform: scale(1.06); }
+  .cl-lead { margin: 30px auto 0; }
+
+  /* PROGRAMS */
+  .row-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: clamp(36px, 5vw, 60px); }
+  .row-head h2 { margin: 0; max-width: 14ch; }
+  .prog { position: relative; display: flex; flex-direction: column; text-decoration: none; padding: 0; overflow: hidden; }
+  .prog-art { display: grid; place-items: center; background: var(--c); border-bottom: var(--line); padding: 18px 0 12px; }
+  .prog h3 { padding: 22px 22px 0; }
+  .prog p { padding: 0 22px; color: var(--ink2); flex: 1; font-size: .98rem; }
+  .go-arr { align-self: flex-end; display: grid; place-items: center; width: 46px; height: 46px; margin: 0 18px 18px; border: var(--line); border-radius: 50%; background: var(--c); transition: transform .45s var(--spring); }
+  .prog:hover .go-arr { transform: rotate(-35deg) scale(1.1); }
+
+  /* METHOD TRAIL */
+  .head-m { margin-bottom: 40px; }
+  .trail { position: relative; display: grid; gap: clamp(40px, 7vw, 110px); padding: 40px 0; }
+  .trail-svg { position: absolute; left: 50%; top: 0; width: 200px; height: 100%; transform: translateX(-50%); overflow: visible; }
+  .trail-bg { fill: none; stroke: var(--ink); stroke-opacity: .2; stroke-width: 4; stroke-dasharray: 2 14; vector-effect: non-scaling-stroke; }
+  .trail-fg { fill: none; stroke: var(--tomato); stroke-width: 6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .trail-dog { position: absolute; left: 0; top: 0; z-index: 3; filter: drop-shadow(3px 3px 0 var(--ink)); }
+  .step { position: relative; z-index: 2; display: flex; align-items: center; gap: 24px; width: calc(50% - 90px); background: var(--white); border: var(--line); border-radius: 28px; padding: 24px; box-shadow: var(--hard); }
+  .step.r { justify-self: end; }
+  .step-art { flex: none; display: grid; place-items: center; width: 130px; height: 130px; border-radius: 50%; background: var(--sand); border: var(--line); }
+  .num { display: block; font-family: var(--display); font-weight: 800; font-size: 3.2rem; line-height: .9; margin-bottom: 6px; }
+  .step-txt p { margin: 0; color: var(--ink2); }
+  @media (max-width: 899px) {
+    .trail-svg { left: 24px; width: 48px; transform: none; }
+    .step { width: auto; margin-left: 70px; flex-direction: column; align-items: flex-start; }
+    .step.r { justify-self: stretch; }
+    .step-art { width: 100px; height: 100px; } .step-art :global(svg) { width: 90px; height: 90px; }
+  }
+
+  /* OSLO */
+  .oslo { padding-top: clamp(100px, 12vw, 160px); padding-bottom: clamp(160px, 15vw, 210px); overflow: hidden; }
+  .oslo-grid { display: grid; gap: 56px; align-items: center; }
+  @media (min-width: 900px) { .oslo-grid { grid-template-columns: .9fr 1.1fr; } }
+  .pile { position: relative; height: clamp(420px, 46vw, 560px); }
+  .pl1 { position: absolute; left: 0; top: 0; width: 66%; rotate: -5deg; margin: 0; }
+  .pl2 { position: absolute; right: 0; bottom: 0; width: 50%; rotate: 6deg; margin: 0; }
+  .idcard { position: relative; background: var(--white); border: var(--line); border-radius: 22px; overflow: hidden; box-shadow: var(--hard-lg); margin: 10px 0 30px; max-width: 520px; rotate: -1deg; }
+  .id-top { display: flex; justify-content: space-between; align-items: center; background: var(--tomato); border-bottom: var(--line); padding: 10px 18px; font-family: var(--display); font-weight: 800; font-stretch: 80%; text-transform: uppercase; letter-spacing: .02em; }
+  .id-top .hand { text-transform: none; font-size: 1.2rem; }
+  .id-body { display: flex; gap: 20px; align-items: center; padding: 20px 20px 46px; }
+  dl { margin: 0; display: grid; gap: 8px; flex: 1; }
+  dl div { display: grid; grid-template-columns: 80px 1fr; gap: 10px; border-bottom: 2px dotted rgb(23 21 15 / .25); padding-bottom: 6px; }
+  dt { font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 700; color: var(--ink2); padding-top: 3px; }
+  dd { margin: 0; font-weight: 700; }
+  .id-stamp { position: absolute; right: 18px; bottom: 10px; margin: 0; color: var(--grass); font-size: 1.35rem; rotate: -6deg; border: 2.5px solid var(--grass); border-radius: 10px; padding: 0 10px; background: rgb(255 255 255 / .8); }
+  @media (max-width: 520px) { .id-body { flex-direction: column; align-items: flex-start; } }
+  .oslo-run { position: absolute; bottom: 14px; left: 0; animation: lane2 12s linear infinite; }
+  @keyframes lane2 { from { transform: translateX(-220px); } to { transform: translateX(calc(100vw + 20px)); } }
+  .oslo::after { content: ''; position: absolute; left: 0; right: 0; bottom: 18px; border-bottom: var(--line); }
+
+  /* PRICES */
+  .tags { display: grid; gap: 28px; margin: 56px 0 50px; }
+  @media (min-width: 640px) { .tags { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1080px) { .tags { grid-template-columns: repeat(4, 1fr); } }
+  .tag { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 54px 20px 28px; background: var(--c); border-radius: 18px; text-decoration: none; transform-origin: 50% 0; animation: tagsw 3s ease-in-out infinite alternate; animation-delay: var(--sw); border: var(--line); box-shadow: var(--hard); }
+  @keyframes tagsw { from { transform: rotate(-2.5deg); } to { transform: rotate(2.5deg); } }
+  .tag:hover { animation-play-state: paused; }
+  .hole { width: 20px; height: 20px; border-radius: 50%; border: var(--line); background: var(--paper); position: absolute; top: 18px; }
+  .hole::before { content: ''; position: absolute; left: 50%; bottom: 100%; width: 2.5px; height: 40px; background: var(--ink); transform: translateX(-50%); }
+  .fav { position: absolute; top: 14px; right: -10px; background: var(--tomato); border: 2px solid var(--ink); border-radius: 8px; padding: 0 8px; font-size: 1.15rem; rotate: 8deg; }
+  .tname { font-family: var(--display); font-weight: 800; font-stretch: 85%; font-size: 1.3rem; margin-top: 8px; text-align: center; }
+  .tprice { font-family: var(--display); font-weight: 800; font-stretch: 75%; font-size: 5rem; line-height: .9; letter-spacing: -.05em; }
+  .tprice small { font-size: .45em; margin-left: 4px; }
+  .tunit { font-weight: 600; font-size: .95rem; }
+
+  /* GALLERY */
+  .gal { overflow: hidden; }
+  .strip-wrap { margin-top: 40px; }
+  .strip { display: flex; gap: 40px; width: max-content; padding: 30px 0 20px; }
+  .strip .polaroid { width: clamp(240px, 26vw, 340px); rotate: var(--r); flex: none; margin: 0; transition: rotate .4s var(--spring), scale .4s var(--spring); }
+  .strip .polaroid:hover { rotate: 0deg; scale: 1.04; }
+  @media (prefers-reduced-motion: reduce) { .strip { width: auto; flex-wrap: wrap; justify-content: center; } }
 </style>
-
-<script>
-  function parallax() {
-    const els = [...document.querySelectorAll<HTMLElement>('.parallax')];
-    if (!els.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    let raf = 0;
-    const run = () => {
-      raf = 0;
-      els.forEach((el) => { el.style.transform = `translateY(${scrollY * Number(el.dataset.speed)}px)`; });
-    };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(run); };
-    addEventListener('scroll', onScroll, { passive: true });
-    document.addEventListener('astro:before-swap', () => removeEventListener('scroll', onScroll), { once: true });
-  }
-  document.addEventListener('astro:page-load', parallax);
-</script>

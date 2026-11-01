@@ -3,55 +3,66 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { programs } from '../data/site';
+import Illus from '../components/Illus.astro';
 import OsloTip from '../components/OsloTip.astro';
-import osloLabrador from '../assets/photos/oslo-labrador.jpg';
-import osloChiot from '../assets/photos/oslo-chiot.jpg';
+import { programs } from '../data/site';
 import frisbee from '../assets/photos/frisbee.jpg';
+import osloChiot from '../assets/photos/oslo-chiot.jpg';
+import osloLabrador from '../assets/photos/oslo-labrador.jpg';
 import riviere from '../assets/photos/riviere.jpg';
-const imgs = [
-  { src: frisbee, alt: 'Chienne couchée calmement dans l’herbe, un frisbee devant elle' },
-  { src: osloChiot, alt: 'Un chiot découvre le parc aux côtés d’Oslo' },
-  { src: osloLabrador, alt: 'Oslo et un labrador posés tranquillement côte à côte' },
-  { src: riviere, alt: 'Plusieurs chiens détendus au bord du Rhône' },
+const look = [
+  { illus: 'ball', color: 'sun', img: frisbee, alt: 'Chienne couchée calmement dans l’herbe, un frisbee devant elle', cap: 'Les bases, avec patience' },
+  { illus: 'puppy', color: 'sky', img: osloChiot, alt: 'Un chiot découvre le parc aux côtés d’Oslo', cap: 'Premières leçons' },
+  { illus: 'heart', color: 'pink', img: osloLabrador, alt: 'Oslo et un labrador posés côte à côte', cap: 'Retrouver la confiance' },
+  { illus: 'house', color: 'mint', img: riviere, alt: 'Plusieurs chiens détendus au bord du Rhône', cap: 'S’adapter au changement' },
 ];
 ---
 <Layout title="Accompagnements" description="Éducation de base, chiots, anxiété de séparation, réactivité, protection de ressources, fugues, changements de vie : les accompagnements de Pauline Renard à Lyon.">
-  <PageHero eyebrow="Accompagnements" title='Comprendre votre chien, <span class="em">pas à pas</span>.' lead="Qu’il s’agisse d’acquérir les bonnes bases ou de résoudre un trouble du comportement, je vous aide à identifier les causes et vous donne des outils pratiques pour guider votre chien.">
-    <nav class="jump rv" style="--d:3" aria-label="Accès rapide">
-      {programs.map((p) => <a href={`#${p.slug}`}>{p.emoji} {p.title}</a>)}
+  <PageHero kicker="Accompagnements" title='Comprendre votre chien, <span class="hl t">pas à pas</span>.' lead="Bonnes bases ou trouble du comportement : j’identifie avec vous les causes et vous donne des outils pratiques pour guider votre chien." color="sky" illus="heart" oslo>
+    <nav class="jump" aria-label="Accès rapide">
+      {programs.map((p, i) => <a href={`#${p.slug}`} style={`--c:var(--${look[i].color})`}>{p.title}</a>)}
     </nav>
   </PageHero>
 
   {programs.map((p, i) => (
-    <section id={p.slug} class:list={['prog', { alt: i % 2 === 0 }]}>
-      <div class:list={['w', 'grid', 'g2', 'row', { rev: i % 2 === 1 }]}>
-        <div class="photo rv"><Image src={imgs[i].src} alt={imgs[i].alt} widths={[400, 675]} sizes="(min-width: 760px) 520px, 90vw" /></div>
-        <div class="rv" style="--d:1">
-          <span class="num">0{i + 1}</span>
-          <h2>{p.emoji} {p.title}</h2>
+    <section id={p.slug} class:list={['prog', i % 2 ? '' : 'bg-sand']}>
+      <div class:list={['w', 'row', { rev: i % 2 === 1 }]}>
+        <div class="visual">
+          <div class="disc" style={`--c:var(--${look[i].color})`} data-pop><Illus name={look[i].illus} size={230} /></div>
+          <figure class="polaroid tape" style="--ar:4/5" data-parallax="0.06">
+            <Image src={look[i].img} alt={look[i].alt} widths={[400, 675]} sizes="(min-width: 900px) 300px, 60vw" />
+            <figcaption>{look[i].cap}</figcaption>
+          </figure>
+        </div>
+        <div class="content">
+          <span class="num outline-text">0{i + 1}</span>
+          <h2 data-split>{p.title}</h2>
           <p class="lead">{p.lead}</p>
-          <ul class="check cols2">{p.items.map((it) => <li>{it}</li>)}</ul>
-          <div class="sugg"><span class="mut">Formule conseillée</span><strong>{p.suggested}</strong></div>
-          <a class="btn" href={`/contact/?motif=${encodeURIComponent(p.title)}`}>En parler avec moi <Icon name="arrow" size={18} /></a>
-          <OsloTip size={76}><p>{p.oslo}</p></OsloTip>
+          <ul class="check cols2" data-reveal="stagger">{p.items.map((it) => <li>{it}</li>)}</ul>
+          <p class="sugg" data-reveal><span class="hand">formule conseillée :</span> <strong>{p.suggested}</strong></p>
+          <a class="btn tomato" href={`/contact/?motif=${encodeURIComponent(p.title)}`}>En parler avec moi <Icon name="arrow" size={18} /></a>
+          <OsloTip size={80}><p>{p.oslo}</p></OsloTip>
         </div>
       </div>
     </section>
   ))}
-  <section style="padding-bottom:0"></section>
 </Layout>
 
 <style>
-  .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
-  .jump a { padding: 10px 18px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 600; font-size: .95rem; transition: transform .3s var(--ease), border-color .3s; }
-  .jump a:hover { transform: translateY(-2px); border-color: var(--green); }
-  .prog { scroll-margin-top: 60px; }
-  .row { align-items: center; gap: 56px; }
-  @media (min-width: 760px) { .rev > :first-child { order: 2; } }
-  .row .photo { aspect-ratio: 4 / 5; max-height: 600px; }
-  .num { font-family: var(--serif); font-size: 4.5rem; line-height: 1; font-weight: 700; color: transparent; -webkit-text-stroke: 1.5px var(--accent); display: block; margin-bottom: 8px; }
+  .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .jump a { padding: 10px 18px; border: var(--line); border-radius: 999px; background: var(--c); font-weight: 700; text-decoration: none; box-shadow: 3px 3px 0 var(--ink); transition: transform .3s var(--spring), box-shadow .3s; }
+  .jump a:hover { transform: translate(-2px, -3px) rotate(-2deg); box-shadow: 5px 6px 0 var(--ink); }
+  .prog { scroll-margin-top: 40px; overflow: hidden; }
+  .row { display: grid; gap: 56px; align-items: center; }
+  @media (min-width: 900px) { .row { grid-template-columns: .9fr 1.1fr; } .rev .visual { order: 2; } }
+  .visual { position: relative; min-height: 460px; }
+  .disc { position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 300px; height: 300px; border-radius: 50%; background: var(--c); border: var(--line); box-shadow: var(--hard-lg); }
+  .visual .polaroid { position: absolute; right: 0; bottom: 0; width: min(62%, 300px); rotate: 5deg; margin: 0; }
+  .rev .visual .polaroid { rotate: -5deg; }
+  @media (max-width: 600px) { .disc { width: 220px; height: 220px; } .disc :global(svg) { width: 170px; height: 170px; } .visual { min-height: 400px; } }
+  .num { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(4rem, 8vw, 6.5rem); line-height: .85; }
   .cols2 { margin: 26px 0; }
   @media (min-width: 560px) { .cols2 { grid-template-columns: 1fr 1fr; } }
-  .sugg { display: flex; flex-direction: column; gap: 2px; padding: 16px 20px; border-left: 4px solid var(--accent); background: var(--card); border-radius: 0 16px 16px 0; margin-bottom: 26px; font-size: .95rem; }
+  .sugg { display: inline-block; background: var(--white); border: var(--line); border-radius: 14px; padding: 10px 16px; margin-bottom: 26px; rotate: -1deg; }
+  .sugg .hand { font-size: 1.3rem; color: var(--tomato); }
 </style>
