@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+const articles = (await getCollection('conseils')).sort((a, b) => a.data.order - b.data.order);
+const cats = ['Tous', ...new Set(articles.map((a) => a.data.category))];
+---
+<Layout title="Conseils" description="Rappel, marche en laisse, chiot, anxiété de séparation, réactivité : les conseils d’éducation canine de Pauline Renard, éducatrice à Lyon.">
+  <PageHero eyebrow="Conseils" title='Des clés pour mieux <span class="em">comprendre</span> votre chien.' lead="Des conseils simples et bienveillants, issus du terrain, pour avancer au quotidien. Pour une situation précise, rien ne remplace une séance adaptée à votre chien.">
+    <div class="filters rv" style="--d:3" role="group" aria-label="Filtrer par thème">
+      {cats.map((c, i) => <button type="button" data-f={c} aria-pressed={i === 0 ? 'true' : 'false'}>{c}</button>)}
+    </div>
+  </PageHero>
+  <section style="padding-top:0">
+    <div class="w grid g3 list">
+      {articles.map((a, i) => <ArticleCard entry={a} d={i % 3} />)}
+    </div>
+  </section>
+  <section style="padding-bottom:0"></section>
+</Layout>
+<style>
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .filters button { font: inherit; font-weight: 600; font-size: .95rem; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; transition: background .25s, color .25s, border-color .25s; }
+  .filters button:hover { border-color: var(--green); }
+  .filters button[aria-pressed='true'] { background: var(--green); color: var(--on); border-color: var(--green); }
+  .list :global(.art.hide) { display: none; }
+</style>
+<script>
+  function init() {
+    const btns = document.querySelectorAll<HTMLButtonElement>('[data-f]');
+    btns.forEach((b) => b.addEventListener('click', () => {
+      const f = b.dataset.f;
+      btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      const apply = () => document.querySelectorAll<HTMLElement>('.list .art').forEach((a) => a.classList.toggle('hide', f !== 'Tous' && a.dataset.cat !== f));
+      document.startViewTransition ? document.startViewTransition(apply) : apply();
+    }));
+  }
+  document.addEventListener('astro:page-load', init);
+</script>

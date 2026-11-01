@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pauline-renard.mute-dew-d0f2.workers.dev/sitemap-index.xml

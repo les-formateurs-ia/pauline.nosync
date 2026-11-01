@@ -1,0 +1,27 @@
+---
+import { faq } from '../data/site';
+import Icon from './Icon.astro';
+const ld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+---
+<div class="faq">
+  {faq.map((f, i) => (
+    <details class="rv" style={`--d:${i % 3}`} name="faq">
+      <summary>{f.q}<span class="pm"><Icon name="plus" size={20} /></span></summary>
+      <div class="a"><p>{f.a}</p></div>
+    </details>
+  ))}
+</div>
+<script type="application/ld+json" set:html={JSON.stringify(ld)} />
+<style>
+  .faq { display: grid; gap: 12px; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 20px; transition: border-color .3s, box-shadow .3s, opacity .9s var(--ease), transform .9s var(--ease); }
+  details[open] { border-color: var(--green); box-shadow: var(--shadow); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 24px; font-weight: 700; font-size: 1.05rem; }
+  summary::-webkit-details-marker { display: none; }
+  .pm { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--green-soft); color: var(--green2); transition: transform .4s var(--ease), background .3s; }
+  details[open] .pm { transform: rotate(45deg); background: var(--accent); color: #fff; }
+  .a { padding: 0 24px 6px; color: var(--mut); }
+  details::details-content { block-size: 0; overflow: hidden; transition: block-size .4s var(--ease), content-visibility .4s allow-discrete; }
+  details[open]::details-content { block-size: auto; }
+  :root { interpolate-size: allow-keywords; }
+</style>

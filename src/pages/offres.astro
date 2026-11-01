@@ -1,0 +1,102 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import { prices, formats } from '../data/site';
+import riviere from '../assets/photos/riviere.jpg';
+---
+<Layout title="Offres & tarifs" description="Séance bilan à 35 €, séance individuelle à 45 €, forfaits 3 et 5 séances : découvrez les offres d’éducation canine de Pauline Renard à Lyon.">
+  <PageHero eyebrow="Offres & tarifs" title='Des formules <span class="em">claires</span>, adaptées à votre chien.' lead="Tout commence par une séance bilan pour faire connaissance. Ensuite, on choisit ensemble la formule la plus adaptée : séance à l’unité ou forfait à tarif avantageux." />
+
+  <section style="padding-top:0">
+    <div class="w">
+      <div class="grid g4 plans">
+        {prices.map((p, i) => (
+          <article class:list={['card', 'hover', 'plan', 'rv', { featured: p.featured }]} style={`--d:${i}`}>
+            {p.featured && <span class="badge">Le plus choisi</span>}
+            <h2 class="h3">{p.name}</h2>
+            <p class="mut pitch">{p.pitch}</p>
+            <p class="price"><span>{p.price}</span>&nbsp;€</p>
+            <p class="unit">{p.unit}</p>
+            <ul class="check">{p.features.map((f) => <li>{f}</li>)}</ul>
+            <a class:list={['btn', { accent: p.featured, ghost: !p.featured }]} href={`/contact/?offre=${encodeURIComponent(p.name)}`}>Choisir <Icon name="arrow" size={18} /></a>
+          </article>
+        ))}
+      </div>
+      <div class="info rv">
+        <p><Icon name="euro" size={22} /> <span><strong>Paiement</strong> par virement ou en espèces.</span></p>
+        <p><Icon name="pin" size={22} /> <span><strong>Basée à Lyon 7</strong>, déplacements dans Lyon et aux alentours.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="w">
+      <div class="head center rv">
+        <span class="eyebrow">Les formats</span>
+        <h2>Là où votre chien en a besoin.</h2>
+        <p class="lead">Chaque séance se déroule dans le cadre le plus pertinent pour votre objectif.</p>
+      </div>
+      <div class="grid g4">
+        {formats.map((f, i) => (
+          <div class="card hover fmt rv" style={`--d:${i}`}>
+            <span class="ico"><Icon name={f.icon} size={26} /></span>
+            <h3>{f.title}</h3>
+            <p class="mut">{f.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="w grid g2 how">
+      <div class="photo rv"><Image src={riviere} alt="Chiens au bord du Rhône pendant une balade éducative" widths={[400, 675]} sizes="(min-width: 760px) 520px, 90vw" /></div>
+      <div class="rv" style="--d:1">
+        <span class="eyebrow">Quelle formule choisir ?</span>
+        <h2>Mes repères pour vous orienter.</h2>
+        <div class="pick">
+          <div><span class="chip">Éducation de base · chiot</span><p>Le <strong>forfait 3 séances</strong> permet de poser des bases solides et de suivre les progrès.</p></div>
+          <div><span class="chip orange">Trouble du comportement</span><p>Le <strong>forfait 5 séances</strong> laisse le temps de travailler en profondeur et de généraliser les acquis.</p></div>
+          <div><span class="chip">Besoin ponctuel</span><p>La <strong>séance individuelle</strong> est idéale pour un objectif précis ou un point d’étape.</p></div>
+        </div>
+        <p class="mut">Pas sûr·e ? La séance bilan est faite pour ça : je vous conseille la formule la plus adaptée à la fin du rendez-vous.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="w narrow">
+      <div class="head center rv"><span class="eyebrow">Questions fréquentes</span><h2>Vous vous demandez…</h2></div>
+      <Faq />
+    </div>
+  </section>
+  <section style="padding-bottom:0"></section>
+</Layout>
+
+<style>
+  .plans { align-items: stretch; }
+  .plan { position: relative; display: flex; flex-direction: column; }
+  .plan.featured { border: 2px solid var(--accent); background: linear-gradient(180deg, var(--accent-soft), var(--card) 40%); }
+  .badge { position: absolute; top: -14px; left: 24px; background: var(--accent); color: #fff; font-weight: 700; font-size: .8rem; padding: 6px 14px; border-radius: 999px; }
+  .h3 { font-size: 1.35rem; margin-bottom: 4px; }
+  .pitch { font-size: .95rem; min-height: 3em; }
+  .price { font-family: var(--serif); font-weight: 700; color: var(--ink); margin: 6px 0 0; font-size: 1.5rem; }
+  .price span { font-size: 3.4rem; line-height: 1; }
+  .unit { color: var(--accent); font-weight: 600; font-size: .92rem; margin-bottom: 22px; }
+  .plan .check { flex: 1; margin-bottom: 26px; font-size: .95rem; }
+  .plan .btn { justify-content: center; }
+  .info { display: flex; flex-wrap: wrap; gap: 12px 36px; justify-content: center; margin-top: 40px; padding: 22px; border-radius: var(--r); border: 1px dashed var(--line); }
+  .info p { margin: 0; display: flex; gap: 10px; align-items: center; color: var(--mut); }
+  .info :global(svg) { color: var(--green); flex: none; }
+  .ico { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 18px; background: var(--green-soft); color: var(--green2); margin-bottom: 18px; transition: transform .5s var(--ease), background .3s, color .3s; }
+  .fmt:hover .ico { background: var(--green); color: var(--on); transform: rotate(-8deg); }
+  .fmt p { margin: 0; font-size: .97rem; }
+  .how { align-items: center; gap: 56px; }
+  .how .photo { aspect-ratio: 3 / 4; max-height: 640px; }
+  .pick { display: grid; gap: 14px; margin: 24px 0; }
+  .pick div { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; }
+  .pick p { margin: 10px 0 0; }
+</style>

@@ -1,0 +1,18 @@
+---
+interface Props { items: string[] }
+const { items } = Astro.props;
+const list = [...items, ...items];
+---
+<div class="mq" aria-hidden="true">
+  <div class="track">
+    {list.map((t) => <span>{t}<svg viewBox="0 0 24 24" width="22" height="22"><use href="#paw-sym" /></svg></span>)}
+  </div>
+</div>
+<style>
+  .mq { overflow: hidden; background: var(--green); color: var(--on); padding: 18px 0; transform: rotate(-1.5deg); margin: 0 -20px; }
+  .track { display: flex; width: max-content; animation: mq 38s linear infinite; }
+  .mq:hover .track { animation-play-state: paused; }
+  span { display: inline-flex; align-items: center; gap: 28px; padding-right: 28px; font-family: var(--serif); font-size: clamp(1.3rem, 2.6vw, 1.9rem); font-weight: 600; white-space: nowrap; }
+  svg { color: var(--sun); }
+  @keyframes mq { to { transform: translateX(-50%); } }
+</style>

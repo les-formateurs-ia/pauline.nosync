@@ -1,0 +1,61 @@
+---
+import { nav, site } from '../data/site';
+import Icon from './Icon.astro';
+---
+<footer class="ft">
+  <div class="w">
+    <div class="cta rv">
+      <div>
+        <h2>Prêt·e à avancer avec votre chien ?</h2>
+        <p>Racontez-moi votre situation : on commence par une séance bilan pour faire connaissance.</p>
+      </div>
+      <div class="btns">
+        <a class="btn accent" href="/contact/">Réserver une séance bilan <Icon name="arrow" size={18} /></a>
+        <a class="btn ghost light" href={site.phoneHref}><Icon name="phone" size={18} /> {site.phone}</a>
+      </div>
+      <svg class="paws" viewBox="0 0 200 200" aria-hidden="true"><use href="#paw-sym" x="20" y="120" width="40" height="40"/><use href="#paw-sym" x="70" y="80" width="40" height="40"/><use href="#paw-sym" x="110" y="40" width="40" height="40"/><use href="#paw-sym" x="160" y="0" width="40" height="40"/></svg>
+    </div>
+    <div class="cols">
+      <div>
+        <p class="brand">Pauline Renard</p>
+        <p class="mut">{site.role}<br />Diplômée EFM Métiers Animaliers · ACACED</p>
+      </div>
+      <div>
+        <p class="t">Navigation</p>
+        <ul>{nav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}<li><a href="/contact/">Contact</a></li></ul>
+      </div>
+      <div>
+        <p class="t">Contact</p>
+        <ul>
+          <li><a href={site.phoneHref}><Icon name="phone" size={16} /> {site.phone}</a></li>
+          <li><a href={`mailto:${site.email}`}><Icon name="mail" size={16} /> {site.email}</a></li>
+          <li><span><Icon name="pin" size={16} /> {site.city} · {site.area}</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copy">© {new Date().getFullYear()} Pauline Renard · Éducatrice &amp; comportementaliste canin · Lyon</p>
+  </div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="paw-sym" viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="12" cy="15.5" rx="5" ry="4.2"/><ellipse cx="5.5" cy="10" rx="2.2" ry="2.8"/><ellipse cx="18.5" cy="10" rx="2.2" ry="2.8"/><ellipse cx="9" cy="5" rx="2" ry="2.6"/><ellipse cx="15" cy="5" rx="2" ry="2.6"/></g></symbol>
+  </svg>
+</footer>
+
+<style>
+  .ft { padding: 0 0 30px; }
+  .cta { position: relative; overflow: hidden; background: var(--green2); color: #fff; border-radius: 36px; padding: clamp(36px, 6vw, 72px); display: grid; gap: 28px; align-items: center; margin-bottom: 64px; }
+  @media (prefers-color-scheme: dark) { .cta { background: #2c4e35; } }
+  @media (min-width: 900px) { .cta { grid-template-columns: 1.3fr 1fr; } }
+  .cta h2 { color: #fff; max-width: 16ch; }
+  .cta p { color: rgb(255 255 255 / .8); font-size: 1.1rem; margin: 0; max-width: 46ch; }
+  .cta .btns { position: relative; z-index: 1; }
+  .cta .ghost.light { color: #fff; box-shadow: inset 0 0 0 2px rgb(255 255 255 / .35); }
+  .paws { position: absolute; right: -10px; bottom: -10px; width: 220px; color: rgb(255 255 255 / .07); }
+  .cols { display: grid; gap: 32px; padding-bottom: 36px; border-bottom: 1px solid var(--line); }
+  @media (min-width: 760px) { .cols { grid-template-columns: 1.4fr 1fr 1.2fr; } }
+  .brand { font-family: var(--serif); font-size: 1.6rem; font-weight: 650; margin-bottom: 8px; }
+  .t { font-weight: 700; font-size: .82rem; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  ul a, ul span { color: var(--mut); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  ul a:hover { color: var(--green); }
+  .copy { color: var(--mut); font-size: .88rem; margin: 24px 0 0; text-align: center; }
+</style>

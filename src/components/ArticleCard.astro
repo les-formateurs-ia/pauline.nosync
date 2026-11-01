@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+interface Props { entry: CollectionEntry<'conseils'>; d?: number }
+const { entry, d = 0 } = Astro.props;
+const { title, description, category, cover, coverAlt, readingTime } = entry.data;
+---
+<a class="card hover art rv" href={`/conseils/${entry.id}/`} style={`--d:${d}`} data-cat={category}>
+  <div class="cover"><Image src={cover} alt={coverAlt} widths={[400, 640]} sizes="(min-width: 760px) 360px, 90vw" loading="lazy" transition:name={`cover-${entry.id}`} /></div>
+  <div class="meta"><span class="chip">{category}</span><span class="mut"><Icon name="clock" size={15} /> {readingTime} min</span></div>
+  <h3>{title}</h3>
+  <p class="mut">{description}</p>
+  <span class="more">Lire le conseil <Icon name="arrow" size={16} /></span>
+</a>
+<style>
+  .art { padding: 0; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+  .cover { aspect-ratio: 16 / 10; overflow: hidden; }
+  .cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
+  .art:hover .cover img { transform: scale(1.06); }
+  .meta { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 0; font-size: .85rem; }
+  .meta .mut { display: inline-flex; align-items: center; gap: 5px; }
+  h3 { padding: 14px 24px 0; margin: 0 0 8px; }
+  p { padding: 0 24px; flex: 1; font-size: .97rem; }
+  .more { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--green); padding: 0 24px 24px; }
+</style>

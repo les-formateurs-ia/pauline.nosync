@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { programs } from '../data/site';
+import osloLabrador from '../assets/photos/oslo-labrador.jpg';
+import osloChiot from '../assets/photos/oslo-chiot.jpg';
+import frisbee from '../assets/photos/frisbee.jpg';
+import riviere from '../assets/photos/riviere.jpg';
+const imgs = [
+  { src: frisbee, alt: 'Chienne couchée calmement dans l’herbe, un frisbee devant elle' },
+  { src: osloChiot, alt: 'Un chiot découvre le parc aux côtés d’Oslo' },
+  { src: osloLabrador, alt: 'Oslo et un labrador posés tranquillement côte à côte' },
+  { src: riviere, alt: 'Plusieurs chiens détendus au bord du Rhône' },
+];
+---
+<Layout title="Accompagnements" description="Éducation de base, chiots, anxiété de séparation, réactivité, protection de ressources, fugues, changements de vie : les accompagnements de Pauline Renard à Lyon.">
+  <PageHero eyebrow="Accompagnements" title='Comprendre votre chien, <span class="em">pas à pas</span>.' lead="Qu’il s’agisse d’acquérir les bonnes bases ou de résoudre un trouble du comportement, je vous aide à identifier les causes et vous donne des outils pratiques pour guider votre chien.">
+    <nav class="jump rv" style="--d:3" aria-label="Accès rapide">
+      {programs.map((p) => <a href={`#${p.slug}`}>{p.emoji} {p.title}</a>)}
+    </nav>
+  </PageHero>
+
+  {programs.map((p, i) => (
+    <section id={p.slug} class:list={['prog', { alt: i % 2 === 0 }]}>
+      <div class:list={['w', 'grid', 'g2', 'row', { rev: i % 2 === 1 }]}>
+        <div class="photo rv"><Image src={imgs[i].src} alt={imgs[i].alt} widths={[400, 675]} sizes="(min-width: 760px) 520px, 90vw" /></div>
+        <div class="rv" style="--d:1">
+          <span class="num">0{i + 1}</span>
+          <h2>{p.emoji} {p.title}</h2>
+          <p class="lead">{p.lead}</p>
+          <ul class="check cols2">{p.items.map((it) => <li>{it}</li>)}</ul>
+          <div class="sugg"><span class="mut">Formule conseillée</span><strong>{p.suggested}</strong></div>
+          <a class="btn" href={`/contact/?motif=${encodeURIComponent(p.title)}`}>En parler avec moi <Icon name="arrow" size={18} /></a>
+        </div>
+      </div>
+    </section>
+  ))}
+  <section style="padding-bottom:0"></section>
+</Layout>
+
+<style>
+  .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .jump a { padding: 10px 18px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 600; font-size: .95rem; transition: transform .3s var(--ease), border-color .3s; }
+  .jump a:hover { transform: translateY(-2px); border-color: var(--green); }
+  .prog { scroll-margin-top: 60px; }
+  .row { align-items: center; gap: 56px; }
+  @media (min-width: 760px) { .rev > :first-child { order: 2; } }
+  .row .photo { aspect-ratio: 4 / 5; max-height: 600px; }
+  .num { font-family: var(--serif); font-size: 4.5rem; line-height: 1; font-weight: 700; color: transparent; -webkit-text-stroke: 1.5px var(--accent); display: block; margin-bottom: 8px; }
+  .cols2 { margin: 26px 0; }
+  @media (min-width: 560px) { .cols2 { grid-template-columns: 1fr 1fr; } }
+  .sugg { display: flex; flex-direction: column; gap: 2px; padding: 16px 20px; border-left: 4px solid var(--accent); background: var(--card); border-radius: 0 16px 16px 0; margin-bottom: 26px; font-size: .95rem; }
+</style>

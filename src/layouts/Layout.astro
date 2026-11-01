@@ -1,0 +1,78 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import { getImage } from 'astro:assets';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import ogPhoto from '../assets/photos/pauline-oslo.jpg';
+import '../styles/global.css';
+
+interface Props { title?: string; description?: string; image?: ImageMetadata; type?: 'website' | 'article' }
+const { title, description = site.description, image = ogPhoto, type = 'website' } = Astro.props;
+const fullTitle = title ? `${title} · Pauline Renard, éducatrice canine à Lyon` : 'Pauline Renard · Éducatrice & comportementaliste canin à Lyon';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const og = await getImage({ src: image, width: 675, format: 'jpg' });
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Pauline Renard – Éducatrice & comportementaliste canin',
+  description: site.description,
+  url: Astro.site?.toString(),
+  telephone: '+33645816419',
+  email: site.email,
+  image: new URL(og.src, Astro.site).toString(),
+  address: { '@type': 'PostalAddress', addressLocality: 'Lyon', postalCode: '69007', addressCountry: 'FR' },
+  areaServed: 'Lyon et alentours',
+  priceRange: '35 € – 200 €',
+};
+---
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#faf6ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141712" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content={type} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(og.src, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    <script is:inline>document.documentElement.classList.remove('no-js')</script>
+    <ClientRouter />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Aller au contenu</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      let io: IntersectionObserver | undefined;
+      function init() {
+        io?.disconnect();
+        io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io!.unobserve(e.target); } }),
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+        );
+        document.querySelectorAll('.rv:not(.in)').forEach((el) => io!.observe(el));
+      }
+      document.addEventListener('astro:page-load', init);
+    </script>
+    <style is:global>
+      .skip { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--green); color: var(--on); padding: 10px 16px; border-radius: 10px; }
+      .skip:focus { top: 12px; }
+      ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .35s; }
+    </style>
+  </body>
+</html>

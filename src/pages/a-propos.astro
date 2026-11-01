@@ -1,0 +1,80 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import PawTrail from '../components/PawTrail.astro';
+import paulineOslo from '../assets/photos/pauline-oslo.jpg';
+import osloBalle from '../assets/photos/oslo-balle.jpg';
+const values = [
+  { icon: 'heart', title: 'Bienveillance', text: 'Des méthodes respectueuses du chien, fondées sur la compréhension de ses émotions et de ses besoins.' },
+  { icon: 'chat', title: 'Écoute', text: 'Chaque famille est unique : je pars de votre quotidien et de vos contraintes pour construire des solutions réalistes.' },
+  { icon: 'star', title: 'Concret', text: 'Des outils pratiques, simples à appliquer, pour que vous soyez autonome entre les séances.' },
+];
+---
+<Layout title="À propos" description="Pauline Renard, éducatrice et comportementaliste canin diplômée (EFM Métiers Animaliers, ACACED), basée à Lyon 7, et Oslo, son chien régulateur.">
+  <PageHero eyebrow="À propos" title='Je suis Pauline, <span class="em">et voici Oslo</span>.' lead="Éducatrice et comportementaliste canin à Lyon, j’accompagne les familles pour construire une relation fondée sur la confiance mutuelle." />
+
+  <section style="padding-top:0">
+    <div class="w grid g2 intro">
+      <div class="visual rv">
+        <div class="photo"><Image src={paulineOslo} alt="Portrait de Pauline Renard avec Oslo dans un parc ensoleillé" widths={[400, 675]} sizes="(min-width: 760px) 520px, 90vw" loading="eager" /></div>
+        <PawTrail class="trail-a" count={7} />
+      </div>
+      <div class="rv" style="--d:1">
+        <h2>Mon histoire</h2>
+        <p class="lead">Quand le quotidien avec son chien devient une source de stress ou de frustration, il est parfois difficile de savoir comment réagir.</p>
+        <p>C’est pour accompagner ces moments que je suis devenue éducatrice et comportementaliste canin. Qu’il s’agisse d’acquérir les bonnes bases d’éducation ou de résoudre des troubles du comportement (réactivité en balade, aboiements, anxiété, destruction…), je suis convaincue que chaque difficulté a sa solution.</p>
+        <p>Mon rôle : vous aider à identifier les causes des comportements gênants et vous donner des outils pratiques pour guider votre chien pas à pas. Ensemble, nous transformons ces défis en un apprentissage positif et durable.</p>
+        <div class="diplomas">
+          <div><Icon name="award" size={28} /><span><strong>EFM Métiers Animaliers</strong><br /><span class="mut">Diplômée éducatrice et comportementaliste canin</span></span></div>
+          <div><Icon name="award" size={28} /><span><strong>ACACED</strong><br /><span class="mut">Attestation de connaissances pour les animaux de compagnie</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="w">
+      <div class="head center rv"><span class="eyebrow">Mes valeurs</span><h2>Ce qui guide mon travail.</h2></div>
+      <div class="grid g3">
+        {values.map((v, i) => (
+          <div class="card hover val rv" style={`--d:${i}`}>
+            <span class="ico"><Icon name={v.icon} size={26} /></span>
+            <h3>{v.title}</h3>
+            <p class="mut">{v.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="w grid g2 intro rev">
+      <div class="rv">
+        <span class="eyebrow">Mon binôme</span>
+        <h2>Oslo, bouvier de l’Entlebuch.</h2>
+        <p class="lead">8 ans, très calme et très bien codé.</p>
+        <p>Selon les situations, Oslo peut servir de chien régulateur. C’est un partenaire idéal pour aider les chiens à apprendre les bons codes et à se sentir en confiance : un chien réactif ou un chiot timide peut ainsi progresser au contact d’un congénère stable et rassurant.</p>
+        <a class="btn" href="/contact/">Rencontrer Pauline &amp; Oslo <Icon name="arrow" size={18} /></a>
+      </div>
+      <div class="photo rv tilt" style="--d:1"><Image src={osloBalle} alt="Oslo debout dans l’herbe, une balle dans la gueule" widths={[400, 675]} sizes="(min-width: 760px) 480px, 90vw" /></div>
+    </div>
+  </section>
+  <section style="padding-bottom:0"></section>
+</Layout>
+
+<style>
+  .intro { align-items: center; gap: 56px; }
+  @media (min-width: 760px) { .rev > :first-child { order: 2; } }
+  .visual { position: relative; }
+  .visual .photo { aspect-ratio: 4 / 5; border-radius: 36px 200px 36px 36px; }
+  .visual :global(.trail-a) { position: absolute; width: 70%; right: -10%; bottom: -60px; transform: rotate(-20deg); }
+  .diplomas { display: grid; gap: 12px; margin-top: 28px; }
+  .diplomas > div { display: flex; gap: 16px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; }
+  .diplomas :global(svg) { color: var(--accent); flex: none; }
+  .ico { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 18px; background: var(--accent-soft); color: var(--accent); margin-bottom: 18px; }
+  .val p { margin: 0; }
+  .tilt { aspect-ratio: 3 / 4; transform: rotate(2deg); transition: transform .8s var(--ease); max-height: 640px; }
+  .tilt:hover { transform: rotate(0) scale(1.02); }
+</style>

@@ -1,0 +1,128 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import { site, prices, programs } from '../data/site';
+const motifs = [...programs.map((p) => p.title), 'Anxiété de séparation', 'Réactivité (humains / congénères)', 'Autre'];
+---
+<Layout title="Contact" description="Contactez Pauline Renard, éducatrice canine à Lyon 7 : décrivez votre situation pour convenir d’une séance bilan. 06 45 81 64 19.">
+  <PageHero eyebrow="Contact" title='Parlons de <span class="em">votre chien</span>.' lead="Décrivez-moi votre situation, je reviens vers vous rapidement pour convenir d’une séance bilan." />
+
+  <section style="padding-top:0">
+    <div class="w layout">
+      <aside class="side rv">
+        <a class="ct" href={site.phoneHref}><span class="ico"><Icon name="phone" /></span><span><small>Téléphone</small><strong>{site.phone}</strong></span></a>
+        <a class="ct" href={`mailto:${site.email}`}><span class="ico"><Icon name="mail" /></span><span><small>E-mail</small><strong>{site.email}</strong></span></a>
+        <div class="ct"><span class="ico"><Icon name="pin" /></span><span><small>Zone d’intervention</small><strong>{site.city} · {site.area}</strong></span></div>
+        <div class="note"><Icon name="paw" size={22} /><p>La <strong>séance bilan à 35 €</strong> est le point de départ idéal : on fait connaissance et je vous propose un plan adapté.</p></div>
+      </aside>
+
+      <div class="card form-card rv" style="--d:1">
+        <form id="f" novalidate>
+          <div class="two">
+            <label>Votre nom<input name="nom" required autocomplete="name" /></label>
+            <label>Votre e-mail<input type="email" name="email" required autocomplete="email" /></label>
+          </div>
+          <div class="two">
+            <label>Téléphone <span class="opt">(facultatif)</span><input type="tel" name="tel" autocomplete="tel" /></label>
+            <label>Nom, âge et race du chien<input name="chien" placeholder="Ex. : Oslo, 8 ans, bouvier" /></label>
+          </div>
+          <div class="two">
+            <label>Votre besoin
+              <select name="motif" id="motif">{motifs.map((m) => <option>{m}</option>)}</select>
+            </label>
+            <label>Formule envisagée
+              <select name="offre" id="offre"><option>Je ne sais pas encore</option>{prices.map((p) => <option>{p.name}</option>)}</select>
+            </label>
+          </div>
+          <label>Votre message<textarea name="msg" rows="6" required placeholder="Décrivez la situation : depuis quand, dans quels contextes, ce que vous avez déjà essayé…"></textarea></label>
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button class="btn accent" type="submit"><span class="lbl">Envoyer ma demande</span> <Icon name="arrow" size={18} /></button>
+          <p class="msg" id="ok" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="w narrow">
+      <div class="head center rv"><span class="eyebrow">Questions fréquentes</span><h2>Avant de me contacter</h2></div>
+      <Faq />
+    </div>
+  </section>
+  <section style="padding-bottom:0"></section>
+</Layout>
+
+<style>
+  .layout { display: grid; gap: 28px; align-items: start; }
+  @media (min-width: 960px) { .layout { grid-template-columns: .8fr 1.2fr; gap: 40px; } .side { position: sticky; top: 100px; } }
+  .side { display: grid; gap: 12px; }
+  .ct { display: flex; gap: 16px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; text-decoration: none; color: var(--ink); transition: transform .4s var(--ease), border-color .3s; overflow-wrap: anywhere; }
+  a.ct:hover { transform: translateX(6px); border-color: var(--green); }
+  .ct small { display: block; color: var(--mut); font-size: .8rem; }
+  .ico { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 16px; background: var(--green-soft); color: var(--green2); }
+  .note { display: flex; gap: 14px; background: var(--accent-soft); border-radius: 20px; padding: 20px; margin-top: 8px; }
+  .note :global(svg) { color: var(--accent); flex: none; margin-top: 3px; }
+  .note p { margin: 0; }
+  form { display: grid; gap: 18px; }
+  .two { display: grid; gap: 18px; }
+  @media (min-width: 600px) { .two { grid-template-columns: 1fr 1fr; } }
+  label { display: grid; gap: 6px; font-weight: 600; font-size: .93rem; }
+  .opt { color: var(--mut); font-weight: 400; }
+  input, select, textarea { font: inherit; font-weight: 400; padding: 14px 16px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); width: 100%; transition: border-color .25s, box-shadow .25s; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft); }
+  .invalid { border-color: var(--accent) !important; }
+  .hp { position: absolute; left: -9999px; }
+  form .btn { justify-self: start; }
+  form .btn[disabled] { opacity: .7; cursor: wait; }
+  .msg { margin: 0; font-weight: 600; }
+  .msg.ok { color: var(--green2); }
+  .msg.err { color: var(--accent); }
+</style>
+
+<script>
+  import { site } from '../data/site';
+  function init() {
+    const f = document.querySelector<HTMLFormElement>('#f');
+    if (!f) return;
+    const q = new URLSearchParams(location.search);
+    const pick = (id: string, v: string | null) => {
+      const s = f.querySelector<HTMLSelectElement>(id);
+      if (!s || !v) return;
+      const o = [...s.options].find((o) => o.text === v || v.startsWith(o.text) || o.text.startsWith(v));
+      if (o) s.value = o.text;
+    };
+    pick('#offre', q.get('offre'));
+    pick('#motif', q.get('motif'));
+
+    const ok = f.querySelector<HTMLElement>('#ok')!;
+    const btn = f.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const lbl = btn.querySelector<HTMLElement>('.lbl')!;
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let valid = true;
+      f.querySelectorAll<HTMLInputElement>('[required]').forEach((el) => {
+        const bad = !el.checkValidity();
+        el.classList.toggle('invalid', bad);
+        if (bad && valid) { el.focus(); valid = false; }
+      });
+      if (!valid) { ok.className = 'msg err'; ok.textContent = 'Merci de compléter les champs obligatoires.'; return; }
+      const o: Record<string, string> = Object.fromEntries(new FormData(f) as any);
+      if (o._honey) return;
+      Object.assign(o, { _subject: `Nouvelle demande via le site – ${o.motif}`, _captcha: 'false', _template: 'table' });
+      btn.disabled = true; lbl.textContent = 'Envoi en cours…'; ok.textContent = '';
+      try {
+        const r = await fetch(`https://formsubmit.co/ajax/${site.email}`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(o) });
+        if (!r.ok) throw new Error();
+        ok.className = 'msg ok'; ok.textContent = 'Merci ! Votre message a bien été envoyé, je vous réponds rapidement. 🐶';
+        f.reset();
+      } catch {
+        ok.className = 'msg err'; ok.textContent = `L’envoi a échoué. Écrivez-moi directement à ${site.email} ou appelez le ${site.phone}.`;
+      } finally {
+        btn.disabled = false; lbl.textContent = 'Envoyer ma demande';
+      }
+    });
+  }
+  document.addEventListener('astro:page-load', init);
+</script>
