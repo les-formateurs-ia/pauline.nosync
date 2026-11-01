@@ -9,53 +9,48 @@ const mobile = [{ href: '/', label: 'Accueil' }, ...nav, { href: '/contact/', la
 <header class="hdr">
   <div class="w bar">
     <a class="logo oslo-host" href="/" aria-label={`${site.name}, accueil`}>
-      <OsloAvatar size={46} />
-      <span class="name">Pauline<br />Renard</span>
+      <OsloAvatar size={40} />
+      <span class="name"><strong>Pauline Renard</strong><small>Éducation canine · Lyon</small></span>
     </a>
     <nav class="links" aria-label="Navigation principale">
-      {nav.map((l) => (
-        <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
-          {l.label}
-          <svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 C 25 2, 55 12, 98 5" /></svg>
-        </a>
-      ))}
+      {nav.map((l) => <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>)}
     </nav>
-    <a class="btn tomato cta" href="/contact/">Me contacter <Icon name="arrow" size={18} /></a>
-    <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mnav"><span></span><span></span><span></span></button>
+    <a class="btn cta" href="/contact/">Prendre rendez-vous</a>
+    <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mnav"><span></span><span></span></button>
   </div>
   <nav id="mnav" class="mnav" aria-label="Navigation mobile">
     {mobile.map((l, i) => <a href={l.href} style={`--i:${i}`} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>)}
-    <a class="btn" href={site.phoneHref} style={`--i:${mobile.length}`}><Icon name="phone" size={18} /> {site.phone}</a>
+    <a class="btn sage" href={site.phoneHref} style={`--i:${mobile.length}`}><Icon name="phone" size={18} /> {site.phone}</a>
   </nav>
 </header>
 
 <style>
-  .hdr { position: sticky; top: 0; z-index: 50; background: var(--paper); transition: box-shadow .3s, transform .45s var(--ease); }
-  .hdr.scrolled { box-shadow: 0 2.5px 0 var(--ink); }
+  .hdr { position: sticky; top: 0; z-index: 50; background: rgb(251 250 247 / .86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid transparent; transition: border-color .3s, transform .45s var(--ease); }
+  .hdr.scrolled { border-color: var(--line); }
   .hdr.hide { transform: translateY(-100%); }
-  .bar { display: flex; align-items: center; gap: 22px; height: 82px; }
+  .bar { display: flex; align-items: center; gap: 28px; height: 78px; }
   .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
-  .name { font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: 1.15rem; line-height: .9; letter-spacing: -.02em; text-transform: uppercase; }
-  .links { display: none; gap: 6px; }
-  .links a { position: relative; padding: 10px 12px; text-decoration: none; font-weight: 600; font-size: 1rem; }
-  .links svg { position: absolute; left: 8px; right: 8px; bottom: 2px; width: calc(100% - 16px); height: 10px; overflow: visible; }
-  .links path { fill: none; stroke: var(--tomato); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 110; stroke-dashoffset: 110; transition: stroke-dashoffset .45s var(--ease); }
-  .links a:hover path, .links a[aria-current='page'] path { stroke-dashoffset: 0; }
-  .cta { display: none; padding: 13px 20px; }
-  .burger { position: relative; width: 52px; height: 52px; border: var(--line); border-radius: 16px; background: var(--sun); cursor: pointer; box-shadow: 3px 3px 0 var(--ink); }
-  .burger span { position: absolute; left: 13px; width: 22px; height: 3px; border-radius: 3px; background: var(--ink); transition: transform .35s var(--spring), opacity .2s; }
-  .burger span:nth-child(1) { top: 16px; } .burger span:nth-child(2) { top: 23.5px; } .burger span:nth-child(3) { top: 31px; }
-  .hdr.open .burger span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
-  .hdr.open .burger span:nth-child(2) { opacity: 0; }
-  .hdr.open .burger span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
-  .mnav { position: fixed; inset: 82px 0 0; background: var(--sun); border-top: var(--line); padding: 28px 24px 40px; display: flex; flex-direction: column; gap: 4px; clip-path: circle(0% at calc(100% - 50px) 0); transition: clip-path .6s var(--ease); overflow-y: auto; }
-  .hdr.open .mnav { clip-path: circle(150% at calc(100% - 50px) 0); }
-  .mnav a:not(.btn) { font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: clamp(2.4rem, 11vw, 3.4rem); line-height: 1.05; letter-spacing: -.03em; text-decoration: none; }
-  .mnav a[aria-current='page'] { color: var(--tomato); -webkit-text-stroke: 1.5px var(--ink); }
-  .mnav a { opacity: 0; transform: translateY(30px) rotate(3deg); transition: opacity .5s var(--ease), transform .6s var(--spring); transition-delay: calc(var(--i) * 50ms + .1s); }
+  .name strong { display: block; font-family: var(--display); font-weight: 600; font-size: 1.08rem; letter-spacing: -.02em; line-height: 1.1; }
+  .name small { display: block; font-size: .76rem; color: var(--ink3); letter-spacing: .02em; }
+  .links { display: none; gap: 30px; }
+  .links a { position: relative; padding: 6px 0; text-decoration: none; font-size: .95rem; color: var(--ink2); transition: color .2s; }
+  .links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform .4s var(--ease); }
+  .links a:hover, .links a[aria-current='page'] { color: var(--ink); }
+  .links a:hover::after, .links a[aria-current='page']::after { transform: scaleX(1); transform-origin: left; }
+  .cta { display: none; padding: 12px 20px; font-size: .92rem; }
+  .burger { position: relative; width: 46px; height: 46px; border: 1px solid var(--line); border-radius: 50%; background: var(--white); cursor: pointer; }
+  .burger span { position: absolute; left: 14px; width: 17px; height: 1.5px; background: var(--ink); transition: transform .4s var(--ease); }
+  .burger span:first-child { top: 19px; } .burger span:last-child { top: 25px; }
+  .hdr.open .burger span:first-child { transform: translateY(3px) rotate(45deg); }
+  .hdr.open .burger span:last-child { transform: translateY(-3px) rotate(-45deg); }
+  .mnav { position: fixed; inset: 78px 0 0; background: var(--paper); padding: 28px 28px 40px; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transition: opacity .4s var(--ease), visibility .4s; overflow-y: auto; }
+  .hdr.open .mnav { opacity: 1; visibility: visible; }
+  .mnav a:not(.btn) { font-family: var(--display); font-weight: 500; font-size: 2.1rem; letter-spacing: -.03em; text-decoration: none; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .mnav a[aria-current='page'] { color: var(--sage); }
+  .mnav a { opacity: 0; transform: translateY(14px); transition: opacity .5s var(--ease), transform .6s var(--ease); transition-delay: calc(var(--i) * 40ms + .05s); }
   .hdr.open .mnav a { opacity: 1; transform: none; }
-  .mnav .btn { margin-top: 24px; align-self: flex-start; }
-  @media (min-width: 1040px) { .links, .cta { display: flex; } .burger, .mnav { display: none; } }
+  .mnav .btn { margin-top: 28px; align-self: flex-start; }
+  @media (min-width: 1060px) { .links, .cta { display: flex; } .burger, .mnav { display: none; } }
 </style>
 
 <script>
@@ -72,7 +67,7 @@ const mobile = [{ href: '/', label: 'Accueil' }, ...nav, { href: '/contact/', la
   addEventListener('scroll', () => {
     const y = scrollY;
     hdr.classList.toggle('scrolled', y > 10);
-    hdr.classList.toggle('hide', y > 400 && y > last && !hdr.classList.contains('open'));
+    hdr.classList.toggle('hide', y > 500 && y > last && !hdr.classList.contains('open'));
     last = y;
   }, { passive: true });
 </script>

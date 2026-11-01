@@ -5,27 +5,25 @@ import PageHero from '../../components/PageHero.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 const articles = (await getCollection('conseils')).sort((a, b) => a.data.order - b.data.order);
 const cats = ['Tous', ...new Set(articles.map((a) => a.data.category))];
-const catColor: Record<string, string> = { Tous: 'white', Éducation: 'sun', Comportement: 'pink', Chiot: 'sky', Quotidien: 'mint' };
 ---
 <Layout title="Conseils" description="Rappel, marche en laisse, chiot, anxiété de séparation, réactivité : les conseils d’éducation canine de Pauline Renard, éducatrice à Lyon.">
-  <PageHero kicker="Conseils" title='Des clés pour mieux <span class="hl">comprendre</span> votre chien.' lead="Des conseils simples et bienveillants, issus du terrain. Pour une situation précise, rien ne remplace une séance adaptée à votre chien." color="pink" illus="bulb" oslo>
+  <PageHero label="Conseils" title="Des clés pour mieux <em>comprendre</em> votre chien." lead="Des conseils simples et bienveillants, issus du terrain. Pour une situation précise, rien ne remplace une séance adaptée à votre chien.">
     <div class="filters" role="group" aria-label="Filtrer par thème">
-      {cats.map((c, i) => <button type="button" data-f={c} aria-pressed={i === 0 ? 'true' : 'false'} style={`--c:var(--${catColor[c]})`}>{c}</button>)}
+      {cats.map((c, i) => <button type="button" data-f={c} aria-pressed={i === 0 ? 'true' : 'false'}>{c}</button>)}
     </div>
   </PageHero>
-  <section class="list-s">
+  <section>
     <div class="w grid g3 list" data-reveal="stagger">
-      {articles.map((a, i) => <ArticleCard entry={a} i={i} />)}
+      {articles.map((a) => <ArticleCard entry={a} />)}
     </div>
   </section>
 </Layout>
 <style>
-  .filters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
-  .filters button { font: inherit; font-weight: 700; padding: 10px 18px; border: var(--line); border-radius: 999px; background: var(--white); cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: transform .3s var(--spring), background .2s, box-shadow .3s; }
-  .filters button:hover { transform: translate(-2px, -2px); }
-  .filters button[aria-pressed='true'] { background: var(--c); transform: rotate(-3deg); box-shadow: 5px 5px 0 var(--ink); }
-  .list-s { padding-top: clamp(40px, 6vw, 70px); }
-  .list { row-gap: 40px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
+  .filters button { font: inherit; font-size: .92rem; padding: 9px 18px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); color: var(--ink2); cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+  .filters button:hover { border-color: var(--ink); color: var(--ink); }
+  .filters button[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .list { row-gap: 56px; }
   .list :global(.art.hide) { display: none; }
 </style>
 <script>

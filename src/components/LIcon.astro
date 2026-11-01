@@ -1,0 +1,19 @@
+---
+// Thin line icons (Lucide), referenced by name from data files.
+import {
+  Fence, Shield, Shovel, Moon, Feather, Footprints, Droplets, Sofa, Wind, Dog, PawPrint, House, Trees, MessageCircle,
+  Search, Lightbulb, TrendingUp, Sprout, Heart, Ear, Sparkles, Send, Bone, Target, Route, Baby, HandHeart, GraduationCap,
+  Eye, ClipboardList, Users, Calendar, Star, Quote,
+} from '@lucide/astro';
+const map: Record<string, any> = {
+  fence: Fence, shield: Shield, shovel: Shovel, moon: Moon, feather: Feather, footprints: Footprints, droplets: Droplets,
+  sofa: Sofa, wind: Wind, dog: Dog, paw: PawPrint, house: House, trees: Trees, chat: MessageCircle, search: Search,
+  bulb: Lightbulb, trend: TrendingUp, sprout: Sprout, heart: Heart, ear: Ear, sparkles: Sparkles, send: Send, bone: Bone,
+  target: Target, route: Route, baby: Baby, handheart: HandHeart, cap: GraduationCap, eye: Eye, list: ClipboardList,
+  users: Users, calendar: Calendar, star: Star, quote: Quote,
+};
+interface Props { name: string; size?: number; stroke?: number; class?: string }
+const { name, size = 24, stroke = 1.5, class: cls } = Astro.props;
+const C = map[name] ?? PawPrint;
+---
+<C size={size} stroke-width={stroke} class={cls} aria-hidden="true" />

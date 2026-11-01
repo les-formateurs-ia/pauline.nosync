@@ -2,52 +2,50 @@
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import Illus from '../components/Illus.astro';
-import Kicker from '../components/Kicker.astro';
+import LIcon from '../components/LIcon.astro';
 import Faq from '../components/Faq.astro';
 import OsloTip from '../components/OsloTip.astro';
 import { prices, formats } from '../data/site';
-const planColor = ['white', 'sky', 'sun', 'pink'];
-const fmtIllus: Record<string, string> = { home: 'house', tree: 'tree', paw: 'paws', chat: 'chat' };
-const fmtColor = ['sun', 'mint', 'pink', 'sky'];
+const fmtIcon: Record<string, string> = { home: 'house', tree: 'trees', paw: 'paw', chat: 'chat' };
 const picks = [
-  { tag: 'Éducation de base · chiot', text: 'Le forfait 3 séances pose des bases solides et permet de suivre les progrès.', c: 'sun' },
-  { tag: 'Trouble du comportement', text: 'Le forfait 5 séances laisse le temps de travailler en profondeur et de généraliser.', c: 'pink' },
-  { tag: 'Besoin ponctuel', text: 'La séance individuelle est idéale pour un objectif précis ou un point d’étape.', c: 'sky' },
+  { tag: 'Éducation de base · chiot', text: 'Le forfait 3 séances pose des bases solides et permet de suivre les progrès.' },
+  { tag: 'Trouble du comportement', text: 'Le forfait 5 séances laisse le temps de travailler en profondeur et de généraliser les acquis.' },
+  { tag: 'Besoin ponctuel', text: 'La séance individuelle convient à un objectif précis ou à un point d’étape.' },
 ];
 ---
 <Layout title="Offres & tarifs" description="Séance bilan à 35 €, séance individuelle à 45 €, forfaits 3 et 5 séances : les offres d’éducation canine de Pauline Renard à Lyon.">
-  <PageHero kicker="Offres & tarifs" title='Des formules <span class="hl">claires</span>, adaptées à votre chien.' lead="Tout commence par une séance bilan pour faire connaissance. Ensuite, on choisit ensemble : séance à l’unité ou forfait à tarif avantageux." color="sun" illus="ticket" oslo />
+  <PageHero label="Offres & tarifs" title="Des formules <em>claires</em>, adaptées à votre chien." lead="Tout commence par une séance bilan pour faire connaissance. Ensuite, on choisit ensemble : séance à l’unité ou forfait à tarif avantageux." />
 
-  <section class="plans-s">
+  <section>
     <div class="w">
       <div class="plans" data-reveal="stagger">
-        {prices.map((p, i) => (
-          <article class:list={['plan', { featured: p.featured }]} style={`--c:var(--${planColor[i]})`}>
-            {p.featured && <span class="fav hand">le + choisi !</span>}
+        {prices.map((p) => (
+          <article class:list={['plan', { featured: p.featured }]}>
+            {p.featured && <span class="badge">Le plus choisi</span>}
             <h2 class="pname">{p.name}</h2>
             <p class="pitch">{p.pitch}</p>
-            <p class="price"><span>{p.price}</span>€</p>
+            <p class="price">{p.price} €</p>
             <p class="unit">{p.unit}</p>
+            <hr class="rule" />
             <ul class="check">{p.features.map((f) => <li>{f}</li>)}</ul>
-            <a class:list={['btn', p.featured ? 'tomato' : 'white']} href={`/contact/?offre=${encodeURIComponent(p.name)}`}>Choisir <Icon name="arrow" size={18} /></a>
+            <a class:list={['btn', p.featured ? 'sage' : 'ghost']} href={`/contact/?offre=${encodeURIComponent(p.name)}`}>Choisir cette formule</a>
           </article>
         ))}
       </div>
       <div class="info" data-reveal>
-        <p><span class="ico bg-sun"><Icon name="euro" size={20} /></span> Paiement par virement ou en espèces</p>
-        <p><span class="ico bg-mint"><Icon name="pin" size={20} /></span> Basée à Lyon 7 · déplacements dans Lyon et alentours</p>
+        <p><LIcon name="list" size={20} /> Paiement par virement ou en espèces</p>
+        <p><LIcon name="route" size={20} /> Basée à Lyon 7 · déplacements dans Lyon et alentours</p>
       </div>
     </div>
   </section>
 
-  <section class="bg-sand">
+  <section class="bg-stone">
     <div class="w">
-      <div class="center head"><Kicker>Les formats</Kicker><h2 data-split>Là où votre chien en a besoin.</h2></div>
+      <div class="head"><p class="label">Les formats</p><h2 data-split>Là où votre chien <em>en a besoin</em>.</h2></div>
       <div class="grid g4" data-reveal="stagger">
-        {formats.map((f, i) => (
-          <div class="fmt card lift" style={`--c:var(--${fmtColor[i]})`}>
-            <div class="fmt-art"><Illus name={fmtIllus[f.icon]} size={130} /></div>
+        {formats.map((f) => (
+          <div class="card hover fmt">
+            <span class="icon-c"><LIcon name={fmtIcon[f.icon]} /></span>
             <h3>{f.title}</h3>
             <p>{f.text}</p>
           </div>
@@ -57,56 +55,48 @@ const picks = [
   </section>
 
   <section>
-    <div class="w">
-      <div class="center head"><Kicker>Quelle formule choisir ?</Kicker><h2 data-split>Mes repères pour vous orienter.</h2></div>
-      <div class="grid g3" data-reveal="stagger">
-        {picks.map((p, i) => (
-          <div class="pick" style={`--c:var(--${p.c});--r:${[-1.5, 1, -1][i]}deg`}>
-            <span class="pill">{p.tag}</span>
-            <p>{p.text}</p>
-          </div>
-        ))}
+    <div class="w choose">
+      <div>
+        <p class="label">Quelle formule choisir ?</p>
+        <h2 data-split>Quelques repères pour <em>vous orienter</em>.</h2>
+        <OsloTip><p>Pas sûr·e ? La séance bilan est faite pour ça : Pauline vous conseille la formule la plus adaptée à la fin du rendez-vous.</p></OsloTip>
       </div>
-      <div class="narrow" style="margin:0 auto">
-        <OsloTip><p>Pas sûr·e ? La séance bilan est faite pour ça : Pauline vous conseille la formule la plus adaptée à la fin du rendez-vous. Et si votre chien a besoin d’un copain bien codé, je peux venir aussi !</p></OsloTip>
-      </div>
+      <ul class="picks" data-reveal="stagger">
+        {picks.map((p) => <li><span class="ptag">{p.tag}</span><p>{p.text}</p></li>)}
+      </ul>
     </div>
   </section>
 
-  <section class="bg-sky">
+  <section class="bg-stone">
     <div class="w narrow">
-      <div class="center head"><Kicker>Questions fréquentes</Kicker><h2 data-split>Vous vous demandez…</h2></div>
+      <div class="head center"><p class="label">Questions fréquentes</p><h2 data-split>Vous vous demandez…</h2></div>
       <Faq />
     </div>
   </section>
 </Layout>
 
 <style>
-  .plans-s { padding-top: clamp(40px, 6vw, 70px); }
-  .head { margin-bottom: clamp(36px, 5vw, 60px); }
-  .plans { display: grid; gap: 26px; }
+  .plans { display: grid; gap: 20px; }
   @media (min-width: 700px) { .plans { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 1120px) { .plans { grid-template-columns: repeat(4, 1fr); } }
-  .plan { position: relative; display: flex; flex-direction: column; background: var(--c); border: var(--line); border-radius: 26px; padding: 30px 26px 26px; box-shadow: var(--hard); transition: transform .4s var(--spring), box-shadow .3s; }
-  .plan:hover { transform: translate(-3px, -6px) rotate(-1deg); box-shadow: var(--hard-lg); }
-  .plan.featured { transform: rotate(-1.5deg); }
-  .plan.featured:hover { transform: translate(-3px, -6px) rotate(0); }
-  .fav { position: absolute; top: -18px; right: 18px; background: var(--tomato); border: 2.5px solid var(--ink); border-radius: 10px; padding: 2px 12px; font-size: 1.3rem; rotate: 6deg; animation: favw 2s ease-in-out infinite; }
-  @keyframes favw { 50% { rotate: -4deg; } }
-  .pname { font-size: 1.7rem; margin-bottom: 4px; }
-  .pitch { font-size: .97rem; min-height: 3em; }
-  .price { font-family: var(--display); font-weight: 800; font-stretch: 75%; font-size: 2rem; line-height: 1; margin: 4px 0 2px; letter-spacing: -.04em; }
-  .price span { font-size: 4.6rem; }
-  .unit { font-family: var(--hand); font-size: 1.35rem; margin-bottom: 20px; }
-  .plan .check { flex: 1; margin-bottom: 26px; font-size: .96rem; }
-  .plan .check li::before { background-color: var(--white); }
-  .info { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; margin-top: 46px; }
-  .info p { display: flex; align-items: center; gap: 12px; margin: 0; font-weight: 600; }
-  .ico { display: grid; place-items: center; width: 42px; height: 42px; border: var(--line); border-radius: 50%; }
-  .fmt { padding: 0; overflow: hidden; }
-  .fmt-art { display: grid; place-items: center; background: var(--c); border-bottom: var(--line); padding: 16px 0 10px; }
-  .fmt h3 { padding: 20px 22px 0; }
-  .fmt p { padding: 0 22px 8px; color: var(--ink2); font-size: .97rem; }
-  .pick { background: var(--c); border: var(--line); border-radius: 24px; padding: 26px; box-shadow: var(--hard); rotate: var(--r); }
-  .pick p { margin: 14px 0 0; font-size: 1.08rem; font-weight: 500; }
+  @media (min-width: 1140px) { .plans { grid-template-columns: repeat(4, 1fr); } }
+  .plan { position: relative; display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 32px 28px 28px; transition: transform .4s var(--ease), box-shadow .4s; }
+  .plan:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .plan.featured { border-color: var(--sage); box-shadow: inset 0 0 0 1px var(--sage); }
+  .badge { position: absolute; top: 20px; right: 20px; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--sage-d); background: var(--sage-l); padding: 5px 10px; border-radius: 999px; }
+  .pname { font-size: 1.35rem; margin-bottom: 6px; padding-right: 90px; }
+  .pitch { font-size: .95rem; color: var(--ink2); min-height: 3em; }
+  .price { font-family: var(--display); font-weight: 400; font-size: 3.4rem; letter-spacing: -.04em; line-height: 1; margin: 10px 0 6px; }
+  .unit { font-size: .9rem; color: var(--ink3); margin-bottom: 22px; }
+  .plan .check { flex: 1; margin: 22px 0 28px; font-size: .95rem; }
+  .info { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; margin-top: 44px; color: var(--ink2); font-size: .95rem; }
+  .info p { display: flex; align-items: center; gap: 10px; margin: 0; }
+  .info :global(svg) { color: var(--sage); }
+  .fmt h3 { margin: 22px 0 10px; }
+  .fmt p { color: var(--ink2); font-size: .96rem; margin: 0; }
+  .choose { display: grid; gap: 48px; align-items: start; }
+  @media (min-width: 960px) { .choose { grid-template-columns: 1fr 1fr; gap: 90px; } }
+  .picks { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+  .picks li { padding: 28px 0; border-bottom: 1px solid var(--line); }
+  .ptag { font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--sage); }
+  .picks p { margin: 8px 0 0; font-family: var(--display); font-size: 1.3rem; letter-spacing: -.015em; line-height: 1.35; }
 </style>

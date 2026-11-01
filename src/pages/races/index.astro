@@ -4,8 +4,7 @@ import PageHero from '../../components/PageHero.astro';
 import DogFinder from '../../components/DogFinder.astro';
 import OsloTip from '../../components/OsloTip.astro';
 import OsloAvatar from '../../components/OsloAvatar.astro';
-import Kicker from '../../components/Kicker.astro';
-import Illus from '../../components/Illus.astro';
+import LIcon from '../../components/LIcon.astro';
 import Icon from '../../components/Icon.astro';
 import { groups } from '../../data/groups';
 import { groupStyle } from '../../data/groupStyle';
@@ -19,55 +18,51 @@ const hints = [
 ];
 ---
 <Layout title="Mon chien : comprendre sa race" description="Bergers, terriers, primitifs, chiens de chasse, molosses… Découvrez comment la famille de race de votre chien influence son comportement et son éducation.">
-  <PageHero kicker="Mon chien" title='Comprendre votre chien <span class="hl">grâce à ses origines</span>.' lead="Chaque race a été sélectionnée pour un métier : garder, chasser, rassembler, tenir compagnie… Ces origines expliquent beaucoup de ses comportements d’aujourd’hui." color="mint" illus="paws" oslo />
+  <PageHero label="Mon chien" title="Comprendre votre chien <em>grâce à ses origines</em>." lead="Chaque race a été sélectionnée pour un métier : garder, chasser, rassembler, tenir compagnie… Ces origines expliquent beaucoup de ses comportements d’aujourd’hui." />
 
-  <section class="find-s" id="mon-chien">
+  <section class="find-s bg-stone" id="mon-chien">
     <div class="w">
       <div class="find-card" data-reveal>
-        <p class="fc-title hand">Le guide d’Oslo ↓</p>
+        <div class="fc-head"><OsloAvatar size={44} /><span>Le guide d’Oslo</span></div>
         <DogFinder />
       </div>
       <div data-unknown hidden>
         <OsloTip title="Enchanté !">
-          <p data-v="unknown">Je n’ai pas trouvé « <strong data-race></strong> » dans ma liste. Pas de souci : si <strong data-nom></strong> est croisé, regardez les questions plus bas ou choisissez la famille qui lui ressemble le plus !</p>
-          <p data-v="mixed" hidden>Un chien croisé, c’est un mélange unique ! Pour mieux comprendre <strong data-nom></strong>, répondez aux questions plus bas ou choisissez la famille qui lui ressemble le plus.</p>
+          <p data-v="unknown">Je n’ai pas trouvé « <strong data-race></strong> » dans ma liste. Si <strong data-nom></strong> est croisé, les questions plus bas vous aideront à choisir la famille qui lui ressemble le plus.</p>
+          <p data-v="mixed" hidden>Un chien croisé hérite de plusieurs familles. Pour mieux comprendre <strong data-nom></strong>, aidez-vous des questions plus bas ou choisissez la famille qui lui ressemble le plus.</p>
         </OsloTip>
       </div>
     </div>
   </section>
 
-  <section class="fam-s">
+  <section>
     <div class="w">
-      <Kicker>Les 9 familles</Kicker>
-      <h2 data-split>Quel est son profil ?</h2>
-      <div class="grid g3 fams" data-reveal="stagger">
-        {groups.map((g, i) => (
-          <a class="fam" href={`/races/${g.slug}/`} style={`--c:var(--${groupStyle[g.slug].color});--r:${[-1, 1, -.5][i % 3]}deg`}>
-            <div class="fam-art"><Illus name={groupStyle[g.slug].illus} size={140} /></div>
-            <div class="fam-body">
-              <h3>{g.name}</h3>
-              <p>{g.short}</p>
-              <p class="ex hand">{g.examples.slice(0, 3).join(' · ')}…</p>
-              <span class="go"><Icon name="arrow" size={18} /></span>
-            </div>
+      <div class="head"><p class="label">Les 9 familles</p><h2 data-split>Quel est <em>son profil</em> ?</h2></div>
+      <div class="grid g3" data-reveal="stagger">
+        {groups.map((g) => (
+          <a class="card hover fam" href={`/races/${g.slug}/`}>
+            <span class="icon-c"><LIcon name={groupStyle[g.slug].icon} /></span>
+            <h3>{g.name}</h3>
+            <p>{g.short}</p>
+            <p class="ex">{g.examples.slice(0, 3).join(' · ')}…</p>
+            <span class="more">Découvrir <Icon name="arrow" size={15} /></span>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="bg-sun">
+  <section class="bg-sage">
     <div class="w mixed">
       <div>
-        <Kicker>Mon chien est croisé</Kicker>
-        <h2 data-split>Observez ce qui domine chez lui.</h2>
-        <p class="lead" style="color:var(--ink)">Un chien croisé hérite des tendances de plusieurs familles. Ses comportements spontanés sont souvent le meilleur indice.</p>
-        <div class="mascot oslo-host"><OsloAvatar size={100} /><p>Et si vous hésitez entre deux familles, lisez les deux ! Moi, je suis un bouvier pur jus, mais j’ai plein de copains croisés : ce sont souvent les plus surprenants.</p></div>
+        <p class="label">Mon chien est croisé</p>
+        <h2 data-split>Observez ce qui <em>domine</em> chez lui.</h2>
+        <p class="lead" data-reveal>Un chien croisé hérite des tendances de plusieurs familles. Ses comportements spontanés sont souvent le meilleur indice. En cas d’hésitation, lisez les deux fiches.</p>
       </div>
       <ul class="hints" data-reveal="stagger">
         {hints.map((h) => {
           const g = groups.find((x) => x.slug === h.slug)!;
-          return <li><a href={`/races/${g.slug}/`} style={`--c:var(--${groupStyle[g.slug].color})`}><span class="q">{h.q}</span><span class="to"><Illus name={groupStyle[g.slug].illus} size={40} /> {g.name} <Icon name="arrow" size={16} /></span></a></li>;
+          return <li><a href={`/races/${g.slug}/`}><span class="q">{h.q}</span><span class="to"><LIcon name={groupStyle[g.slug].icon} size={16} /> {g.name} <Icon name="arrow" size={15} /></span></a></li>;
         })}
       </ul>
     </div>
@@ -75,29 +70,22 @@ const hints = [
 </Layout>
 
 <style>
-  .find-s { padding-top: clamp(50px, 6vw, 80px); padding-bottom: clamp(30px, 5vw, 60px); scroll-margin-top: 80px; }
-  .find-card { position: relative; background: var(--white); border: var(--line); border-radius: 32px; padding: clamp(28px, 5vw, 56px); box-shadow: var(--hard-lg); }
-  .fc-title { position: absolute; top: -22px; left: 28px; background: var(--sun); border: var(--line); border-radius: 12px; padding: 2px 14px; font-size: 1.5rem; rotate: -3deg; margin: 0; }
+  .find-s { scroll-margin-top: 80px; }
+  .find-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(28px, 5vw, 56px); }
+  .fc-head { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--sage); }
   [data-unknown][hidden] { display: none; }
-  .fam-s h2 { margin-bottom: 44px; }
-  .fams { row-gap: 34px; }
-  .fam { display: flex; flex-direction: column; background: var(--white); border: var(--line); border-radius: 26px; overflow: hidden; text-decoration: none; rotate: var(--r); transition: rotate .4s var(--spring), transform .4s var(--spring), box-shadow .3s; }
-  .fam:hover { rotate: 0deg; transform: translate(-4px, -6px); box-shadow: var(--hard-lg); }
-  .fam-art { display: grid; place-items: center; background: var(--c); border-bottom: var(--line); padding: 14px 0 8px; }
-  .fam-body { position: relative; padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
-  .fam-body p { color: var(--ink2); font-size: .97rem; }
-  .ex { font-size: 1.2rem; color: var(--tomato) !important; margin: auto 0 0; padding-right: 50px; }
-  .go { position: absolute; right: 18px; bottom: 18px; display: grid; place-items: center; width: 44px; height: 44px; border: var(--line); border-radius: 50%; background: var(--c); transition: transform .4s var(--spring); }
-  .fam:hover .go { transform: rotate(-35deg) scale(1.1); }
-  .mixed { display: grid; gap: 48px; align-items: center; }
-  @media (min-width: 900px) { .mixed { grid-template-columns: 1fr 1fr; } }
-  .mascot { display: flex; gap: 16px; align-items: center; margin-top: 24px; background: var(--white); border: var(--line); border-radius: 24px; padding: 16px; box-shadow: var(--hard); }
-  .mascot p { margin: 0; }
-  .hints { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
-  .hints a { display: flex; flex-direction: column; gap: 6px; padding: 16px 20px; border: var(--line); border-radius: 20px; background: var(--white); text-decoration: none; box-shadow: 3px 3px 0 var(--ink); transition: transform .35s var(--spring), box-shadow .3s, background .2s; }
-  .hints a:hover { transform: translateX(8px) rotate(-1deg); box-shadow: 5px 5px 0 var(--ink); background: var(--c); }
-  .q { font-weight: 700; font-size: 1.05rem; }
-  .to { display: inline-flex; align-items: center; gap: 8px; font-size: .92rem; font-weight: 600; }
+  .fam { display: flex; flex-direction: column; text-decoration: none; }
+  .fam h3 { margin: 22px 0 10px; }
+  .fam p { color: var(--ink2); font-size: .96rem; }
+  .ex { font-size: .88rem !important; color: var(--ink3) !important; margin-top: auto; }
+  .more { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; font-weight: 500; color: var(--sage); }
+  .mixed { display: grid; gap: 48px; align-items: start; }
+  @media (min-width: 960px) { .mixed { grid-template-columns: 1fr 1fr; gap: 90px; } }
+  .hints { list-style: none; padding: 0; margin: 0; border-top: 1px solid rgb(54 81 63 / .2); }
+  .hints a { display: flex; flex-direction: column; gap: 6px; padding: 20px 0; border-bottom: 1px solid rgb(54 81 63 / .2); text-decoration: none; transition: padding .4s var(--ease); }
+  .hints a:hover { padding-left: 10px; }
+  .q { font-family: var(--display); font-size: 1.2rem; letter-spacing: -.015em; }
+  .to { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--sage-d); }
 </style>
 
 <script>

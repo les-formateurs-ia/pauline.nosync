@@ -2,26 +2,24 @@
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import Kicker from '../components/Kicker.astro';
 import Faq from '../components/Faq.astro';
 import OsloTip from '../components/OsloTip.astro';
 import { site, prices, programs } from '../data/site';
 const motifs = [...programs.map((p) => p.title), 'Anxiété de séparation', 'Réactivité (humains / congénères)', 'Séance bilan', 'Autre'];
 ---
 <Layout title="Contact" description="Contactez Pauline Renard, éducatrice canine à Lyon 7 : décrivez votre situation pour convenir d’une séance bilan. 06 45 81 64 19.">
-  <PageHero kicker="Contact" title='Parlons de <span class="hl">votre chien</span>.' lead="Décrivez-moi votre situation, je reviens vers vous rapidement pour convenir d’une séance bilan." color="lilac" illus="plane" oslo />
+  <PageHero label="Contact" title="Parlons de <em>votre chien</em>." lead="Décrivez-moi votre situation, je reviens vers vous rapidement pour convenir d’une séance bilan." />
 
-  <section class="ct-s">
+  <section>
     <div class="w layout">
       <aside class="side" data-reveal="stagger">
-        <a class="ct bg-sun" href={site.phoneHref}><span class="ico"><Icon name="phone" /></span><span><small>Téléphone</small><strong>{site.phone}</strong></span></a>
-        <a class="ct bg-sky" href={`mailto:${site.email}`}><span class="ico"><Icon name="mail" /></span><span><small>E-mail</small><strong>{site.email}</strong></span></a>
-        <div class="ct bg-mint"><span class="ico"><Icon name="pin" /></span><span><small>Zone d’intervention</small><strong>{site.city} · {site.area}</strong></span></div>
-        <OsloTip size={80} title="Le mot d’Oslo"><p>La <strong>séance bilan à 35 €</strong>, c’est le point de départ idéal : on fait connaissance et Pauline vous propose un plan adapté.</p></OsloTip>
+        <a class="ct" href={site.phoneHref}><span class="icon-c"><Icon name="phone" size={20} /></span><span><small>Téléphone</small><strong>{site.phone}</strong></span></a>
+        <a class="ct" href={`mailto:${site.email}`}><span class="icon-c"><Icon name="mail" size={20} /></span><span><small>E-mail</small><strong>{site.email}</strong></span></a>
+        <div class="ct"><span class="icon-c"><Icon name="pin" size={20} /></span><span><small>Zone d’intervention</small><strong>{site.city} · {site.area}</strong></span></div>
+        <OsloTip title="Bon à savoir"><p>La <strong>séance bilan à 35 €</strong> est le point de départ idéal : on fait connaissance et je vous propose un plan adapté.</p></OsloTip>
       </aside>
 
       <div class="form-card" data-reveal>
-        <p class="fc-title hand">Votre message ↓</p>
         <form id="f" novalidate>
           <div class="two">
             <label>Votre nom<input name="nom" required autocomplete="name" /></label>
@@ -37,48 +35,44 @@ const motifs = [...programs.map((p) => p.title), 'Anxiété de séparation', 'R�
           </div>
           <label>Votre message<textarea name="msg" rows="6" required placeholder="Depuis quand, dans quels contextes, ce que vous avez déjà essayé…"></textarea></label>
           <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <button class="btn tomato" type="submit"><span class="lbl">Envoyer ma demande</span> <Icon name="arrow" size={18} /></button>
+          <button class="btn sage" type="submit"><span class="lbl">Envoyer ma demande</span> <Icon name="arrow" size={17} /></button>
           <p class="msg" id="ok" role="status" aria-live="polite"></p>
         </form>
       </div>
     </div>
   </section>
 
-  <section class="bg-sand">
+  <section class="bg-stone">
     <div class="w narrow">
-      <div class="center head"><Kicker>Questions fréquentes</Kicker><h2 data-split>Avant de me contacter</h2></div>
+      <div class="head center"><p class="label">Questions fréquentes</p><h2 data-split>Avant de me contacter</h2></div>
       <Faq />
     </div>
   </section>
 </Layout>
 
 <style>
-  .ct-s { padding-top: clamp(40px, 6vw, 70px); }
-  .head { margin-bottom: clamp(36px, 5vw, 56px); }
-  .layout { display: grid; gap: 32px; align-items: start; }
-  @media (min-width: 980px) { .layout { grid-template-columns: .8fr 1.2fr; gap: 48px; } .side { position: sticky; top: 110px; } }
-  .side { display: grid; gap: 14px; }
-  .ct { display: flex; gap: 16px; align-items: center; border: var(--line); border-radius: 22px; padding: 16px 18px; text-decoration: none; box-shadow: 4px 4px 0 var(--ink); transition: transform .35s var(--spring), box-shadow .3s; overflow-wrap: anywhere; }
-  a.ct:hover { transform: translate(-2px, -3px) rotate(-1deg); box-shadow: 6px 7px 0 var(--ink); }
-  .ct small { display: block; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
-  .ct strong { font-size: 1.05rem; }
-  .ico { flex: none; display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; border: var(--line); background: var(--white); }
-  .form-card { position: relative; background: var(--white); border: var(--line); border-radius: 30px; padding: clamp(24px, 4vw, 40px); box-shadow: var(--hard-lg); }
-  .fc-title { position: absolute; top: -22px; left: 28px; background: var(--sun); border: var(--line); border-radius: 12px; padding: 2px 14px; font-size: 1.5rem; rotate: -3deg; margin: 0; }
-  form { display: grid; gap: 18px; }
-  .two { display: grid; gap: 18px; }
+  .layout { display: grid; gap: 40px; align-items: start; }
+  @media (min-width: 980px) { .layout { grid-template-columns: .8fr 1.2fr; gap: 64px; } .side { position: sticky; top: 110px; } }
+  .side { display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .ct { display: flex; gap: 16px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--line); text-decoration: none; overflow-wrap: anywhere; }
+  a.ct:hover strong { color: var(--sage); }
+  .ct small { display: block; font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink3); }
+  .ct strong { font-weight: 500; transition: color .2s; }
+  .form-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(26px, 4vw, 44px); }
+  form { display: grid; gap: 20px; }
+  .two { display: grid; gap: 20px; }
   @media (min-width: 620px) { .two { grid-template-columns: 1fr 1fr; } }
-  label { display: grid; gap: 6px; font-weight: 700; font-size: .93rem; }
-  .opt { font-weight: 400; color: var(--ink2); }
-  input, select, textarea { font: inherit; font-weight: 400; padding: 14px 16px; border-radius: 14px; border: var(--line); background: var(--paper); color: var(--ink); width: 100%; transition: box-shadow .25s, background .25s, transform .25s; }
-  input:focus, select:focus, textarea:focus { outline: none; background: var(--white); box-shadow: 4px 4px 0 var(--sun); transform: translate(-2px, -2px); }
-  .invalid { background: #ffe3dc !important; border-color: var(--tomato) !important; }
+  label { display: grid; gap: 8px; font-weight: 500; font-size: .9rem; }
+  .opt { font-weight: 400; color: var(--ink3); }
+  input, select, textarea { font: inherit; font-weight: 400; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); width: 100%; transition: border-color .2s, box-shadow .2s, background .2s; }
+  input:focus, select:focus, textarea:focus { outline: none; background: var(--white); border-color: var(--sage); box-shadow: 0 0 0 3px var(--sage-l); }
+  .invalid { border-color: var(--clay) !important; background: var(--clay-l) !important; }
   .hp { position: absolute; left: -9999px; }
   form .btn { justify-self: start; }
   form .btn[disabled] { opacity: .7; cursor: wait; }
-  .msg { margin: 0; font-weight: 700; }
-  .msg.ok { color: var(--grass); }
-  .msg.err { color: #c8341a; }
+  .msg { margin: 0; font-weight: 500; }
+  .msg.ok { color: var(--sage); }
+  .msg.err { color: var(--clay); }
 </style>
 
 <script>

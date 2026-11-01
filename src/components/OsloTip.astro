@@ -1,23 +1,19 @@
 ---
 import OsloAvatar from './OsloAvatar.astro';
 interface Props { title?: string; size?: number; class?: string; color?: string }
-const { title = 'Le conseil d’Oslo', size = 92, class: cls, color = 'white' } = Astro.props;
+const { title = 'Le conseil d’Oslo', size = 56, class: cls } = Astro.props;
 ---
-<aside class:list={['oslo-tip', 'oslo-host', cls]} data-reveal>
-  <div class="av"><OsloAvatar size={size} /></div>
-  <div class="bubble" style={`--b: var(--${color})`}>
-    <p class="t hand">{title}</p>
+<aside class:list={['oslo-tip', cls]} data-reveal>
+  <OsloAvatar size={size} />
+  <div>
+    <p class="t">{title}</p>
     <div class="txt"><slot /></div>
   </div>
 </aside>
 <style>
-  .oslo-tip { display: flex; gap: 20px; align-items: flex-end; margin: 40px 0; }
-  .av { flex: none; animation: hop 3.6s var(--ease) infinite; }
-  @keyframes hop { 0%, 84%, 100% { transform: none; } 90% { transform: translateY(-14px) rotate(-6deg); } 95% { transform: translateY(0) scale(1.05, .95); } }
-  .bubble { position: relative; flex: 1; background: var(--b); border: var(--line); border-radius: 26px 26px 26px 6px; padding: 18px 24px 20px; box-shadow: var(--hard); }
-  .bubble::before { content: ''; position: absolute; left: -15px; bottom: 10px; width: 22px; height: 18px; background: var(--b); border-left: var(--line); border-bottom: var(--line); transform: skewX(-30deg); clip-path: polygon(0 0, 100% 100%, 0 100%); }
-  .t { font-size: 1.55rem; color: var(--tomato); margin: 0 0 4px; line-height: 1; }
-  .txt { font-size: 1.04rem; }
+  .oslo-tip { display: flex; gap: 18px; align-items: flex-start; margin: 36px 0; padding: 22px 24px; background: var(--white); border: 1px solid var(--line); border-left: 3px solid var(--sage); border-radius: 4px var(--r) var(--r) 4px; }
+  .t { font-family: var(--serif); font-style: italic; font-size: 1.25rem; color: var(--sage); margin: 0 0 4px; line-height: 1.2; }
+  .txt { color: var(--ink2); font-size: 1rem; }
   .txt :global(p:last-child) { margin: 0; }
-  @media (max-width: 560px) { .oslo-tip { flex-direction: column; align-items: flex-start; gap: 14px; } .bubble { border-radius: 6px 26px 26px 26px; } .bubble::before { display: none; } }
+  .txt :global(strong) { color: var(--ink); font-weight: 600; }
 </style>

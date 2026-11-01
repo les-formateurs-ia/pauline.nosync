@@ -16,22 +16,21 @@ import Icon from './Icon.astro';
 </div>
 
 <style>
-  .buddy { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 40; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; pointer-events: none; }
+  .buddy { position: fixed; right: max(20px, env(safe-area-inset-right)); bottom: max(20px, env(safe-area-inset-bottom)); z-index: 40; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; pointer-events: none; }
   .buddy > * { pointer-events: auto; }
-  .pup { position: relative; border: 0; padding: 0; background: none; cursor: pointer; border-radius: 50%; box-shadow: 4px 4px 0 var(--ink); transform: translateY(160%) rotate(20deg); transition: transform .9s var(--spring), box-shadow .25s; }
-  .buddy.ready .pup { transform: none; }
-  .pup:hover { transform: translate(-2px, -3px) rotate(-8deg) !important; box-shadow: 6px 7px 0 var(--ink); }
-  .ping { position: absolute; top: 0; right: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--tomato); border: 2.5px solid var(--ink); }
-  .ping::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2.5px solid var(--tomato); animation: ping 1.6s infinite; }
+  .pup { position: relative; border: 1px solid var(--line); padding: 4px; background: var(--white); cursor: pointer; border-radius: 50%; box-shadow: var(--shadow); opacity: 0; transform: translateY(16px); transition: transform .6s var(--ease), opacity .6s var(--ease), box-shadow .3s; }
+  .buddy.ready .pup { opacity: 1; transform: none; }
+  .pup:hover { transform: translateY(-2px) !important; box-shadow: 0 12px 30px -12px rgb(29 32 28 / .3); }
+  .pup :global(.oslo) { width: 54px; height: 54px; }
+  .ping { position: absolute; top: 3px; right: 3px; width: 11px; height: 11px; border-radius: 50%; background: var(--clay); border: 2px solid var(--white); }
   .buddy.seen .ping { display: none; }
-  @keyframes ping { to { transform: scale(2); opacity: 0; } }
-  .bub { position: relative; width: min(320px, calc(100vw - 32px)); background: var(--white); border: var(--line); border-radius: 24px 24px 6px 24px; padding: 18px 20px 18px; box-shadow: var(--hard); opacity: 0; transform: translateY(20px) scale(.8) rotate(4deg); transform-origin: bottom right; visibility: hidden; transition: opacity .3s var(--ease), transform .55s var(--spring), visibility .3s; }
+  .bub { position: relative; width: min(310px, calc(100vw - 40px)); background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 18px 20px; box-shadow: 0 20px 50px -20px rgb(29 32 28 / .3); opacity: 0; transform: translateY(10px); visibility: hidden; transition: opacity .35s var(--ease), transform .45s var(--ease), visibility .35s; }
   .buddy.open .bub { opacity: 1; transform: none; visibility: visible; }
-  .who { font-family: var(--hand); font-size: 1.5rem; line-height: 1; color: var(--tomato); margin: 0 0 6px; }
-  .line { margin: 0 0 14px; font-size: 1rem; line-height: 1.5; }
-  .go { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-decoration: underline; text-decoration-color: var(--tomato); text-decoration-thickness: 3px; text-underline-offset: 4px; }
-  .x { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--ink); background: var(--sun); cursor: pointer; }
-  @media (max-width: 600px) { .pup :global(.oslo) { width: 62px; height: 62px; } }
+  .who { font-family: var(--serif); font-style: italic; font-size: 1.2rem; color: var(--sage); margin: 0 0 4px; }
+  .line { margin: 0 0 12px; font-size: .95rem; line-height: 1.55; color: var(--ink2); }
+  .go { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; font-size: .92rem; text-decoration: none; color: var(--ink); border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+  .go:hover { color: var(--sage); }
+  .x { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line); background: var(--white); color: var(--ink3); cursor: pointer; }
   @media print { .buddy { display: none; } }
 </style>
 
@@ -83,15 +82,15 @@ import Icon from './Icon.astro';
     fill();
     if (sessionStorage.getItem('oslo-seen')) root.classList.add('seen');
     setTimeout(() => root.classList.add('ready'), 900);
-    // pop the bubble once per page and per session
-    const k = `oslo-pop:${location.pathname}`;
+    // pop the bubble once per visit
+    const k = "oslo-pop";
     if (!sessionStorage.getItem(k) && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
       clearTimeout(timer);
       timer = window.setTimeout(() => {
         sessionStorage.setItem(k, '1');
         setOpen(true);
-        timer = window.setTimeout(() => setOpen(false), 6500);
-      }, 3200);
+        timer = window.setTimeout(() => setOpen(false), 6000);
+      }, 4000);
     }
   }
 </script>

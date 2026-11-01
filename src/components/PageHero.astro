@@ -1,36 +1,25 @@
 ---
-import Illus from './Illus.astro';
-import OsloAvatar from './OsloAvatar.astro';
-interface Props { kicker: string; title: string; lead?: string; color?: string; illus?: string; oslo?: boolean }
-const { kicker, title, lead, color = 'sun', illus, oslo = false } = Astro.props;
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+interface Props { label: string; title: string; lead?: string; image?: ImageMetadata; alt?: string }
+const { label, title, lead, image, alt = '' } = Astro.props;
 ---
-<section class:list={['phero', `bg-${color}`]} data-hero>
+<section class:list={['phero', { 'with-img': image }]} data-hero>
   <div class="w grid-h">
     <div class="txt">
-      <p class="kicker hand">{kicker}</p>
+      <p class="label" data-reveal>{label}</p>
       <h1 data-split set:html={title} />
-      {lead && <p class="lead">{lead}</p>}
-      <slot />
+      {lead && <p class="lead" data-reveal>{lead}</p>}
+      <div data-reveal><slot /></div>
     </div>
-    <div class="art" aria-hidden="true">
-      <div class="disc spin-slow"></div>
-      <div class="art-in float">{illus ? <Illus name={illus} size={260} /> : oslo && <OsloAvatar size={260} />}</div>
-      {illus && oslo && <div class="mini oslo-host" data-pop="0.6"><OsloAvatar size={96} /></div>}
-    </div>
+    {image && <div class="photo pimg" data-img><Image src={image} alt={alt} widths={[400, 675]} sizes="(min-width: 900px) 440px, 90vw" loading="eager" /></div>}
   </div>
-  <svg class="wave edge" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 V20 C 120 0, 240 0, 360 20 S 600 40, 720 20 S 960 0, 1080 20 S 1320 40, 1440 20 V40Z" /></svg>
 </section>
 <style>
-  .phero { padding: clamp(48px, 7vw, 96px) 0 clamp(80px, 9vw, 120px); overflow: hidden; border-bottom: 0; }
-  .grid-h { display: grid; gap: 32px; align-items: center; }
-  @media (min-width: 900px) { .grid-h { grid-template-columns: 1.35fr .65fr; } }
-  .txt h1 { font-size: clamp(2.9rem, 7.4vw, 6.4rem); }
-  .phero .kicker { color: var(--ink); }
-  .phero .lead { color: var(--ink); opacity: .85; }
-  .art { position: relative; display: grid; place-items: center; min-height: 260px; }
-  .disc { position: absolute; width: 300px; height: 300px; border-radius: 50%; border: 2.5px dashed var(--ink); opacity: .45; }
-  .art-in { position: relative; display: grid; place-items: center; width: 280px; height: 280px; border-radius: 50%; background: var(--white); border: var(--line); box-shadow: var(--hard-lg); }
-  .mini { position: absolute; right: 4%; bottom: 0; }
-  .edge { position: absolute; left: 0; right: 0; bottom: -1px; color: var(--paper); }
-  @media (max-width: 899px) { .art { display: none; } }
+  .phero { padding: clamp(56px, 8vw, 110px) 0 clamp(56px, 7vw, 90px); border-bottom: 1px solid var(--line); }
+  .grid-h { display: grid; gap: 48px; align-items: end; }
+  @media (min-width: 900px) { .with-img .grid-h { grid-template-columns: 1.3fr .7fr; } }
+  .txt h1 { max-width: 16ch; }
+  .pimg { aspect-ratio: 4 / 5; max-height: 520px; }
+  @media (max-width: 899px) { .pimg { aspect-ratio: 16 / 10; } }
 </style>

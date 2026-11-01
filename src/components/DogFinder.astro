@@ -22,27 +22,22 @@ import { stages } from '../data/groups';
     <option value="Croisé / je ne sais pas" />
     {breeds.map((b) => <option value={b.name} />)}
   </datalist>
-  <button class="btn tomato go" type="submit">Découvrir son profil <Icon name="arrow" size={20} /></button>
+  <button class="btn sage" type="submit">Découvrir son profil <Icon name="arrow" size={18} /></button>
 </form>
 
 <style>
-  .dog-form { display: grid; gap: 26px; justify-items: start; }
-  .sentence { font-family: var(--display); font-weight: 800; font-stretch: 82%; font-size: clamp(1.7rem, 4.2vw, 3.3rem); line-height: 1.35; letter-spacing: -.025em; margin: 0; }
+  .dog-form { display: grid; gap: 30px; justify-items: start; }
+  .sentence { font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 3.2vw, 2.5rem); line-height: 1.6; letter-spacing: -.025em; margin: 0; color: var(--ink); }
   .slot { display: inline-block; position: relative; vertical-align: baseline; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  input, select {
-    font-family: var(--hand); font-size: .92em; font-weight: 400; letter-spacing: 0; color: var(--tomato);
-    background: rgb(255 255 255 / .55); border: 0; border-bottom: 4px solid var(--ink); border-radius: 12px 12px 0 0;
-    padding: 0 .3em; margin: 0 .1em; line-height: 1.3; appearance: none; -webkit-appearance: none; transition: background .25s, border-color .25s;
-  }
-  input::placeholder { color: rgb(23 21 15 / .3); }
-  select:invalid { color: rgb(23 21 15 / .3); }
-  input:focus, select:focus { outline: none; background: var(--white); border-color: var(--tomato); }
-  .w-name input { width: 5.2em; }
-  .w-age select { width: 7.6em; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2317150f' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .1em center; background-size: .55em; padding-right: .8em; }
-  .w-race input { width: 8.4em; }
-  @media (max-width: 640px) { .w-name input, .w-age select, .w-race input { width: 100%; } .slot { display: block; margin: 4px 0 10px; } }
-  .go { font-size: 1.15rem; padding: 18px 30px; }
+  input, select { font-family: var(--serif); font-style: italic; font-size: 1.05em; color: var(--sage-d); background: transparent; border: 0; border-bottom: 1.5px solid var(--ink3); border-radius: 0; padding: 0 .15em; margin: 0 .15em; line-height: 1.25; appearance: none; -webkit-appearance: none; transition: border-color .25s; }
+  input::placeholder { color: var(--ink3); opacity: .7; }
+  select:invalid { color: var(--ink3); }
+  input:focus, select:focus { outline: none; border-color: var(--sage); }
+  .w-name input { width: 5.4em; }
+  .w-age select { width: 7.8em; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a5e57' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right center; background-size: .5em; padding-right: .7em; }
+  .w-race input { width: 9em; }
+  @media (max-width: 640px) { .w-name input, .w-age select, .w-race input { width: 100%; } .slot { display: block; margin: 2px 0 12px; } }
 </style>
 
 <script>

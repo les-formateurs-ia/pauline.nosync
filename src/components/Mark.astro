@@ -1,6 +1,0 @@
----
-// Highlighter stroke that draws itself behind a word.
-interface Props { color?: 'sun' | 'pink' | 'sky' | 'mint' }
-const { color = 'sun' } = Astro.props;
----
-<span class:list={['mark', color]}><slot /><svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true" data-draw="0.6"><path d="M6 26 C 50 12, 120 10, 194 20" /></svg></span>

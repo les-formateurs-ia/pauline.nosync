@@ -3,49 +3,44 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import Illus from '../components/Illus.astro';
-import Kicker from '../components/Kicker.astro';
-import Mark from '../components/Mark.astro';
+import LIcon from '../components/LIcon.astro';
 import OsloTip from '../components/OsloTip.astro';
-import OsloRun from '../components/OsloRun.astro';
 import paulineOslo from '../assets/photos/pauline-oslo.jpg';
 import osloBalle from '../assets/photos/oslo-balle.jpg';
 const values = [
-  { illus: 'heart', c: 'pink', title: 'Bienveillance', text: 'Des méthodes respectueuses du chien, fondées sur la compréhension de ses émotions et de ses besoins.' },
-  { illus: 'chat', c: 'sky', title: 'Écoute', text: 'Chaque famille est unique : je pars de votre quotidien et de vos contraintes pour construire des solutions réalistes.' },
-  { illus: 'star', c: 'sun', title: 'Concret', text: 'Des outils pratiques, simples à appliquer, pour que vous soyez autonome entre les séances.' },
+  { icon: 'handheart', title: 'Bienveillance', text: 'Des méthodes respectueuses du chien, fondées sur la compréhension de ses émotions et de ses besoins.' },
+  { icon: 'ear', title: 'Écoute', text: 'Chaque famille est unique : je pars de votre quotidien et de vos contraintes pour construire des solutions réalistes.' },
+  { icon: 'list', title: 'Concret', text: 'Des outils pratiques, simples à appliquer, pour que vous soyez autonome entre les séances.' },
 ];
 ---
 <Layout title="À propos" description="Pauline Renard, éducatrice et comportementaliste canin diplômée (EFM Métiers Animaliers, ACACED), basée à Lyon 7, et Oslo, son chien régulateur.">
-  <PageHero kicker="À propos" title='Je suis Pauline, <span class="hl">et voici Oslo</span>.' lead="Éducatrice et comportementaliste canin à Lyon, j’accompagne les familles pour construire une relation fondée sur la confiance mutuelle." color="mint" oslo />
+  <PageHero label="À propos" title="Pauline Renard, <em>éducatrice</em> et comportementaliste canin." lead="J’accompagne les familles lyonnaises pour construire avec leur chien une relation fondée sur la confiance mutuelle." image={paulineOslo} alt="Pauline Renard avec Oslo dans un parc ensoleillé" />
 
   <section>
-    <div class="w row">
-      <div class="visual">
-        <figure class="polaroid tape main" style="--ar:4/5" data-pop>
-          <Image src={paulineOslo} alt="Portrait de Pauline Renard avec Oslo dans un parc ensoleillé" widths={[400, 675]} sizes="(min-width: 900px) 440px, 85vw" loading="eager" />
-          <figcaption>Au parc, avec Oslo</figcaption>
-        </figure>
-        <div class="diploma d1 spin-hover" data-pop="0.3"><span>Diplômée</span><strong>EFM</strong><span>Métiers animaliers</span></div>
-        <div class="diploma d2 spin-hover" data-pop="0.5"><span>Titulaire</span><strong>ACACED</strong><span>Animaux de compagnie</span></div>
-      </div>
+    <div class="w story">
       <div>
-        <Kicker>Mon histoire</Kicker>
-        <h2 data-split>Chaque difficulté a sa solution.</h2>
+        <p class="label">Mon approche</p>
+        <h2 data-split>Chaque difficulté a <em>sa solution</em>.</h2>
+      </div>
+      <div class="story-txt" data-reveal>
         <p class="lead">Quand le quotidien avec son chien devient une source de stress ou de frustration, il est parfois difficile de savoir comment réagir.</p>
-        <p>C’est pour accompagner ces moments que je suis devenue éducatrice et comportementaliste canin. Qu’il s’agisse d’acquérir les bonnes bases ou de résoudre des troubles du comportement (réactivité en balade, aboiements, anxiété, destruction…), je suis convaincue qu’on peut toujours avancer.</p>
-        <p>Mon rôle : vous aider à identifier les causes des comportements gênants et vous donner des <Mark color="mint">outils pratiques</Mark> pour guider votre chien pas à pas. Ensemble, on transforme ces défis en un apprentissage positif et durable.</p>
+        <p>Qu’il s’agisse d’acquérir les bonnes bases d’éducation ou de résoudre des troubles du comportement (réactivité en balade, aboiements, anxiété, destruction…), je vous aide à identifier les causes de ces comportements et vous donne des outils pratiques pour guider votre chien pas à pas.</p>
+        <p>Ensemble, nous transformons ces défis en un apprentissage positif et durable, afin de retrouver un quotidien serein.</p>
+        <div class="diplomas">
+          <div><LIcon name="cap" size={26} /><span><strong>EFM Métiers Animaliers</strong>Diplômée éducatrice et comportementaliste canin</span></div>
+          <div><LIcon name="cap" size={26} /><span><strong>ACACED</strong>Attestation de connaissances pour les animaux de compagnie</span></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="bg-sand">
+  <section class="bg-stone">
     <div class="w">
-      <div class="center head"><Kicker>Mes valeurs</Kicker><h2 data-split>Ce qui guide mon travail.</h2></div>
+      <div class="head"><p class="label">Mes valeurs</p><h2 data-split>Ce qui guide <em>mon travail</em>.</h2></div>
       <div class="grid g3" data-reveal="stagger">
         {values.map((v) => (
-          <div class="val card lift">
-            <div class="val-art" style={`--c:var(--${v.c})`}><Illus name={v.illus} size={120} /></div>
+          <div class="card hover val">
+            <span class="icon-c"><LIcon name={v.icon} /></span>
             <h3>{v.title}</h3>
             <p>{v.text}</p>
           </div>
@@ -54,43 +49,33 @@ const values = [
     </div>
   </section>
 
-  <section class="oslo-s bg-sun">
-    <div class="w row rev">
-      <div class="visual">
-        <figure class="polaroid tape pink main tilt" style="--ar:3/4" data-pop><Image src={osloBalle} alt="Oslo debout dans l’herbe, une balle dans la gueule" widths={[400, 675]} sizes="(min-width: 900px) 400px, 85vw" /><figcaption>Oslo et LA balle</figcaption></figure>
-      </div>
+  <section>
+    <div class="w row">
+      <div class="photo oimg" data-img><Image src={osloBalle} alt="Oslo debout dans l’herbe, une balle dans la gueule" widths={[400, 675]} sizes="(min-width: 900px) 460px, 90vw" /></div>
       <div>
-        <Kicker>Mon binôme</Kicker>
-        <h2 data-split>Oslo, bouvier de l’Entlebuch.</h2>
-        <p class="lead">8 ans, très calme et très bien codé.</p>
-        <p>Selon les situations, Oslo peut servir de chien régulateur. C’est un partenaire idéal pour aider les chiens à apprendre les bons codes et à se sentir en confiance : un chien réactif ou un chiot timide peut progresser au contact d’un congénère stable et rassurant.</p>
-        <OsloTip size={80} title="Oslo se présente"><p>Ma spécialité ? Rester zen quand un copain s’agite. Mon péché mignon ? Ma balle orange. Mon poste préféré ? Sous le bureau de Pauline.</p></OsloTip>
-        <a class="btn" href="/contact/">Rencontrer Pauline &amp; Oslo <Icon name="arrow" size={18} /></a>
+        <p class="label">Mon binôme</p>
+        <h2 data-split>Oslo, bouvier de <em>l’Entlebuch</em>.</h2>
+        <p class="lead" data-reveal>8 ans, très calme et très bien codé.</p>
+        <p class="muted" data-reveal>Selon les situations, Oslo peut servir de chien régulateur. C’est un partenaire idéal pour aider les chiens à apprendre les bons codes et à se sentir en confiance : un chien réactif ou un chiot timide peut progresser au contact d’un congénère stable et rassurant.</p>
+        <OsloTip title="Oslo se présente"><p>Ma spécialité : rester calme quand un congénère s’agite. C’est souvent comme ça que la confiance revient.</p></OsloTip>
+        <a class="btn sage" href="/contact/">Rencontrer Pauline &amp; Oslo <Icon name="arrow" size={17} /></a>
       </div>
     </div>
-    <div class="lane" aria-hidden="true"><div class="runner"><OsloRun size={160} /></div></div>
   </section>
 </Layout>
 
 <style>
-  .head { margin-bottom: clamp(36px, 5vw, 60px); }
-  .row { display: grid; gap: 64px; align-items: center; }
-  @media (min-width: 900px) { .row { grid-template-columns: 1fr 1.1fr; } .rev .visual { order: 2; } }
-  .visual { position: relative; }
-  .main { width: min(100%, 440px); rotate: -3deg; margin: 0 auto; }
-  .tilt { rotate: 3deg; }
-  .diploma { position: absolute; display: grid; place-items: center; align-content: center; width: 150px; height: 150px; border-radius: 50%; border: var(--line); box-shadow: var(--hard); text-align: center; line-height: 1.1; padding: 12px; }
-  .diploma strong { font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: 1.9rem; letter-spacing: -.02em; }
-  .diploma span { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
-  .d1 { right: -10px; top: 10%; background: var(--sun); rotate: 10deg; }
-  .d2 { left: -10px; bottom: 6%; background: var(--pink); rotate: -8deg; }
-  .diploma { transition: rotate .6s var(--spring); }
-  .diploma:hover { rotate: 0deg; }
-  @media (max-width: 600px) { .diploma { width: 118px; height: 118px; } .diploma strong { font-size: 1.4rem; } }
-  .val-art { display: grid; place-items: center; width: 150px; height: 150px; margin-bottom: 16px; border-radius: 50%; border: var(--line); background: var(--c); }
+  .story { display: grid; gap: 40px; }
+  @media (min-width: 960px) { .story { grid-template-columns: .8fr 1.2fr; gap: 90px; } }
+  .story-txt p:not(.lead) { color: var(--ink2); }
+  .diplomas { display: grid; gap: 0; margin-top: 34px; border-top: 1px solid var(--line); }
+  .diplomas > div { display: flex; gap: 18px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .diplomas :global(svg) { color: var(--sage); flex: none; margin-top: 2px; }
+  .diplomas strong { display: block; font-weight: 600; }
+  .diplomas span { color: var(--ink2); font-size: .95rem; }
+  .val h3 { margin: 22px 0 10px; }
   .val p { color: var(--ink2); margin: 0; }
-  .oslo-s { overflow: hidden; padding-bottom: clamp(170px, 15vw, 210px); }
-  .lane { position: absolute; left: 0; right: 0; bottom: 18px; height: 110px; border-bottom: var(--line); }
-  .runner { position: absolute; bottom: -6px; animation: lane 11s linear infinite; }
-  @keyframes lane { from { transform: translateX(-200px); } to { transform: translateX(calc(100vw + 20px)); } }
+  .row { display: grid; gap: 56px; align-items: center; }
+  @media (min-width: 960px) { .row { grid-template-columns: .85fr 1.15fr; gap: 90px; } }
+  .oimg { aspect-ratio: 4 / 5; }
 </style>
