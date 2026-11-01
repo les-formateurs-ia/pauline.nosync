@@ -4,6 +4,7 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import Icon from '../../components/Icon.astro';
+import OsloTip from '../../components/OsloTip.astro';
 
 export async function getStaticPaths() {
   const all = await getCollection('conseils');
@@ -25,6 +26,7 @@ const related = all.filter((a) => a.id !== entry.id).sort((a, b) => Number(b.dat
     </header>
     <div class="w cover-w"><div class="photo cover"><Image src={cover} alt={coverAlt} widths={[480, 675, 900]} sizes="(min-width: 1180px) 1100px, 94vw" loading="eager" transition:name={`cover-${entry.id}`} /></div></div>
     <div class="w narrow prose"><Content /></div>
+    {entry.data.oslo && <div class="w narrow"><OsloTip><p>{entry.data.oslo}</p></OsloTip></div>}
     <div class="w narrow">
       <aside class="box">
         <p class="t">Besoin d’un accompagnement personnalisé ?</p>

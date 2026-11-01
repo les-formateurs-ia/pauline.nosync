@@ -1,0 +1,99 @@
+---
+import OsloAvatar from './OsloAvatar.astro';
+import Icon from './Icon.astro';
+---
+<div class="buddy" transition:persist="oslo-buddy" data-buddy>
+  <div class="bub" role="dialog" aria-label="Oslo vous parle" aria-hidden="true">
+    <button class="x" type="button" aria-label="Fermer"><Icon name="close" size={16} /></button>
+    <p class="who">Oslo</p>
+    <p class="line" data-line></p>
+    <a class="go" href="/races/#mon-chien" data-go>Présenter mon chien <Icon name="arrow" size={16} /></a>
+  </div>
+  <button class="pup oslo-host" type="button" aria-label="Parler avec Oslo" aria-expanded="false">
+    <OsloAvatar size={76} />
+    <span class="ping" aria-hidden="true"></span>
+  </button>
+</div>
+
+<style>
+  .buddy { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 40; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; pointer-events: none; }
+  .buddy > * { pointer-events: auto; }
+  .pup { position: relative; border: 0; padding: 0; background: none; cursor: pointer; border-radius: 50%; filter: drop-shadow(0 12px 22px rgb(31 35 28 / .3)); transform: translateY(140%); transition: transform .8s cubic-bezier(.3, 1.5, .5, 1); }
+  .buddy.ready .pup { transform: none; }
+  .pup:hover { transform: translateY(-4px) rotate(-6deg) !important; }
+  .ping { position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); border: 3px solid var(--bg); }
+  .ping::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 2px solid var(--accent); animation: ping 1.8s infinite; }
+  .buddy.seen .ping { display: none; }
+  @keyframes ping { to { transform: scale(2.2); opacity: 0; } }
+  .bub { position: relative; width: min(320px, calc(100vw - 32px)); background: var(--card); border: 1px solid var(--line); border-radius: 22px 22px 6px 22px; padding: 18px 20px; box-shadow: var(--shadow-lg); opacity: 0; transform: translateY(12px) scale(.96); transform-origin: bottom right; visibility: hidden; transition: opacity .35s var(--ease), transform .45s var(--ease), visibility .35s; }
+  .buddy.open .bub { opacity: 1; transform: none; visibility: visible; }
+  .who { font-family: var(--serif); font-weight: 650; color: var(--accent); margin: 0 0 4px; }
+  .line { margin: 0 0 12px; font-size: .97rem; line-height: 1.5; }
+  .go { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--green); text-decoration: none; font-size: .95rem; }
+  .go:hover { text-decoration: underline; }
+  .x { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 0; background: var(--bg2); color: var(--mut); cursor: pointer; }
+  @media (max-width: 600px) { .pup :global(.oslo) { width: 62px; height: 62px; } }
+  @media print { .buddy { display: none; } }
+</style>
+
+<script>
+  import { osloLines } from '../data/oslo';
+  import { loadDog, dogUrl } from '../lib/dog';
+
+  const root = document.querySelector<HTMLElement>('[data-buddy]')!;
+  const pup = root.querySelector<HTMLButtonElement>('.pup')!;
+  const bub = root.querySelector<HTMLElement>('.bub')!;
+  const line = root.querySelector<HTMLElement>('[data-line]')!;
+  const go = root.querySelector<HTMLAnchorElement>('[data-go]')!;
+  let timer: number | undefined;
+
+  const setOpen = (o: boolean) => {
+    root.classList.toggle('open', o);
+    pup.setAttribute('aria-expanded', String(o));
+    bub.setAttribute('aria-hidden', String(!o));
+    if (o) { root.classList.add('seen'); sessionStorage.setItem('oslo-seen', '1'); }
+  };
+
+  function fill() {
+    const path = location.pathname;
+    const key = Object.keys(osloLines).filter((k) => (k === '/' ? path === '/' : path.startsWith(k))).sort((a, b) => b.length - a.length)[0];
+    const dog = loadDog();
+    const base = osloLines[key] ?? 'Une question ? Pauline vous répond avec plaisir.';
+    if (dog) {
+      line.textContent = `Comment va ${dog.nom} ? ${base}`;
+      go.href = dogUrl(dog);
+      go.firstChild!.textContent = `Revoir le profil de ${dog.nom} `;
+    } else {
+      line.textContent = base;
+      go.href = path === '/' ? '#mon-chien' : '/races/#mon-chien';
+      go.firstChild!.textContent = 'Présenter mon chien ';
+    }
+    // the dog form is already on screen: point to contact instead
+    if (!dog && document.querySelector('.dog-form') && path !== '/') {
+      go.href = '/contact/'; go.firstChild!.textContent = 'Écrire à Pauline ';
+    }
+  }
+
+  pup.addEventListener('click', () => { clearTimeout(timer); setOpen(!root.classList.contains('open')); });
+  root.querySelector('.x')!.addEventListener('click', () => setOpen(false));
+  go.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+  document.addEventListener('oslo:dog', fill);
+
+  document.addEventListener('astro:page-load', () => {
+    setOpen(false);
+    fill();
+    if (sessionStorage.getItem('oslo-seen')) root.classList.add('seen');
+    requestAnimationFrame(() => root.classList.add('ready'));
+    // pop the bubble once per page and per session
+    const k = `oslo-pop:${location.pathname}`;
+    if (!sessionStorage.getItem(k) && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        sessionStorage.setItem(k, '1');
+        setOpen(true);
+        timer = window.setTimeout(() => setOpen(false), 9000);
+      }, 2800);
+    }
+  });
+</script>

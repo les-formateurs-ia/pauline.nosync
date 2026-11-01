@@ -1,0 +1,102 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import DogFinder from '../../components/DogFinder.astro';
+import OsloTip from '../../components/OsloTip.astro';
+import OsloAvatar from '../../components/OsloAvatar.astro';
+import Icon from '../../components/Icon.astro';
+import { groups } from '../../data/groups';
+const hints = [
+  { q: 'Il suit les mouvements, rassemble, vous colle ?', slug: 'bergers-bouviers' },
+  { q: 'Il garde la maison, se méfie des inconnus ?', slug: 'molosses-gardiens' },
+  { q: 'Il creuse, chasse les petites bêtes, ne lâche rien ?', slug: 'terriers' },
+  { q: 'Il est indépendant, fugueur, peu câlin ?', slug: 'primitifs-nordiques' },
+  { q: 'Il a toujours la truffe au sol ?', slug: 'chiens-courants' },
+  { q: 'Il porte tout dans sa gueule et adore l’eau ?', slug: 'rapporteurs-chiens-d-eau' },
+];
+---
+<Layout title="Mon chien : comprendre sa race" description="Bergers, terriers, primitifs, chiens de chasse, molosses… Découvrez comment la famille de race de votre chien influence son comportement et son éducation.">
+  <PageHero eyebrow="Mon chien" title='Comprendre votre chien <span class="em">grâce à ses origines</span>.' lead="Chaque race a été sélectionnée pour un métier : garder, chasser, rassembler, tenir compagnie… Ces origines expliquent beaucoup de ses comportements d’aujourd’hui.">
+    <div class="finder-wrap rv" style="--d:3" id="mon-chien"><DogFinder compact /></div>
+  </PageHero>
+
+  <div class="w" data-unknown hidden>
+    <OsloTip title="Enchanté !">
+      <p data-v="unknown">Je n’ai pas trouvé « <strong data-race></strong> » dans ma liste. Pas de souci : si <strong data-nom></strong> est croisé, regardez les questions plus bas ou choisissez la famille qui lui ressemble le plus !</p>
+      <p data-v="mixed" hidden>Un chien croisé, c’est un mélange unique ! Pour mieux comprendre <strong data-nom></strong>, répondez aux questions plus bas ou choisissez la famille qui lui ressemble le plus.</p>
+    </OsloTip>
+  </div>
+
+  <section style="padding-top:20px">
+    <div class="w">
+      <div class="head rv"><span class="eyebrow">Les 9 familles</span><h2>Quel est son profil ?</h2></div>
+      <div class="grid g3">
+        {groups.map((g, i) => (
+          <a class="card hover fam rv" href={`/races/${g.slug}/`} style={`--d:${i % 3};--hue:${g.hue}`} data-fam>
+            <span class="emo">{g.emoji}</span>
+            <h3>{g.name}</h3>
+            <p class="mut">{g.short}</p>
+            <p class="ex">{g.examples.slice(0, 4).join(' · ')}</p>
+            <span class="more">Découvrir <Icon name="arrow" size={16} /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="w grid g2 mixed">
+      <div class="rv">
+        <span class="eyebrow">Mon chien est croisé</span>
+        <h2>Observez ce qui domine chez lui.</h2>
+        <p class="lead">Un chien croisé hérite des tendances de plusieurs familles. Ses comportements spontanés sont souvent le meilleur indice.</p>
+        <div class="mascot oslo-host"><OsloAvatar size={110} /><p>Et si vous hésitez entre deux familles, lisez les deux ! Moi, je suis un bouvier pur jus, mais j’ai plein de copains croisés : ce sont souvent les plus surprenants !</p></div>
+      </div>
+      <ul class="hints">
+        {hints.map((h, i) => {
+          const g = groups.find((x) => x.slug === h.slug)!;
+          return <li class="rv" style={`--d:${i % 3};--hue:${g.hue}`}><a href={`/races/${g.slug}/`}><span class="q">{h.q}</span><span class="to">{g.emoji} {g.name} <Icon name="arrow" size={16} /></span></a></li>;
+        })}
+      </ul>
+    </div>
+  </section>
+  <section style="padding-bottom:0"></section>
+</Layout>
+
+<style>
+  .finder-wrap { margin-top: 32px; max-width: 1000px; }
+  .fam { display: flex; flex-direction: column; text-decoration: none; color: inherit; border-top: 4px solid var(--hue); }
+  .fam .mut { flex: 1; font-size: .97rem; }
+  .emo { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 18px; background: color-mix(in srgb, var(--hue) 15%, var(--card)); font-size: 1.8rem; margin-bottom: 16px; transition: transform .5s var(--ease); }
+  .fam:hover .emo { transform: rotate(-8deg) scale(1.1); }
+  .ex { font-size: .85rem; color: var(--mut); border-top: 1px dashed var(--line); padding-top: 12px; }
+  .more { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--green); }
+  .mixed { gap: 48px; align-items: center; }
+  .mascot { display: flex; gap: 16px; align-items: center; margin-top: 24px; background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 18px; }
+  .mascot p { margin: 0; }
+  .hints { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  .hints a { display: flex; flex-direction: column; gap: 6px; padding: 18px 22px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--hue); text-decoration: none; color: var(--ink); transition: transform .35s var(--ease), box-shadow .35s; }
+  .hints a:hover { transform: translateX(6px); box-shadow: var(--shadow); }
+  .q { font-weight: 600; }
+  .to { display: inline-flex; align-items: center; gap: 6px; color: var(--mut); font-size: .92rem; }
+  [data-unknown][hidden] { display: none; }
+</style>
+
+<script>
+  function init() {
+    const box = document.querySelector<HTMLElement>('[data-unknown]');
+    if (!box) return;
+    const q = new URLSearchParams(location.search);
+    const race = q.get('race');
+    if (!race) return;
+    box.querySelector('[data-race]')!.textContent = race;
+    box.querySelectorAll('[data-nom]').forEach((el) => (el.textContent = q.get('nom') || 'votre chien'));
+    if (/crois|sais pas|inconnu|batard|bâtard/i.test(race)) {
+      box.querySelector<HTMLElement>('[data-v="unknown"]')!.hidden = true;
+      box.querySelector<HTMLElement>('[data-v="mixed"]')!.hidden = false;
+    }
+    box.hidden = false;
+    box.querySelector('.rv')?.classList.add('in');
+  }
+  document.addEventListener('astro:page-load', init);
+</script>

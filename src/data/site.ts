@@ -11,7 +11,7 @@ export const site = {
 };
 
 export const nav = [
-  { href: '/', label: 'Accueil' },
+  { href: '/races/', label: 'Mon chien' },
   { href: '/offres/', label: 'Offres' },
   { href: '/accompagnements/', label: 'Accompagnements' },
   { href: '/conseils/', label: 'Conseils' },
@@ -111,6 +111,7 @@ export const programs = [
       'Apprentissage des autocontrôles',
     ],
     suggested: 'Forfait 3 séances',
+    oslo: 'Astuce de pro : un exercice réussi trois fois de suite ? On arrête et on joue ! Mieux vaut finir sur une victoire.',
   },
   {
     slug: 'chiot',
@@ -126,6 +127,7 @@ export const programs = [
       'Chien adopté adulte ou en refuge',
     ],
     suggested: 'Forfait 3 séances',
+    oslo: 'Les chiots, je les adore ! Je leur apprends les bonnes manières entre chiens, en douceur. Et n’oubliez pas : un chiot a besoin de dormir énormément.',
   },
   {
     slug: 'comportement',
@@ -141,6 +143,7 @@ export const programs = [
       'Aboiements, destructions',
     ],
     suggested: 'Forfait 5 séances',
+    oslo: 'Pour les chiens qui ont peur de leurs congénères, je peux venir en séance. Je reste calme, je regarde ailleurs… et petit à petit, la confiance revient.',
   },
   {
     slug: 'changements',
@@ -154,6 +157,7 @@ export const programs = [
       'Évolution du rythme de vie',
     ],
     suggested: 'Séance bilan + séances individuelles',
+    oslo: 'Un bébé arrive ? Préparez votre chien quelques semaines avant : nouveaux bruits, nouvelles odeurs, nouvelles pièces interdites. Les surprises, on n’aime pas trop.',
   },
 ];
 

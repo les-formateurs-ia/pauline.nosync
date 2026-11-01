@@ -19,9 +19,9 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     </button>
   </div>
   <nav id="mnav" class="mnav" aria-label="Navigation mobile">
-    {nav.map((l, i) => <a href={l.href} data-nav={l.href} style={`--i:${i}`}>{l.label}</a>)}
-    <a href="/contact/" data-nav="/contact/" style={`--i:${nav.length}`}>Contact</a>
-    <a class="btn accent" href={site.phoneHref} style={`--i:${nav.length + 1}`}><Icon name="phone" size={18} /> {site.phone}</a>
+    {[{ href: '/', label: 'Accueil' }, ...nav].map((l, i) => <a href={l.href} data-nav={l.href} style={`--i:${i}`}>{l.label}</a>)}
+    <a href="/contact/" data-nav="/contact/" style={`--i:${nav.length + 1}`}>Contact</a>
+    <a class="btn accent" href={site.phoneHref} style={`--i:${nav.length + 2}`}><Icon name="phone" size={18} /> {site.phone}</a>
   </nav>
 </header>
 

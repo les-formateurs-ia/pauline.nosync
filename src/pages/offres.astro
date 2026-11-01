@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
+import OsloTip from '../components/OsloTip.astro';
 import { prices, formats } from '../data/site';
 import riviere from '../assets/photos/riviere.jpg';
 ---
@@ -62,7 +63,7 @@ import riviere from '../assets/photos/riviere.jpg';
           <div><span class="chip orange">Trouble du comportement</span><p>Le <strong>forfait 5 séances</strong> laisse le temps de travailler en profondeur et de généraliser les acquis.</p></div>
           <div><span class="chip">Besoin ponctuel</span><p>La <strong>séance individuelle</strong> est idéale pour un objectif précis ou un point d’étape.</p></div>
         </div>
-        <p class="mut">Pas sûr·e ? La séance bilan est faite pour ça : je vous conseille la formule la plus adaptée à la fin du rendez-vous.</p>
+        <OsloTip size={80}><p>Pas sûr·e ? La séance bilan est faite pour ça : Pauline vous conseille la formule la plus adaptée à la fin du rendez-vous. Et si votre chien a besoin d’un copain bien codé, je peux venir aussi !</p></OsloTip>
       </div>
     </div>
   </section>

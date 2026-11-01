@@ -6,6 +6,7 @@ cover: "../../assets/photos/frisbee.jpg"
 coverAlt: "Chienne en harnais couchée dans l’herbe, attentive à son environnement"
 readingTime: 6
 order: 5
+oslo: "Avec les chiens qui ont peur de moi, je bâille, je renifle le sol, je regarde ailleurs. En langage chien, ça veut dire : « tout va bien, je ne te veux aucun mal »."
 ---
 
 Votre chien aboie, grogne ou se jette au bout de la laisse quand il croise un chien, un vélo ou un passant ? Les balades deviennent stressantes et vous changez de trottoir dès que quelqu’un approche. Vous n’êtes pas seul·e : la réactivité est l’une des difficultés les plus courantes.

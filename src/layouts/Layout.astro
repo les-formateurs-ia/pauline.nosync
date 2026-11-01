@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import { getImage } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import OsloBuddy from '../components/OsloBuddy.astro';
 import { site } from '../data/site';
 import ogPhoto from '../assets/photos/pauline-oslo.jpg';
 import '../styles/global.css';
@@ -57,6 +58,7 @@ const ld = {
       <slot />
     </main>
     <Footer />
+    <OsloBuddy />
     <script>
       let io: IntersectionObserver | undefined;
       function init() {

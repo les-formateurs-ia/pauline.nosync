@@ -12,6 +12,7 @@ const conseils = defineCollection({
       coverAlt: z.string(),
       readingTime: z.number(),
       order: z.number(),
+      oslo: z.string().optional(),
     }),
 });
 

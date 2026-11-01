@@ -1,0 +1,256 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import OsloAvatar from '../../components/OsloAvatar.astro';
+import OsloTip from '../../components/OsloTip.astro';
+import { groups, stages, type Group } from '../../data/groups';
+import { breeds } from '../../data/breeds';
+import osloBalle from '../../assets/photos/oslo-balle.jpg';
+
+export function getStaticPaths() {
+  return groups.map((g) => ({ params: { slug: g.slug }, props: { g } }));
+}
+const { g } = Astro.props as { g: Group };
+const groupBreeds = breeds.filter((b) => b.group === g.slug).map((b) => b.name);
+const others = groups.filter((o) => o.slug !== g.slug);
+---
+<Layout title={`${g.name} : comprendre et éduquer`} description={`${g.short} Comprendre le comportement des ${g.name.toLowerCase()} et adapter leur éducation, avec Pauline Renard, éducatrice canine à Lyon.`}>
+  <div style={`--hue:${g.hue}`} class="gp">
+    <section class="ghero">
+      <div class="blob" style="width:480px;height:480px;background:color-mix(in srgb,var(--hue) 22%,transparent);top:-180px;right:-120px"></div>
+      <div class="w ghero-grid">
+        <div>
+          <a class="back rv" href="/races/"><Icon name="arrow" size={16} /> Toutes les familles</a>
+          <div class="dogcard rv" hidden data-dogcard>
+            <span class="paw"><Icon name="paw" size={18} /></span>
+            <span><strong data-dog="nom"></strong> · <span data-dog="race"></span> · <span data-dog="stage"></span></span>
+            <button type="button" class="reset" data-reset>Changer de chien</button>
+          </div>
+          <span class="eyebrow rv" style="--d:1">{g.emoji} Famille de races</span>
+          <h1 class="rv" style="--d:1">
+            <span data-dog-title hidden><span data-dog="nom"></span> fait partie des </span><span class="hl">{g.name}</span>
+          </h1>
+          <p class="lead rv" style="--d:2">{g.short}</p>
+          <ul class="traits rv" style="--d:3">{g.traits.map((t) => <li>{t}</li>)}</ul>
+        </div>
+        <div class="oslo-big oslo-host rv" style="--d:2">
+          <div class="ring"><OsloAvatar size={260} /></div>
+          <div class="speech"><p data-oslo-hello>Je vais vous expliquer comment fonctionnent les {g.name.toLowerCase()}, et comment adapter leur éducation.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="alt">
+      <div class="w grid g2 origin">
+        <div class="rv">
+          <span class="eyebrow">D’où vient-il ?</span>
+          <h2>Un chien façonné par son métier d’origine.</h2>
+          <p class="lead">{g.origin}</p>
+          <p class="mut small">Exemples : {g.examples.join(', ')}…</p>
+        </div>
+        {g.slug === 'bergers-bouviers'
+          ? <div class="photo rv tall" style="--d:1"><Image src={osloBalle} alt="Oslo, bouvier de l’Entlebuch, une balle dans la gueule" widths={[400, 675]} sizes="(min-width: 760px) 460px, 90vw" /></div>
+          : <div class="rv" style="--d:1"><OsloTip title="Le mot d’Oslo"><p>{g.oslo}</p></OsloTip></div>}
+      </div>
+      {g.slug === 'bergers-bouviers' && <div class="w"><OsloTip title="Le mot d’Oslo"><p>{g.oslo}</p></OsloTip></div>}
+    </section>
+
+    <section>
+      <div class="w">
+        <div class="head rv">
+          <span class="eyebrow">Décrypter son comportement</span>
+          <h2>Ce que vous observez… <span class="em">et ce que ça veut dire.</span></h2>
+          <p class="lead">Touchez une carte pour découvrir l’explication.</p>
+        </div>
+        <div class="grid g2 flips">
+          {g.decode.map((d, i) => (
+            <button type="button" class="flip rv" style={`--d:${i}`} aria-pressed="false">
+              <span class="face front"><span class="q">« {d.obs} »</span><span class="hint">Pourquoi ? <Icon name="arrow" size={16} /></span></span>
+              <span class="face rear"><span class="lbl">Ce que ça veut dire</span><span>{d.why}</span></span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="alt">
+      <div class="w">
+        <div class="head rv">
+          <span class="eyebrow">Adapter l’éducation</span>
+          <h2>Comment l’accompagner au mieux.</h2>
+        </div>
+        <div class="grid g4">
+          {g.education.map((e, i) => (
+            <div class="card hover edu rv" style={`--d:${i}`}>
+              <span class="n">0{i + 1}</span>
+              <h3>{e.title}</h3>
+              <p class="mut">{e.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="w grid g2 lists">
+        <div class="card rv">
+          <h3>🎯 Activités qui lui plaisent</h3>
+          <ul class="pills">{g.activities.map((a) => <li>{a}</li>)}</ul>
+        </div>
+        <div class="card rv" style="--d:1">
+          <h3>⚠️ Points de vigilance</h3>
+          <ul class="check warn">{g.vigilance.map((v) => <li>{v}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="alt">
+      <div class="w narrow">
+        <div class="head center rv">
+          <span class="eyebrow">Selon son âge</span>
+          <h2><span data-dog-age-title>Et selon l’âge ?</span></h2>
+        </div>
+        <div class="tabs rv" role="tablist">
+          {stages.map((s, i) => <button type="button" role="tab" data-stage={s.key} aria-selected={i === 2 ? 'true' : 'false'}>{s.label}</button>)}
+        </div>
+        {stages.map((s, i) => (
+          <div class="panel card" role="tabpanel" data-panel={s.key} hidden={i !== 2}>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <div class="w">
+        <div class="note rv">
+          <OsloAvatar size={72} mood="calm" />
+          <p><strong>Chaque chien est unique.</strong> La race donne des tendances, pas un destin : l’histoire, l’environnement et la personnalité de votre chien comptent tout autant. Pour une analyse vraiment personnalisée, rien ne remplace une séance bilan.</p>
+          <a class="btn accent" href={`/contact/?motif=${encodeURIComponent('Séance bilan')}`} data-contact>Réserver un bilan <span data-dog-for></span> <Icon name="arrow" size={18} /></a>
+        </div>
+        <details class="all rv">
+          <summary>Voir les {groupBreeds.length} races de cette famille</summary>
+          <p class="mut">{groupBreeds.join(' · ')}</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="alt">
+      <div class="w">
+        <div class="head rv"><span class="eyebrow">Les autres familles</span><h2>Explorer d’autres profils.</h2></div>
+        <div class="others">
+          {others.map((o, i) => <a class="other rv" href={`/races/${o.slug}/`} style={`--d:${i % 4};--hue:${o.hue}`}><span>{o.emoji}</span>{o.name}</a>)}
+        </div>
+      </div>
+    </section>
+    <section style="padding-bottom:0"></section>
+  </div>
+</Layout>
+
+<style>
+  .gp { --accent-g: var(--hue); }
+  .ghero { padding-top: clamp(32px, 5vw, 64px); overflow: hidden; }
+  .ghero-grid { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 960px) { .ghero-grid { grid-template-columns: 1.15fr .85fr; } }
+  .back { display: inline-flex; align-items: center; gap: 8px; color: var(--mut); text-decoration: none; font-weight: 600; margin-bottom: 20px; }
+  .back :global(svg) { transform: rotate(180deg); }
+  .dogcard { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 8px 10px 8px 8px; margin-bottom: 20px; width: fit-content; box-shadow: var(--shadow); font-size: .95rem; }
+  .dogcard[hidden] { display: none; }
+  .dogcard .paw { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--hue); color: #fff; }
+  .reset { font: inherit; font-size: .85rem; font-weight: 600; color: var(--mut); background: var(--bg2); border: 0; border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+  .hl { color: var(--hue); font-style: italic; }
+  @media (prefers-color-scheme: dark) { .hl { color: color-mix(in srgb, var(--hue) 55%, white); } }
+  .traits { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .traits li { padding: 8px 16px; border-radius: 999px; background: color-mix(in srgb, var(--hue) 14%, var(--card)); color: var(--ink); font-weight: 600; font-size: .92rem; border: 1px solid color-mix(in srgb, var(--hue) 25%, transparent); }
+  .oslo-big { position: relative; display: grid; justify-items: center; }
+  .ring { border-radius: 50%; padding: 14px; background: conic-gradient(from 0deg, var(--hue), var(--accent), var(--sun), var(--hue)); animation: spin 14s linear infinite; }
+  .ring :global(.oslo) { animation: spin 14s linear infinite reverse; border-radius: 50%; background: var(--bg); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .speech { position: relative; margin-top: -10px; max-width: 340px; background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 16px 20px; box-shadow: var(--shadow-lg); text-align: center; }
+  .speech::before { content: ''; position: absolute; top: -8px; left: 50%; width: 16px; height: 16px; background: var(--card); border-left: 1px solid var(--line); border-top: 1px solid var(--line); transform: translateX(-50%) rotate(45deg); }
+  .speech p { margin: 0; }
+  .origin { align-items: center; gap: 48px; }
+  .tall { aspect-ratio: 3 / 4; max-height: 560px; }
+  .small { font-size: .95rem; }
+  .flips { perspective: 1400px; }
+  .flip { position: relative; min-height: 210px; border: 0; padding: 0; background: none; cursor: pointer; font: inherit; color: inherit; text-align: left; transform-style: preserve-3d; transition: transform .8s var(--ease), opacity .9s var(--ease); }
+  .flip.rv.in[aria-pressed='true'] { transform: rotateY(180deg); }
+  .face { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; padding: 28px; border-radius: var(--r); backface-visibility: hidden; -webkit-backface-visibility: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .front { background: var(--card); }
+  .q { font-family: var(--serif); font-size: 1.25rem; font-style: italic; line-height: 1.35; }
+  .hint { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--hue); }
+  .face.rear { background: var(--hue); color: #fff; transform: rotateY(180deg); justify-content: center; margin: 0; }
+  .lbl { font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+  .edu .n { font-family: var(--serif); font-size: 2.4rem; font-weight: 700; color: var(--hue); line-height: 1; display: block; margin-bottom: 14px; }
+  .edu p { margin: 0; font-size: .97rem; }
+  .lists { align-items: start; }
+  .pills { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .pills li { padding: 10px 16px; border-radius: 14px; background: var(--bg2); font-weight: 600; font-size: .95rem; transition: transform .3s var(--ease), background .3s, color .3s; }
+  .pills li:hover { transform: translateY(-3px); background: var(--hue); color: #fff; }
+  .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
+  .tabs button { font: inherit; font-weight: 600; font-size: .95rem; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  .tabs button[aria-selected='true'] { background: var(--hue); color: #fff; border-color: var(--hue); }
+  .panel h3 { color: var(--hue); }
+  @media (prefers-color-scheme: dark) { .panel h3, .hint, .edu .n { color: color-mix(in srgb, var(--hue) 55%, white); } }
+  .panel p { margin: 0; font-size: 1.05rem; }
+  .note { display: grid; gap: 20px; align-items: center; background: var(--accent-soft); border-radius: 28px; padding: 28px; }
+  @media (min-width: 860px) { .note { grid-template-columns: auto 1fr auto; } }
+  .note p { margin: 0; }
+  .all { margin-top: 24px; padding: 18px 22px; border: 1px dashed var(--line); border-radius: 20px; }
+  .all summary { cursor: pointer; font-weight: 700; }
+  .all p { margin: 12px 0 0; font-size: .95rem; }
+  .others { display: flex; flex-wrap: wrap; gap: 12px; }
+  .other { display: inline-flex; align-items: center; gap: 10px; padding: 14px 20px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 600; transition: transform .35s var(--ease), border-color .3s, opacity .9s var(--ease); }
+  .other:hover { transform: translateY(-3px); border-color: var(--hue); }
+  .other span { font-size: 1.3rem; }
+</style>
+
+<script>
+  import { stages, groups } from '../../data/groups';
+  import { loadDog, clearDog, saveDog } from '../../lib/dog';
+  import { navigate } from 'astro:transitions/client';
+  function init() {
+    if (!document.querySelector('.gp')) return;
+    // flip cards
+    document.querySelectorAll<HTMLButtonElement>('.flip').forEach((b) =>
+      b.addEventListener('click', () => b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')))
+    );
+    // age tabs
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-stage]')];
+    const select = (key: string) => {
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.stage === key)));
+      document.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => (p.hidden = p.dataset.panel !== key));
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => select(t.dataset.stage!)));
+
+    // personalisation: URL params first, then saved profile if it matches this group
+    const slug = location.pathname.split('/').filter(Boolean)[1];
+    const q = new URLSearchParams(location.search);
+    const saved = loadDog();
+    const dog = q.get('nom')
+      ? { nom: q.get('nom')!, race: q.get('race') || '', age: q.get('age') || '' }
+      : saved && saved.group === slug ? saved : null;
+    if (!dog) return;
+    if (q.get('nom')) saveDog({ nom: dog.nom, age: dog.age, race: dog.race, group: slug });
+    const stage = stages.find((s) => s.key === dog.age);
+    const g = groups.find((x) => x.slug === slug)!;
+    const set = (k: string, v: string) => document.querySelectorAll<HTMLElement>(`[data-dog="${k}"]`).forEach((el) => (el.textContent = v));
+    set('nom', dog.nom); set('race', dog.race); set('stage', stage?.label ?? '');
+    document.querySelector<HTMLElement>('[data-dogcard]')!.hidden = false;
+    document.querySelector<HTMLElement>('[data-dog-title]')!.hidden = false;
+    document.querySelector<HTMLElement>('[data-oslo-hello]')!.textContent =
+      `Enchanté, ${dog.nom} ! Les ${g.name.toLowerCase()} ont une histoire passionnante. Voyons ensemble ce qui se cache derrière ses comportements.`;
+    const forEl = document.querySelector<HTMLElement>('[data-dog-for]');
+    if (forEl) forEl.textContent = `pour ${dog.nom}`;
+    const c = document.querySelector<HTMLAnchorElement>('[data-contact]');
+    if (c) c.href = `/contact/?motif=${encodeURIComponent('Séance bilan')}&chien=${encodeURIComponent(`${dog.nom}, ${stage?.label ?? ''}, ${dog.race}`)}`;
+    if (stage) {
+      select(stage.key);
+      document.querySelector<HTMLElement>('[data-dog-age-title]')!.textContent = `${dog.nom} : ${stage.title.charAt(0).toLowerCase()}${stage.title.slice(1)}`;
+    }
+    document.querySelector('[data-reset]')?.addEventListener('click', () => { clearDog(); navigate('/#mon-chien'); });
+  }
+  document.addEventListener('astro:page-load', init);
+</script>

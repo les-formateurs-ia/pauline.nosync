@@ -1,15 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PawTrail from '../components/PawTrail.astro';
+import OsloAvatar from '../components/OsloAvatar.astro';
 import Icon from '../components/Icon.astro';
 ---
 <Layout title="Page introuvable">
   <section class="nf">
     <div class="w center">
+      <div class="o404"><OsloAvatar size={160} /></div>
       <PawTrail class="t404" />
       <p class="big">404</p>
       <h1>Cette page a fugué…</h1>
-      <p class="lead" style="margin-inline:auto">On travaille le rappel, promis. En attendant, revenez à l’accueil.</p>
+      <p class="lead" style="margin-inline:auto">Même Oslo ne la retrouve pas, et pourtant il a du flair. On travaille le rappel, promis !</p>
       <a class="btn accent" href="/">Retour à l’accueil <Icon name="arrow" size={18} /></a>
     </div>
   </section>
@@ -17,5 +19,7 @@ import Icon from '../components/Icon.astro';
 <style>
   .nf { min-height: 60vh; display: grid; place-items: center; }
   .big { font-family: var(--serif); font-size: clamp(6rem, 20vw, 12rem); line-height: 1; font-weight: 700; color: var(--green); margin: 0; }
+  .o404 { display: grid; place-items: center; margin-bottom: -20px; animation: tilt 3s ease-in-out infinite; }
+  @keyframes tilt { 50% { transform: rotate(-8deg); } }
   .nf :global(.t404) { width: min(500px, 90%); margin: 0 auto; }
 </style>

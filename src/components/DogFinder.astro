@@ -1,0 +1,77 @@
+---
+import OsloAvatar from './OsloAvatar.astro';
+import Icon from './Icon.astro';
+import { breeds } from '../data/breeds';
+import { stages } from '../data/groups';
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+---
+<div class:list={['finder', 'oslo-host', { compact }]}>
+  <div class="head">
+    <OsloAvatar size={compact ? 64 : 78} />
+    <div class="say">
+      <p class="hello">Wouf ! Moi c’est <strong>Oslo</strong>.</p>
+      <p class="mut">Présentez-moi votre chien : je vous explique comment il fonctionne et comment adapter son éducation.</p>
+    </div>
+  </div>
+  <form class="dog-form" autocomplete="off">
+    <label><span>Son nom</span><input name="nom" required maxlength="30" placeholder="Ex. : Oslo" /></label>
+    <label><span>Son âge</span>
+      <select name="age" required>
+        <option value="" disabled selected>Choisir…</option>
+        {stages.map((s) => <option value={s.key}>{s.label}</option>)}
+      </select>
+    </label>
+    <label class="race"><span>Sa race</span>
+      <input name="race" list="breed-list" required placeholder="Ex. : Bouvier de l’Entlebuch, croisé…" />
+      <datalist id="breed-list">
+        <option value="Croisé / je ne sais pas" />
+        {breeds.map((b) => <option value={b.name} />)}
+      </datalist>
+    </label>
+    <button class="btn accent" type="submit">Découvrir son profil <Icon name="arrow" size={18} /></button>
+  </form>
+</div>
+
+<style>
+  .finder { background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 22px; box-shadow: var(--shadow-lg); position: relative; }
+  .head { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
+  .say p { margin: 0; line-height: 1.4; }
+  .hello { font-family: var(--serif); font-size: 1.2rem; }
+  .say .mut { font-size: .92rem; margin-top: 2px; }
+  form { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+  .race, form .btn { grid-column: 1 / -1; }
+  label { display: grid; gap: 4px; font-weight: 600; font-size: .85rem; }
+  label span { padding-left: 4px; }
+  input, select { font: inherit; font-weight: 400; font-size: 1rem; padding: 13px 14px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); width: 100%; transition: border-color .25s, box-shadow .25s; }
+  input:focus, select:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft); }
+  form .btn { justify-content: center; }
+  @media (min-width: 700px) { .compact form { grid-template-columns: 1fr 1fr 1.6fr auto; align-items: end; } .compact .race, .compact form .btn { grid-column: auto; } }
+</style>
+
+<script>
+  import { navigate } from 'astro:transitions/client';
+  import { findGroup, saveDog, dogUrl, loadDog } from '../lib/dog';
+  function init() {
+    document.querySelectorAll<HTMLFormElement>('.dog-form').forEach((f) => {
+      if (f.dataset.ready) return;
+      f.dataset.ready = '1';
+      const saved = loadDog();
+      if (saved) {
+        (f.elements.namedItem('nom') as HTMLInputElement).value = saved.nom;
+        (f.elements.namedItem('age') as HTMLSelectElement).value = saved.age;
+        (f.elements.namedItem('race') as HTMLInputElement).value = saved.race;
+      }
+      f.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!f.reportValidity()) return;
+        const d = new FormData(f);
+        const p = { nom: String(d.get('nom')).trim(), age: String(d.get('age')), race: String(d.get('race')).trim(), group: null as string | null };
+        p.group = findGroup(p.race);
+        saveDog(p);
+        navigate(dogUrl(p));
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', init);
+</script>

@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
+import OsloTip from '../components/OsloTip.astro';
 import { site, prices, programs } from '../data/site';
 const motifs = [...programs.map((p) => p.title), 'Anxiété de séparation', 'Réactivité (humains / congénères)', 'Autre'];
 ---
@@ -15,7 +16,7 @@ const motifs = [...programs.map((p) => p.title), 'Anxiété de séparation', 'R�
         <a class="ct" href={site.phoneHref}><span class="ico"><Icon name="phone" /></span><span><small>Téléphone</small><strong>{site.phone}</strong></span></a>
         <a class="ct" href={`mailto:${site.email}`}><span class="ico"><Icon name="mail" /></span><span><small>E-mail</small><strong>{site.email}</strong></span></a>
         <div class="ct"><span class="ico"><Icon name="pin" /></span><span><small>Zone d’intervention</small><strong>{site.city} · {site.area}</strong></span></div>
-        <div class="note"><Icon name="paw" size={22} /><p>La <strong>séance bilan à 35 €</strong> est le point de départ idéal : on fait connaissance et je vous propose un plan adapté.</p></div>
+        <OsloTip size={80} title="Le mot d’Oslo"><p>La <strong>séance bilan à 35 €</strong>, c’est le point de départ idéal : on fait connaissance et Pauline vous propose un plan adapté.</p></OsloTip>
       </aside>
 
       <div class="card form-card rv" style="--d:1">
@@ -83,6 +84,8 @@ const motifs = [...programs.map((p) => p.title), 'Anxiété de séparation', 'R�
 
 <script>
   import { site } from '../data/site';
+  import { stages } from '../data/groups';
+  import { loadDog } from '../lib/dog';
   function init() {
     const f = document.querySelector<HTMLFormElement>('#f');
     if (!f) return;
@@ -95,6 +98,11 @@ const motifs = [...programs.map((p) => p.title), 'Anxiété de séparation', 'R�
     };
     pick('#offre', q.get('offre'));
     pick('#motif', q.get('motif'));
+    // prefill the dog field from the URL or the profile saved with Oslo
+    const chien = f.querySelector<HTMLInputElement>('[name=chien]')!;
+    const dog = loadDog();
+    if (q.get('chien')) chien.value = q.get('chien')!;
+    else if (dog && !chien.value) chien.value = `${dog.nom}, ${stages.find((s) => s.key === dog.age)?.label ?? ''}, ${dog.race}`;
 
     const ok = f.querySelector<HTMLElement>('#ok')!;
     const btn = f.querySelector<HTMLButtonElement>('button[type=submit]')!;
@@ -114,7 +122,9 @@ const motifs = [...programs.map((p) => p.title), 'Anxiété de séparation', 'R�
       btn.disabled = true; lbl.textContent = 'Envoi en cours…'; ok.textContent = '';
       try {
         const r = await fetch(`https://formsubmit.co/ajax/${site.email}`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(o) });
-        if (!r.ok) throw new Error();
+        // FormSubmit answers 200 with success "false" (e.g. form not activated yet): treat it as a failure.
+        const res = await r.json().catch(() => ({}));
+        if (!r.ok || String(res.success) !== 'true') throw new Error(res.message);
         ok.className = 'msg ok'; ok.textContent = 'Merci ! Votre message a bien été envoyé, je vous réponds rapidement. 🐶';
         f.reset();
       } catch {

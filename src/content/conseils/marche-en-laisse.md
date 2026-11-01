@@ -6,6 +6,7 @@ cover: "../../assets/photos/riviere.jpg"
 coverAlt: "Chiens tenus en laisse au bord du Rhône"
 readingTime: 5
 order: 2
+oslo: "Ma balade préférée ? Celle où Pauline me laisse renifler chaque arbre. Après, je marche à côté d’elle sans même y penser."
 ---
 
 Un chien qui tire en laisse n’est pas un chien « dominant » ou têtu. Il va simplement plus vite que nous, il est curieux… et il a souvent appris que **tirer fonctionne** : à chaque fois qu’il tire, il avance.

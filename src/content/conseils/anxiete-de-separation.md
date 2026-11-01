@@ -6,6 +6,7 @@ cover: "../../assets/photos/pauline-oslo.jpg"
 coverAlt: "Pauline accroupie avec Oslo dans un parc"
 readingTime: 6
 order: 4
+oslo: "Quand Pauline part, j’ai mon tapis de fouille et mon coin tranquille. Et quand elle revient, je reste calme… enfin, j’essaie !"
 ---
 
 Les voisins se plaignent d’aboiements, vous retrouvez le canapé détruit ou des besoins à votre retour ? Votre chien n’agit pas par vengeance : il exprime **une vraie détresse émotionnelle** face à la solitude.

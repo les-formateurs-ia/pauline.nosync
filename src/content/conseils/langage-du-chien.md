@@ -6,6 +6,7 @@ cover: "../../assets/photos/oslo-labrador.jpg"
 coverAlt: "Oslo et un labrador détendus, couchés dans l’herbe"
 readingTime: 4
 order: 6
+oslo: "Quand je m’ébroue après avoir croisé un chien un peu trop excité, c’est ma façon de dire : « allez, on passe à autre chose »."
 ---
 
 Les chiens communiquent en permanence, principalement avec leur corps. Apprendre à lire ces signaux, c’est mieux comprendre ses émotions… et éviter bien des malentendus.

@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import { programs } from '../data/site';
+import OsloTip from '../components/OsloTip.astro';
 import osloLabrador from '../assets/photos/oslo-labrador.jpg';
 import osloChiot from '../assets/photos/oslo-chiot.jpg';
 import frisbee from '../assets/photos/frisbee.jpg';
@@ -33,6 +34,7 @@ const imgs = [
           <ul class="check cols2">{p.items.map((it) => <li>{it}</li>)}</ul>
           <div class="sugg"><span class="mut">Formule conseillée</span><strong>{p.suggested}</strong></div>
           <a class="btn" href={`/contact/?motif=${encodeURIComponent(p.title)}`}>En parler avec moi <Icon name="arrow" size={18} /></a>
+          <OsloTip size={76}><p>{p.oslo}</p></OsloTip>
         </div>
       </div>
     </section>

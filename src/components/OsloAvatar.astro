@@ -1,0 +1,77 @@
+---
+// Oslo, the Entlebucher mountain dog mascot, as an animated SVG.
+interface Props { size?: number; class?: string; bg?: boolean; mood?: 'happy' | 'calm' }
+const { size = 120, class: cls, bg = true, mood = 'happy' } = Astro.props;
+---
+<svg class:list={['oslo', cls, mood]} width={size} height={size} viewBox="0 0 200 200" role="img" aria-label="Oslo, le bouvier de l’Entlebuch de Pauline">
+  <defs>
+    <clipPath id="oslo-clip"><circle cx="100" cy="100" r="100" /></clipPath>
+  </defs>
+  <g clip-path={bg ? 'url(#oslo-clip)' : undefined}>
+    {bg && <circle class="bg" cx="100" cy="100" r="100" />}
+    <!-- body -->
+    <path class="black" d="M30 212 C34 166 64 148 100 148 C136 148 166 166 170 212 Z" />
+    <path class="white" d="M74 212 C76 176 88 156 100 156 C112 156 124 176 126 212 Z" />
+    <path class="tan" d="M48 212 C50 190 58 178 66 172 C70 186 70 200 68 212 Z" />
+    <path class="tan" d="M152 212 C150 190 142 178 134 172 C130 186 130 200 132 212 Z" />
+    <path class="collar" d="M68 150 Q100 170 132 150" />
+    <circle class="tag" cx="100" cy="166" r="6" />
+    <g class="head">
+      <!-- ears -->
+      <path class="black ear ear-l" d="M64 56 C42 58 28 88 34 122 C37 133 50 132 56 121 C62 105 70 82 76 66 Z" />
+      <path class="black ear ear-r" d="M136 56 C158 58 172 88 166 122 C163 133 150 132 144 121 C138 105 130 82 124 66 Z" />
+      <!-- skull -->
+      <path class="black" d="M100 40 C136 40 152 70 150 100 C148 130 130 152 100 154 C70 152 52 130 50 100 C48 70 64 40 100 40 Z" />
+      <ellipse class="tan" cx="70" cy="122" rx="15" ry="13" />
+      <ellipse class="tan" cx="130" cy="122" rx="15" ry="13" />
+      <path class="white" d="M100 50 C95 50 93 60 93 72 L91 96 C79 104 74 122 80 137 C87 151 113 151 120 137 C126 122 121 104 109 96 L107 72 C107 60 105 50 100 50 Z" />
+      <!-- eyebrows -->
+      <ellipse class="tan brow brow-l" cx="78" cy="74" rx="6.5" ry="4.5" />
+      <ellipse class="tan brow brow-r" cx="122" cy="74" rx="6.5" ry="4.5" />
+      <!-- eyes -->
+      <g class="eyes">
+        <circle class="eye" cx="79" cy="90" r="7.5" />
+        <circle class="eye" cx="121" cy="90" r="7.5" />
+        <circle class="shine" cx="81.5" cy="87.5" r="2.4" />
+        <circle class="shine" cx="123.5" cy="87.5" r="2.4" />
+      </g>
+      <g class="lids">
+        <ellipse class="black" cx="79" cy="90" rx="9" ry="9" />
+        <ellipse class="black" cx="121" cy="90" rx="9" ry="9" />
+      </g>
+      <!-- nose & mouth -->
+      <path class="nose" d="M87 117 C87 110 113 110 113 117 C113 125 105 130 100 130 C95 130 87 125 87 117 Z" />
+      <ellipse class="shine" cx="95" cy="114.5" rx="4" ry="2" opacity=".55" />
+      <path class="tongue" d="M91 137 C91 157 109 157 109 137 Z" />
+      <path class="mouth" d="M100 130 V136 M100 136 C94 142 86 142 81 135 M100 136 C106 142 114 142 119 135" />
+    </g>
+  </g>
+</svg>
+
+<style>
+  .oslo { display: block; overflow: visible; flex: none; }
+  .bg { fill: var(--accent-soft); }
+  .black { fill: #1c1c1e; }
+  .white { fill: #fbf8f2; }
+  .tan { fill: #c8763a; }
+  .eye { fill: #3b2414; }
+  .shine { fill: #fff; }
+  .nose { fill: #121212; }
+  .tongue { fill: #ec7088; transform-origin: 100px 137px; animation: pant 1.6s ease-in-out infinite; }
+  .calm .tongue { display: none; }
+  .mouth { fill: none; stroke: #121212; stroke-width: 3; stroke-linecap: round; }
+  .collar { fill: none; stroke: #3f6b4a; stroke-width: 7; stroke-linecap: round; }
+  .tag { fill: #f2c14e; }
+  .head { transform-origin: 100px 150px; transition: transform .6s cubic-bezier(.3, 1.6, .5, 1); }
+  .oslo:hover .head, :global(.oslo-host:hover) .head { transform: rotate(-9deg); }
+  .lids ellipse { transform-box: fill-box; transform-origin: center; transform: scaleY(0); animation: blink 4.5s infinite; }
+  .ear-l { transform-origin: 66px 60px; animation: ear-l 5s ease-in-out infinite; }
+  .ear-r { transform-origin: 134px 60px; animation: ear-r 5s ease-in-out infinite 1.2s; }
+  .brow { transform-box: fill-box; transform-origin: center; animation: brow 5s ease-in-out infinite; }
+  @keyframes blink { 0%, 92%, 100% { transform: scaleY(0); } 95% { transform: scaleY(1); } }
+  @keyframes ear-l { 0%, 80%, 100% { transform: rotate(0); } 85% { transform: rotate(8deg); } 90% { transform: rotate(-3deg); } }
+  @keyframes ear-r { 0%, 80%, 100% { transform: rotate(0); } 85% { transform: rotate(-8deg); } 90% { transform: rotate(3deg); } }
+  @keyframes brow { 0%, 60%, 100% { transform: none; } 66% { transform: translateY(-3px); } 72% { transform: none; } }
+  @keyframes pant { 50% { transform: scaleY(1.18); } }
+  @media (prefers-reduced-motion: reduce) { .oslo * { animation: none !important; } }
+</style>

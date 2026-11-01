@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import PawTrail from '../components/PawTrail.astro';
+import OsloTip from '../components/OsloTip.astro';
 import paulineOslo from '../assets/photos/pauline-oslo.jpg';
 import osloBalle from '../assets/photos/oslo-balle.jpg';
 const values = [
@@ -56,6 +57,7 @@ const values = [
         <h2>Oslo, bouvier de l’Entlebuch.</h2>
         <p class="lead">8 ans, très calme et très bien codé.</p>
         <p>Selon les situations, Oslo peut servir de chien régulateur. C’est un partenaire idéal pour aider les chiens à apprendre les bons codes et à se sentir en confiance : un chien réactif ou un chiot timide peut ainsi progresser au contact d’un congénère stable et rassurant.</p>
+        <OsloTip size={80} title="Oslo se présente"><p>Ma spécialité ? Rester zen quand un copain s’agite. Mon péché mignon ? Ma balle orange. Mon poste préféré ? Sous le bureau de Pauline.</p></OsloTip>
         <a class="btn" href="/contact/">Rencontrer Pauline &amp; Oslo <Icon name="arrow" size={18} /></a>
       </div>
       <div class="photo rv tilt" style="--d:1"><Image src={osloBalle} alt="Oslo debout dans l’herbe, une balle dans la gueule" widths={[400, 675]} sizes="(min-width: 760px) 480px, 90vw" /></div>

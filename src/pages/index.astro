@@ -6,6 +6,8 @@ import Icon from '../components/Icon.astro';
 import Marquee from '../components/Marquee.astro';
 import PawTrail from '../components/PawTrail.astro';
 import ArticleCard from '../components/ArticleCard.astro';
+import DogFinder from '../components/DogFinder.astro';
+import OsloTip from '../components/OsloTip.astro';
 import { programs, steps, prices, site } from '../data/site';
 import paulineOslo from '../assets/photos/pauline-oslo.jpg';
 import osloBalle from '../assets/photos/oslo-balle.jpg';
@@ -29,12 +31,10 @@ const struggles = ['Il tire en laisse', 'Il ne revient pas au rappel', 'Il aboie
           Un lien de <span class="draw">confiance<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 60 4, 140 4, 296 12" /></svg></span>,<br />pour avancer ensemble.
         </h1>
         <p class="lead rv" style="--d:2">
-          Réactivité en balade, aboiements, anxiété, chiot qui découvre le monde… Je vous aide à comprendre votre chien et vous donne des outils concrets pour retrouver un quotidien serein.
+          Réactivité, aboiements, anxiété, chiot qui découvre le monde… Je vous aide à comprendre votre chien et vous donne des outils concrets pour un quotidien serein.
         </p>
-        <div class="btns rv" style="--d:3">
-          <a class="btn accent" href="/contact/">Réserver une séance bilan <Icon name="arrow" size={18} /></a>
-          <a class="btn ghost" href="/offres/">Voir les offres</a>
-        </div>
+        <div class="rv finder-slot" style="--d:3" id="mon-chien"><DogFinder /></div>
+        <p class="direct rv" style="--d:3">ou <a href="/contact/">réserver directement une séance bilan</a> · <a href="/offres/">voir les offres</a></p>
         <ul class="trust rv" style="--d:4">
           <li><Icon name="award" size={20} /> Diplômée EFM &amp; ACACED</li>
           <li><Icon name="heart" size={20} /> Méthodes bienveillantes</li>
@@ -67,6 +67,11 @@ const struggles = ['Il tire en laisse', 'Il ne revient pas au rappel', 'Il aboie
       </div>
       <div class="bubbles">
         {struggles.map((s, i) => <span class="bubble rv" style={`--d:${i % 5}`}>« {s} »</span>)}
+      </div>
+      <div class="narrow" style="margin:0 auto">
+        <OsloTip title="Le saviez-vous ?">
+          <p>Beaucoup de ces comportements viennent du <strong>métier d’origine</strong> de la race : un berger qui poursuit les vélos, un terrier qui creuse… <a href="#mon-chien">Présentez-moi votre chien</a> pour découvrir le sien !</p>
+        </OsloTip>
       </div>
     </div>
   </section>
@@ -206,6 +211,8 @@ const struggles = ['Il tire en laisse', 'Il ne revient pas au rappel', 'Il aboie
   .draw path { fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 320; stroke-dashoffset: 320; animation: draw 1.2s .7s var(--ease) forwards; }
   @keyframes draw { to { stroke-dashoffset: 0; } }
   .lead { max-width: 54ch; }
+  .finder-slot { margin-top: 28px; max-width: 560px; scroll-margin-top: 100px; }
+  .direct { margin: 14px 0 0 6px; color: var(--mut); font-size: .95rem; }
   .trust { list-style: none; padding: 0; margin: 30px 0 0; display: flex; flex-wrap: wrap; gap: 10px 24px; color: var(--mut); font-size: .95rem; }
   .trust li { display: inline-flex; align-items: center; gap: 8px; }
   .trust :global(svg) { color: var(--green); }

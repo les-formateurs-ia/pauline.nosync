@@ -6,6 +6,7 @@ cover: "../../assets/photos/oslo-chiot.jpg"
 coverAlt: "Un chiot couché dans l’herbe observe Oslo"
 readingTime: 6
 order: 3
+oslo: "Quand j’étais chiot, je dormais partout, tout le temps. Aujourd’hui encore, la sieste reste mon activité numéro un."
 ---
 
 L’arrivée d’un chiot est un moment de joie… et de questions ! Les premières semaines sont décisives : ce que votre chiot vit maintenant influence son comportement d’adulte.
